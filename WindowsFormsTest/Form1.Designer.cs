@@ -31,7 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.visualStudio2012DarkTheme1 = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.radDock1 = new Telerik.WinControls.UI.Docking.RadDock();
+            this.documentWindow1 = new Telerik.WinControls.UI.Docking.DocumentWindow();
+            this.mainLogicDesigner1 = new WindowsFormsTest.Controls.MainLogicDesigner();
             this.toolTabStrip2 = new Telerik.WinControls.UI.Docking.ToolTabStrip();
+            this.toolWindow1 = new Telerik.WinControls.UI.Docking.ToolWindow();
+            this.standardTools1 = new WindowsFormsTest.Controls.StandardTools();
             this.documentContainer1 = new Telerik.WinControls.UI.Docking.DocumentContainer();
             this.documentTabStrip1 = new Telerik.WinControls.UI.Docking.DocumentTabStrip();
             this.radRibbonBar1 = new Telerik.WinControls.UI.RadRibbonBar();
@@ -39,26 +43,22 @@
             this.radRibbonBarGroup1 = new Telerik.WinControls.UI.RadRibbonBarGroup();
             this.newPart = new Telerik.WinControls.UI.RadButtonElement();
             this.SavedParts = new Telerik.WinControls.UI.RadButtonElement();
-            this.toolWindow1 = new Telerik.WinControls.UI.Docking.ToolWindow();
-            this.standardTools1 = new WindowsFormsTest.Controls.StandardTools();
-            this.documentWindow1 = new Telerik.WinControls.UI.Docking.DocumentWindow();
-            this.mainLogicDesigner1 = new WindowsFormsTest.Controls.MainLogicDesigner();
             ((System.ComponentModel.ISupportInitialize)(this.radDock1)).BeginInit();
             this.radDock1.SuspendLayout();
+            this.documentWindow1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toolTabStrip2)).BeginInit();
             this.toolTabStrip2.SuspendLayout();
+            this.toolWindow1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.documentContainer1)).BeginInit();
             this.documentContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.documentTabStrip1)).BeginInit();
             this.documentTabStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radRibbonBar1)).BeginInit();
-            this.toolWindow1.SuspendLayout();
-            this.documentWindow1.SuspendLayout();
             this.SuspendLayout();
             // 
             // radDock1
             // 
-            this.radDock1.ActiveWindow = this.documentWindow1;
+            this.radDock1.ActiveWindow = this.toolWindow1;
             this.radDock1.BackColor = System.Drawing.Color.Gray;
             this.radDock1.CausesValidation = false;
             this.radDock1.Controls.Add(this.toolTabStrip2);
@@ -66,7 +66,7 @@
             this.radDock1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radDock1.ForeColor = System.Drawing.Color.White;
             this.radDock1.IsCleanUpTarget = true;
-            this.radDock1.Location = new System.Drawing.Point(0, 148);
+            this.radDock1.Location = new System.Drawing.Point(0, 161);
             this.radDock1.MainDocumentContainer = this.documentContainer1;
             this.radDock1.Name = "radDock1";
             this.radDock1.Padding = new System.Windows.Forms.Padding(0);
@@ -74,12 +74,31 @@
             // 
             // 
             this.radDock1.RootElement.MinSize = new System.Drawing.Size(0, 0);
-            this.radDock1.Size = new System.Drawing.Size(886, 369);
+            this.radDock1.Size = new System.Drawing.Size(886, 356);
             this.radDock1.SplitterWidth = 2;
             this.radDock1.TabIndex = 1;
             this.radDock1.TabStop = false;
             this.radDock1.Text = "radDock1";
             this.radDock1.ThemeName = "VisualStudio2012Dark";
+            // 
+            // documentWindow1
+            // 
+            this.documentWindow1.Controls.Add(this.mainLogicDesigner1);
+            this.documentWindow1.Location = new System.Drawing.Point(4, 29);
+            this.documentWindow1.Name = "documentWindow1";
+            this.documentWindow1.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.TabbedDocument;
+            this.documentWindow1.Size = new System.Drawing.Size(676, 323);
+            this.documentWindow1.Text = "Document1";
+            // 
+            // mainLogicDesigner1
+            // 
+            this.mainLogicDesigner1.AllowDrop = true;
+            this.mainLogicDesigner1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.mainLogicDesigner1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainLogicDesigner1.Location = new System.Drawing.Point(0, 0);
+            this.mainLogicDesigner1.Name = "mainLogicDesigner1";
+            this.mainLogicDesigner1.Size = new System.Drawing.Size(676, 323);
+            this.mainLogicDesigner1.TabIndex = 0;
             // 
             // toolTabStrip2
             // 
@@ -92,10 +111,30 @@
             // 
             this.toolTabStrip2.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.toolTabStrip2.SelectedIndex = 0;
-            this.toolTabStrip2.Size = new System.Drawing.Size(200, 369);
+            this.toolTabStrip2.Size = new System.Drawing.Size(200, 356);
             this.toolTabStrip2.TabIndex = 1;
             this.toolTabStrip2.TabStop = false;
             this.toolTabStrip2.ThemeName = "VisualStudio2012Dark";
+            // 
+            // toolWindow1
+            // 
+            this.toolWindow1.Caption = null;
+            this.toolWindow1.Controls.Add(this.standardTools1);
+            this.toolWindow1.Location = new System.Drawing.Point(4, 24);
+            this.toolWindow1.Name = "toolWindow1";
+            this.toolWindow1.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.Docked;
+            this.toolWindow1.Size = new System.Drawing.Size(192, 328);
+            this.toolWindow1.Text = "toolWindow1";
+            // 
+            // standardTools1
+            // 
+            this.standardTools1.AutoSize = true;
+            this.standardTools1.BackColor = System.Drawing.SystemColors.GrayText;
+            this.standardTools1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.standardTools1.Location = new System.Drawing.Point(0, 0);
+            this.standardTools1.Name = "standardTools1";
+            this.standardTools1.Size = new System.Drawing.Size(192, 328);
+            this.standardTools1.TabIndex = 0;
             // 
             // documentContainer1
             // 
@@ -123,7 +162,7 @@
             // 
             this.documentTabStrip1.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.documentTabStrip1.SelectedIndex = 0;
-            this.documentTabStrip1.Size = new System.Drawing.Size(684, 369);
+            this.documentTabStrip1.Size = new System.Drawing.Size(684, 356);
             this.documentTabStrip1.TabIndex = 0;
             this.documentTabStrip1.TabStop = false;
             this.documentTabStrip1.ThemeName = "VisualStudio2012Dark";
@@ -134,7 +173,7 @@
             this.ribbonTab1});
             this.radRibbonBar1.Location = new System.Drawing.Point(0, 0);
             this.radRibbonBar1.Name = "radRibbonBar1";
-            this.radRibbonBar1.Size = new System.Drawing.Size(886, 148);
+            this.radRibbonBar1.Size = new System.Drawing.Size(886, 161);
             this.radRibbonBar1.StartButtonImage = ((System.Drawing.Image)(resources.GetObject("radRibbonBar1.StartButtonImage")));
             this.radRibbonBar1.TabIndex = 0;
             this.radRibbonBar1.ThemeName = "VisualStudio2012Dark";
@@ -181,45 +220,6 @@
             this.SavedParts.Text = "savedParts";
             this.SavedParts.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
-            // toolWindow1
-            // 
-            this.toolWindow1.Caption = null;
-            this.toolWindow1.Controls.Add(this.standardTools1);
-            this.toolWindow1.Location = new System.Drawing.Point(4, 24);
-            this.toolWindow1.Name = "toolWindow1";
-            this.toolWindow1.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.Docked;
-            this.toolWindow1.Size = new System.Drawing.Size(192, 341);
-            this.toolWindow1.Text = "toolWindow1";
-            // 
-            // standardTools1
-            // 
-            this.standardTools1.AutoSize = true;
-            this.standardTools1.BackColor = System.Drawing.SystemColors.GrayText;
-            this.standardTools1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.standardTools1.Location = new System.Drawing.Point(0, 0);
-            this.standardTools1.Name = "standardTools1";
-            this.standardTools1.Size = new System.Drawing.Size(192, 341);
-            this.standardTools1.TabIndex = 0;
-            // 
-            // documentWindow1
-            // 
-            this.documentWindow1.Controls.Add(this.mainLogicDesigner1);
-            this.documentWindow1.Location = new System.Drawing.Point(4, 29);
-            this.documentWindow1.Name = "documentWindow1";
-            this.documentWindow1.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.TabbedDocument;
-            this.documentWindow1.Size = new System.Drawing.Size(676, 336);
-            this.documentWindow1.Text = "Document1";
-            // 
-            // mainLogicDesigner1
-            // 
-            this.mainLogicDesigner1.AllowDrop = true;
-            this.mainLogicDesigner1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.mainLogicDesigner1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainLogicDesigner1.Location = new System.Drawing.Point(0, 0);
-            this.mainLogicDesigner1.Name = "mainLogicDesigner1";
-            this.mainLogicDesigner1.Size = new System.Drawing.Size(676, 336);
-            this.mainLogicDesigner1.TabIndex = 0;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -232,16 +232,16 @@
             this.Name = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.radDock1)).EndInit();
             this.radDock1.ResumeLayout(false);
+            this.documentWindow1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.toolTabStrip2)).EndInit();
             this.toolTabStrip2.ResumeLayout(false);
+            this.toolWindow1.ResumeLayout(false);
+            this.toolWindow1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.documentContainer1)).EndInit();
             this.documentContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.documentTabStrip1)).EndInit();
             this.documentTabStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radRibbonBar1)).EndInit();
-            this.toolWindow1.ResumeLayout(false);
-            this.toolWindow1.PerformLayout();
-            this.documentWindow1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -30,7 +30,7 @@ namespace WindowsFormsTest.Controls
             var type = typeof(ILogicComponent);
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
-                .Where(p => type.IsAssignableFrom(p)&&p.Name!=type.Name);
+                .Where(p => type.IsAssignableFrom(p)&&p.Name!=type.Name&&p.Name!="LogicComponentBase");
 
             foreach (Type t in types)
             {

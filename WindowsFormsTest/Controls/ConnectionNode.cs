@@ -37,8 +37,22 @@ namespace WindowsFormsTest.Controls
 
         private void pictureBox1_MouseHover(object sender, EventArgs e)
         {
-
+            this.Cursor = Cursors.Cross;
         }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            Globals.node1 = this;
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.Parent != Globals.node1.Parent)
+            {
+                Globals.node2 = this;
+            }
+        }
+
 
 
     }
