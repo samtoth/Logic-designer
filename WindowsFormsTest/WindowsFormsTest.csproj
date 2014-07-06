@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{379A9520-F4E7-4554-B6F4-3A91FFE9C4FB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WindowsFormsTest</RootNamespace>
+    <AssemblyName>WindowsFormsTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.WinControls, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.RadDock, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.VisualStudio2012Dark, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.Windows8, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.UI, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="TelerikCommon, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="component\ILogicComponent.cs" />
+    <Compile Include="component\LogicComponentBase.cs" />
+    <Compile Include="Controls\ConnectionNode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ConnectionNode.Designer.cs">
+      <DependentUpon>ConnectionNode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MainLogicDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MainLogicDesigner.Designer.cs">
+      <DependentUpon>MainLogicDesigner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GateControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GateControl.Designer.cs">
+      <DependentUpon>GateControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StandardTools.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\StandardTools.Designer.cs">
+      <DependentUpon>StandardTools.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\partDesignerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\partDesignerControl.Designer.cs">
+      <DependentUpon>partDesignerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gates\XnorGate.cs" />
+    <Compile Include="Gates\XorGate.cs" />
+    <Compile Include="Gates\NorGate.cs" />
+    <Compile Include="Gates\AndGate.cs" />
+    <Compile Include="Gates\NandGate.cs" />
+    <Compile Include="Gates\OrGate.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="newPartMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="newPartMessageBox.Designer.cs">
+      <DependentUpon>newPartMessageBox.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Controls\ConnectionNode.resx">
+      <DependentUpon>ConnectionNode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MainLogicDesigner.resx">
+      <DependentUpon>MainLogicDesigner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GateControl.resx">
+      <DependentUpon>GateControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StandardTools.resx">
+      <DependentUpon>StandardTools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\partDesignerControl.resx">
+      <DependentUpon>partDesignerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="newPartMessageBox.resx">
+      <DependentUpon>newPartMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\compass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AND.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NAND.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NOR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NOT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XNOR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XOR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AND-32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AND-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NAND-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NOR-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NOT-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OR-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XNOR-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XOR-16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\connectionPoint.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
