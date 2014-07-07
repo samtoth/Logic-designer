@@ -42,16 +42,17 @@ namespace WindowsFormsTest.Controls
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            Globals.node1 = this;
+            this.DoDragDrop(this, DragDropEffects.All);
         }
 
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        private void pictureBox1_DragDrop(object sender, DragEventArgs e)
         {
-            if (this.Parent != Globals.node1.Parent)
-            {
-                Globals.node2 = this;
-            }
+            //if (e.Data.GetData(e.Data.GetFormats()[0]) is ConnectionNode && ((ConnectionNode)e.Data.GetData(e.Data.GetFormats()[0])).Parent != this.Parent)
+            //{
+                Console.WriteLine("Worked and my parent is: " + ((ConnectionNode)e.Data.GetData(e.Data.GetFormats()[0])).Parent.ToString());
+            //}
         }
+
 
 
 

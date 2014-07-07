@@ -60,14 +60,16 @@ namespace WindowsFormsTest.Controls
         private void MainLogicDesigner_DragDrop(object sender, DragEventArgs e)
         {
             //Creqate a new LogicGAe
-            //RadTreeNode node = (RadTreeNode)e.Data.GetData(typeof(RadTreeNode));
-
-            Point pos = this.PointToClient(new Point(e.X, e.Y));
-            var lc = (ILogicComponent)e.Data.GetData(e.Data.GetFormats()[0]);
-            GateControl gc = new GateControl((ILogicComponent)(lc));
-            gc.Parent = this.radScrollablePanel1;
-            gc.Left = pos.X;
-            gc.Top = pos.Y;
+            //RadTreeNode node = (RadTreeNode)e.Data.GetData(typeof(RadTreeNode));            
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent)
+            {
+                Point pos = this.PointToClient(new Point(e.X, e.Y));
+                var lc = (ILogicComponent)e.Data.GetData(e.Data.GetFormats()[0]);
+                GateControl gc = new GateControl((ILogicComponent)(lc));
+                gc.Parent = this.radScrollablePanel1;
+                gc.Left = pos.X;
+                gc.Top = pos.Y;
+            }
         }
     }
 }

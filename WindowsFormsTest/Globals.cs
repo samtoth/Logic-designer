@@ -11,8 +11,5 @@ namespace WindowsFormsTest
     {
         internal static Form1 MainForm { get; set; }
 
-        internal static ConnectionNode node1 { get; set; }
-
-        internal static ConnectionNode node2 { get; set; }
     }
 }
