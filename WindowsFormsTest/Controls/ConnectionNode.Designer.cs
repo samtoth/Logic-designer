@@ -29,40 +29,46 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.ConnectionNodeImage = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            ((System.ComponentModel.ISupportInitialize)(this.ConnectionNodeImage)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // ConnectionNodeImage
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::WindowsFormsTest.Properties.Resources.connectionPoint;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(10, 10);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.pictureBox1_DragDrop);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseHover += new System.EventHandler(this.pictureBox1_MouseHover);
+            this.ConnectionNodeImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConnectionNodeImage.Image = global::WindowsFormsTest.Properties.Resources.connectionPoint;
+            this.ConnectionNodeImage.Location = new System.Drawing.Point(0, 0);
+            this.ConnectionNodeImage.Name = "ConnectionNodeImage";
+            this.ConnectionNodeImage.Size = new System.Drawing.Size(10, 10);
+            this.ConnectionNodeImage.TabIndex = 0;
+            this.ConnectionNodeImage.TabStop = false;
+            this.ConnectionNodeImage.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragOver);
+            this.ConnectionNodeImage.DragOver += new System.Windows.Forms.DragEventHandler(this.panel1_DragOver);
+            this.ConnectionNodeImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.ConnectionNodeImage.MouseHover += new System.EventHandler(this.pictureBox1_MouseHover);
             // 
             // ConnectionNode
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.ConnectionNodeImage);
             this.Name = "ConnectionNode";
             this.Size = new System.Drawing.Size(10, 10);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.DragOver += new System.Windows.Forms.DragEventHandler(this.panel1_DragOver);
+            ((System.ComponentModel.ISupportInitialize)(this.ConnectionNodeImage)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox ConnectionNodeImage;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
 
 
     }

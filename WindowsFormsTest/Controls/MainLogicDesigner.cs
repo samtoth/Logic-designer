@@ -40,12 +40,12 @@ namespace WindowsFormsTest.Controls
 
         private void MainLogicDesigner_DragEnter(object sender, DragEventArgs e)
         {
-            e.Effect = DragDropEffects.Copy;
-            
-            //if (e.Data.GetDataPresent(typeof(GateControl)))
-            //{
-            //    e.Effect = DragDropEffects.Copy;
-            //}
+           // e.Effect = DragDropEffects.Copy;
+
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent)
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
 
             //if (e.Data is GateControl)
             //{
@@ -65,7 +65,8 @@ namespace WindowsFormsTest.Controls
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
                 var lc = (ILogicComponent)e.Data.GetData(e.Data.GetFormats()[0]);
-                GateControl gc = new GateControl((ILogicComponent)(lc));
+                var newLc = Activator.CreateInstance(lc.GetType());
+                GateControl gc = new GateControl((ILogicComponent)(newLc));
                 gc.Parent = this.radScrollablePanel1;
                 gc.Left = pos.X;
                 gc.Top = pos.Y;

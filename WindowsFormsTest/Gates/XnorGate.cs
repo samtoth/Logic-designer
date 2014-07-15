@@ -12,7 +12,7 @@ namespace WindowsFormsTest.Gates
 
         public XnorGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "bollocks"));            
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "bollocks", true));            
         }
 
         public override System.Drawing.Image ToolboxIcon

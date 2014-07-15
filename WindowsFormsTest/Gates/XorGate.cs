@@ -12,8 +12,8 @@ namespace WindowsFormsTest.Gates
 
         public XorGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input 1"));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input 2")); 
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input 1", true));
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input 2", true)); 
         }
 
         public override System.Drawing.Image ToolboxIcon
