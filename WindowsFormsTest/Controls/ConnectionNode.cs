@@ -7,11 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace WindowsFormsTest.Controls
 {
     public partial class ConnectionNode : UserControl
     {
+
+        public class ConnectionMadeEventArgs : EventArgs {
+            public ConnectionNode nodeFrom{get; set;}
+            public ConnectionNode nodeTo{get; set;}
+
+            public ConnectionMadeEventArgs(ConnectionNode PnodeFrom, ConnectionNode PnodeTo)
+            {
+                nodeFrom = PnodeFrom;
+                nodeTo = PnodeTo;
+            }
+        }
+
+        
+        
+        [JsonIgnore]
+        public GateControl gateControl { get; set; }
+
         Point _RPos;
 
         String _connectionName;
@@ -24,7 +42,16 @@ namespace WindowsFormsTest.Controls
 
         public String ConnectionName { get { return _connectionName; } }
 
+        public delegate void ConnectionMadeDelegate(Object sender, ConnectionMadeEventArgs e);
+
+        public event ConnectionMadeDelegate ConnectionMade;
+
         public ConnectionNode(Point RelativePosition, String ConnectionName, bool IsInput)
+        {
+            SetupNode(RelativePosition, ConnectionName, IsInput);
+        }
+
+        private void SetupNode(Point RelativePosition, String ConnectionName, bool IsInput)
         {
             InitializeComponent();
             _RPos = RelativePosition;
@@ -55,11 +82,11 @@ namespace WindowsFormsTest.Controls
                 if (connectionNode.Parent != this.Parent || connectionNode.IsInput != this.IsInput)
                 {
                     Console.WriteLine("Worked and my parent is: " + ((ConnectionNode)e.Data.GetData(e.Data.GetFormats()[0])).Parent.ToString());
-                    System.Drawing.Graphics graphics = this.CreateGraphics();
-                    //System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(100, 100, 200, 200);
-                    //graphics.DrawEllipse(System.Drawing.Pens.Black, rectangle);
-                    //graphics.DrawRectangle(System.Drawing.Pens.Red, rectangle);
-                    graphics.DrawLine(System.Drawing.Pens.Black, new Point(10, 15), new Point(50, 100));
+
+                    if (ConnectionMade != null)
+                    {
+                        ConnectionMade(this, new ConnectionNode.ConnectionMadeEventArgs(connectionNode ,this));
+                    }
                 }
             }
 
@@ -79,7 +106,14 @@ namespace WindowsFormsTest.Controls
         }
 
 
+        //string getSaveData()
+        //{
+        //    string result = "";
 
+        //    //save type, guid, pos, 
+
+        //    return result;
+        //}
 
 
     }

@@ -7,24 +7,25 @@ using WindowsFormsTest.component;
 
 namespace WindowsFormsTest.Gates
 {
-    public class OrGate : ILogicComponent
+    public class OrGate : LogicComponentBase
     {
 
    
 
-        public System.Drawing.Image ToolboxIcon
+        public override System.Drawing.Image ToolboxIcon
         {
             get { return Properties.Resources.OR_16x16; }
         }
 
-        public System.Drawing.Image DesignerImage
+        public override System.Drawing.Image DesignerImage
         {
             get { return Properties.Resources.OR; }
         }
 
-        public List<Controls.ConnectionNode> Nodes
+        public OrGate()
         {
-            get { throw new NotImplementedException(); }
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(6, 5), "Input A", true));
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 10), "Input B", true));            
         }
     }
 }
