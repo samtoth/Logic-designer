@@ -10,9 +10,9 @@ using Telerik.WinControls.UI.Docking;
 
 namespace WindowsFormsTest
 {
-    public partial class newPartMessageBox : Telerik.WinControls.UI.RadForm
+    public partial class SaveAsMessageBox : Telerik.WinControls.UI.RadForm
     {
-        public newPartMessageBox()
+        public SaveAsMessageBox()
         {
             InitializeComponent();
         }

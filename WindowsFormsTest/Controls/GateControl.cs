@@ -14,14 +14,30 @@ namespace WindowsFormsTest.Controls
     public partial class GateControl : UserControl
     {
 
+        public Guid guid { get; set; }
+
+        public event EventHandler Moved;
+
+        public event EventHandler Moving;
+
+        public event ConnectionNode.ConnectionMadeDelegate NodeConnectionMade;
+
         public ILogicComponent LogicComponent { get { return _logicComponent; } }
 
         ILogicComponent _logicComponent;
 
         public GateControl(ILogicComponent logicComponent)
         {
+            guid = Guid.NewGuid();
             _logicComponent = logicComponent;
             InitializeComponent();            
+        }
+
+        public GateControl(ILogicComponent logicComponent, Guid pGuid)
+        {
+            guid = pGuid;
+            _logicComponent = logicComponent;
+            InitializeComponent(); 
         }
 
 
@@ -30,13 +46,23 @@ namespace WindowsFormsTest.Controls
             this.pictureBox1.Image = _logicComponent.DesignerImage;
             foreach (var node in _logicComponent.Nodes)
             {
-                node.Parent = pictureBox1;              
+                node.Parent = pictureBox1;
+                node.gateControl = this;
+                node.ConnectionMade += node_ConnectionMade;
+            }
+        }
+
+        void node_ConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
+        {
+            if (NodeConnectionMade != null)
+            {
+                NodeConnectionMade(sender, e);
             }
         }
 
         //bool _moving;
 
-        void Moving()
+        void moveHandler()
         {
             if (MouseButtons == MouseButtons.Left)
             {
@@ -52,11 +78,19 @@ namespace WindowsFormsTest.Controls
                 }
                 this.Left = pos.X;
                 this.Top = pos.Y;
+
+                if (this.Moving != null)
+                {
+                    this.Moving(this, new EventArgs());
+                }
             }
             else
             {
                 MoveTimer.Enabled = false;
-
+                if (this.Moved != null)
+                {
+                    this.Moved(this, new EventArgs());
+                }
             }
         }
 
@@ -97,7 +131,8 @@ namespace WindowsFormsTest.Controls
 
         private void MoveTimer_Tick(object sender, EventArgs e)
         {
-            Moving();
+            moveHandler();
+            
         }
 
 
@@ -105,5 +140,27 @@ namespace WindowsFormsTest.Controls
         {
             return true;
         }
+
+        public SaveData getSaveData()
+        {
+            SaveData saveData = new SaveData();
+
+            saveData.type = this.LogicComponent.GetType();
+            saveData.pos = this.Location;
+            saveData.guid = this.guid;
+
+            //result = Newtonsoft.Json.JsonConvert.SerializeObject(saveData, Newtonsoft.Json.Formatting.Indented);
+
+
+            return saveData;
+        }
+
+        public class SaveData
+        {
+            public Type type;
+            public Point pos;
+            public Guid guid;
+        }
     }
+
 }

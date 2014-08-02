@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsTest
 {
-    partial class newPartMessageBox
+    partial class SaveAsMessageBox
     {
         /// <summary>
         /// Required designer variable.
@@ -56,19 +56,19 @@
             this.radButton2.ThemeName = "VisualStudio2012Dark";
             this.radButton2.Click += new System.EventHandler(this.radButton2_Click);
             // 
-            // newPartMessageBox
+            // SaveAsMessageBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(298, 279);
             this.Controls.Add(this.radButton2);
             this.Controls.Add(this.okButton);
-            this.Name = "newPartMessageBox";
+            this.Name = "SaveAsMessageBox";
             // 
             // 
             // 
             this.RootElement.ApplyShapeToControl = true;
-            this.Text = "RadForm1";
+            this.Text = "Save As";
             this.ThemeName = "VisualStudio2012Dark";
             ((System.ComponentModel.ISupportInitialize)(this.okButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radButton2)).EndInit();
