@@ -30,12 +30,16 @@
         {
             this.visualStudio2012DarkTheme1 = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.drawingSurface = new Telerik.WinControls.UI.RadPanel();
+            this.trashcan = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.drawingSurface)).BeginInit();
+            this.drawingSurface.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trashcan)).BeginInit();
             this.SuspendLayout();
             // 
             // drawingSurface
             // 
             this.drawingSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.drawingSurface.Controls.Add(this.trashcan);
             this.drawingSurface.Dock = System.Windows.Forms.DockStyle.Fill;
             this.drawingSurface.Location = new System.Drawing.Point(0, 0);
             this.drawingSurface.Name = "drawingSurface";
@@ -43,6 +47,20 @@
             this.drawingSurface.TabIndex = 0;
             this.drawingSurface.ThemeName = "VisualStudio2012Dark";
             this.drawingSurface.Paint += new System.Windows.Forms.PaintEventHandler(this.drawingSurface_Paint);
+            // 
+            // trashcan
+            // 
+            this.trashcan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.trashcan.BackgroundImage = global::WindowsFormsTest.Properties.Resources.trash_recyclebin_empty_closed;
+            this.trashcan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.trashcan.Location = new System.Drawing.Point(320, 346);
+            this.trashcan.Margin = new System.Windows.Forms.Padding(0);
+            this.trashcan.Name = "trashcan";
+            this.trashcan.Size = new System.Drawing.Size(70, 74);
+            this.trashcan.TabIndex = 1;
+            this.trashcan.TabStop = false;
+            this.trashcan.DragDrop += new System.Windows.Forms.DragEventHandler(this.trashcan_DragDrop);
+            this.trashcan.DragEnter += new System.Windows.Forms.DragEventHandler(this.trashcan_DragEnter);
             // 
             // MainLogicDesigner
             // 
@@ -56,6 +74,8 @@
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainLogicDesigner_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainLogicDesigner_DragEnter);
             ((System.ComponentModel.ISupportInitialize)(this.drawingSurface)).EndInit();
+            this.drawingSurface.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trashcan)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -64,5 +84,6 @@
 
         private Telerik.WinControls.Themes.VisualStudio2012DarkTheme visualStudio2012DarkTheme1;
         private Telerik.WinControls.UI.RadPanel drawingSurface;
+        private System.Windows.Forms.PictureBox trashcan;
     }
 }

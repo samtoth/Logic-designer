@@ -363,5 +363,21 @@ namespace WindowsFormsTest.Controls
             this.Refresh();
 
         }
+
+        private void trashcan_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is GateControl)
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void trashcan_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is GateControl)
+            {
+                var lc = (Control)e.Data.GetData(e.Data.GetFormats()[0]);                
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsTest", "WindowsFormsTest\WindowsFormsTest.csproj", "{379A9520-F4E7-4554-B6F4-3A91FFE9C4FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicDesigner", "WindowsFormsTest\LogicDesigner.csproj", "{379A9520-F4E7-4554-B6F4-3A91FFE9C4FB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{48AAFFA3-A20A-4883-9C92-4BEBDA3CBB5D}"
 	ProjectSection(SolutionItems) = preProject

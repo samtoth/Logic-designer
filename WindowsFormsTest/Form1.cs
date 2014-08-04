@@ -143,6 +143,16 @@ namespace WindowsFormsTest
             }
         }
 
+        private void playButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            playButton.BackgroundImage = Properties.Resources.playButton_pressed;
+        }
+
+        private void playButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            playButton.BackgroundImage = Properties.Resources.playButton;
+        }
+
 
     }
 }
