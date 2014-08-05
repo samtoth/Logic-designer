@@ -17,7 +17,10 @@ namespace WindowsFormsTest
         public Form1()
         {
             InitializeComponent();
-            Globals.MainForm = this;
+            if (!DesignMode)
+            {
+                Globals.MainForm = this;
+            }
         }
 
 

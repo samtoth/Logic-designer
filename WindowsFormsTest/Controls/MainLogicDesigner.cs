@@ -194,34 +194,33 @@ namespace WindowsFormsTest.Controls
             }
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+    
         private void drawingSurface_Paint(object sender, PaintEventArgs e)
         {
-            using (Pen myPen = new Pen(Color.Red))
+            if (!DesignMode)
             {
-                myPen.Width = 3;
-
-                myPen.Color = ((RadColorBox)(Globals.MainForm.Controls.Find("settings1", true)[0]).Controls.Find("WireColor", true)[0]).Value;
-
-                foreach (var item in connectedNodes)
+                using (Pen myPen = new Pen(Color.Red))
                 {
-                    /*e.Graphics.DrawLine(myPen, new Point(165, 37), new Point(299, 37));
-                    e.Graphics.DrawLine(myPen, new Point(10, 10), new Point(20, 10));
-                    e.Graphics.DrawLine(System.Drawing.Pens.Blue, new Point(10, 10), new Point(20, 20));*/
+                    myPen.Width = 3;
 
-                    //path.AddLine(item.NodeFrom.gateControl.Location, new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.gateControl.Location.Y));
-                    //path.AddLine(new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.Parent.Parent.Location.Y), item.NodeTo.gateControl.Location);
-                                        
-                    e.Graphics.DrawPath(myPen, getConnectionPath(item));
+                    myPen.Color = ((RadColorBox)(Globals.MainForm.Controls.Find("settings1", true)[0]).Controls.Find("WireColor", true)[0]).Value;
+
+                    foreach (var item in connectedNodes)
+                    {
+                        /*e.Graphics.DrawLine(myPen, new Point(165, 37), new Point(299, 37));
+                        e.Graphics.DrawLine(myPen, new Point(10, 10), new Point(20, 10));
+                        e.Graphics.DrawLine(System.Drawing.Pens.Blue, new Point(10, 10), new Point(20, 20));*/
+
+                        //path.AddLine(item.NodeFrom.gateControl.Location, new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.gateControl.Location.Y));
+                        //path.AddLine(new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.Parent.Parent.Location.Y), item.NodeTo.gateControl.Location);
+
+                        e.Graphics.DrawPath(myPen, getConnectionPath(item));
 
 
-                    //e.Graphics.DrawLine(myPen, item.NodeFrom.Parent.Parent.Location, new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y));
+                        //e.Graphics.DrawLine(myPen, item.NodeFrom.Parent.Parent.Location, new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y));
 
 
+                    }
                 }
             }
         }

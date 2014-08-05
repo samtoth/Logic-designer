@@ -37,7 +37,6 @@
             this.documentContainer1 = new Telerik.WinControls.UI.Docking.DocumentContainer();
             this.documentTabStrip1 = new Telerik.WinControls.UI.Docking.DocumentTabStrip();
             this.documentWindow1 = new Telerik.WinControls.UI.Docking.DocumentWindow();
-            this.mainLogicDesigner1 = new WindowsFormsTest.Controls.MainLogicDesigner();
             this.toolTabStrip3 = new Telerik.WinControls.UI.Docking.ToolTabStrip();
             this.toolWindow2 = new Telerik.WinControls.UI.Docking.ToolWindow();
             this.settings1 = new WindowsFormsTest.Controls.Settings();
@@ -68,7 +67,6 @@
             this.documentContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.documentTabStrip1)).BeginInit();
             this.documentTabStrip1.SuspendLayout();
-            this.documentWindow1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.toolTabStrip3)).BeginInit();
             this.toolTabStrip3.SuspendLayout();
             this.toolWindow2.SuspendLayout();
@@ -80,7 +78,7 @@
             // 
             // radDock1
             // 
-            this.radDock1.ActiveWindow = this.toolWindow1;
+            this.radDock1.ActiveWindow = this.documentWindow1;
             this.radDock1.BackColor = System.Drawing.Color.Gray;
             this.radDock1.CausesValidation = false;
             this.radDock1.Controls.Add(this.toolsWindow);
@@ -151,7 +149,9 @@
             // 
             // 
             this.documentContainer1.RootElement.MinSize = new System.Drawing.Size(0, 0);
+            this.documentContainer1.SizeInfo.AbsoluteSize = new System.Drawing.Size(487, 200);
             this.documentContainer1.SizeInfo.SizeMode = Telerik.WinControls.UI.Docking.SplitPanelSizeMode.Fill;
+            this.documentContainer1.SizeInfo.SplitterCorrection = new System.Drawing.Size(-111, 0);
             this.documentContainer1.SplitterWidth = 2;
             this.documentContainer1.TabIndex = 2;
             this.documentContainer1.ThemeName = "VisualStudio2012Dark";
@@ -168,44 +168,34 @@
             // 
             this.documentTabStrip1.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.documentTabStrip1.SelectedIndex = 0;
-            this.documentTabStrip1.Size = new System.Drawing.Size(598, 397);
+            this.documentTabStrip1.Size = new System.Drawing.Size(487, 397);
             this.documentTabStrip1.TabIndex = 0;
             this.documentTabStrip1.TabStop = false;
             this.documentTabStrip1.ThemeName = "VisualStudio2012Dark";
             // 
             // documentWindow1
             // 
-            this.documentWindow1.Controls.Add(this.mainLogicDesigner1);
             this.documentWindow1.Location = new System.Drawing.Point(4, 29);
             this.documentWindow1.Name = "documentWindow1";
             this.documentWindow1.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.TabbedDocument;
-            this.documentWindow1.Size = new System.Drawing.Size(590, 364);
+            this.documentWindow1.Size = new System.Drawing.Size(479, 364);
             this.documentWindow1.Text = "Document 1";
-            // 
-            // mainLogicDesigner1
-            // 
-            this.mainLogicDesigner1.AllowDrop = true;
-            this.mainLogicDesigner1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.mainLogicDesigner1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainLogicDesigner1.Location = new System.Drawing.Point(0, 0);
-            this.mainLogicDesigner1.Name = "mainLogicDesigner1";
-            this.mainLogicDesigner1.Size = new System.Drawing.Size(590, 364);
-            this.mainLogicDesigner1.TabIndex = 0;
-            this.mainLogicDesigner1.Load += new System.EventHandler(this.mainLogicDesigner1_Load);
             // 
             // toolTabStrip3
             // 
             this.toolTabStrip3.CanUpdateChildIndex = true;
             this.toolTabStrip3.CausesValidation = false;
             this.toolTabStrip3.Controls.Add(this.toolWindow2);
-            this.toolTabStrip3.Location = new System.Drawing.Point(802, 0);
+            this.toolTabStrip3.Location = new System.Drawing.Point(691, 0);
             this.toolTabStrip3.Name = "toolTabStrip3";
             // 
             // 
             // 
             this.toolTabStrip3.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.toolTabStrip3.SelectedIndex = 0;
-            this.toolTabStrip3.Size = new System.Drawing.Size(200, 397);
+            this.toolTabStrip3.Size = new System.Drawing.Size(311, 397);
+            this.toolTabStrip3.SizeInfo.AbsoluteSize = new System.Drawing.Size(311, 200);
+            this.toolTabStrip3.SizeInfo.SplitterCorrection = new System.Drawing.Size(111, 0);
             this.toolTabStrip3.TabIndex = 3;
             this.toolTabStrip3.TabStop = false;
             this.toolTabStrip3.ThemeName = "VisualStudio2012Dark";
@@ -217,7 +207,7 @@
             this.toolWindow2.Location = new System.Drawing.Point(4, 24);
             this.toolWindow2.Name = "toolWindow2";
             this.toolWindow2.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.Docked;
-            this.toolWindow2.Size = new System.Drawing.Size(192, 369);
+            this.toolWindow2.Size = new System.Drawing.Size(303, 369);
             this.toolWindow2.Text = "Settings";
             // 
             // settings1
@@ -226,7 +216,7 @@
             this.settings1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settings1.Location = new System.Drawing.Point(0, 0);
             this.settings1.Name = "settings1";
-            this.settings1.Size = new System.Drawing.Size(192, 369);
+            this.settings1.Size = new System.Drawing.Size(303, 369);
             this.settings1.TabIndex = 0;
             // 
             // radPanel1
@@ -460,7 +450,6 @@
             this.documentContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.documentTabStrip1)).EndInit();
             this.documentTabStrip1.ResumeLayout(false);
-            this.documentWindow1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.toolTabStrip3)).EndInit();
             this.toolTabStrip3.ResumeLayout(false);
             this.toolWindow2.ResumeLayout(false);
@@ -490,7 +479,6 @@
         private Telerik.WinControls.UI.Docking.DocumentWindow documentWindow1;
         private Telerik.WinControls.UI.RadButtonElement SavedParts;
         private Controls.StandardTools standardTools1;
-        private Controls.MainLogicDesigner mainLogicDesigner1;
         private Telerik.WinControls.UI.RadMenuItem Save;
         private Telerik.WinControls.UI.RadMenuButtonItem radMenuButtonItem1;
         private Telerik.WinControls.UI.RadMenuButtonItem SaveAs;
