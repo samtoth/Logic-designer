@@ -65,6 +65,12 @@
     <Compile Include="Controls\ConnectionNode.Designer.cs">
       <DependentUpon>ConnectionNode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ConstantControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ConstantControl.Designer.cs">
+      <DependentUpon>ConstantControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MainLogicDesigner.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -76,6 +82,12 @@
     </Compile>
     <Compile Include="Controls\GateControl.Designer.cs">
       <DependentUpon>GateControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\StandardTools.cs">
       <SubType>UserControl</SubType>
@@ -113,11 +125,17 @@
     <EmbeddedResource Include="Controls\ConnectionNode.resx">
       <DependentUpon>ConnectionNode.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ConstantControl.resx">
+      <DependentUpon>ConstantControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\MainLogicDesigner.resx">
       <DependentUpon>MainLogicDesigner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GateControl.resx">
       <DependentUpon>GateControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StandardTools.resx">
       <DependentUpon>StandardTools.cs</DependentUpon>
@@ -217,6 +235,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\trash_recyclebin_empty_closed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\High.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Low.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

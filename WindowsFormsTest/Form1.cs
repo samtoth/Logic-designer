@@ -153,6 +153,11 @@ namespace WindowsFormsTest
             playButton.BackgroundImage = Properties.Resources.playButton;
         }
 
+        private void mainLogicDesigner1_Load(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }

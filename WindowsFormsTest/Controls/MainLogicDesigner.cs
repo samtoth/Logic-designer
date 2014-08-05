@@ -23,7 +23,7 @@ namespace WindowsFormsTest.Controls
 
         public String filePath = null;
 
-        public const String FileExtension = ".bollocks";
+        public const String FileExtension = ".ldsch";
 
         public const String FileTypeName = "Logic designer schematic";
 
@@ -67,7 +67,7 @@ namespace WindowsFormsTest.Controls
         {
             // e.Effect = DragDropEffects.Copy;
 
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent || e.Data.GetData(e.Data.GetFormats()[0]) is bool)
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -91,6 +91,15 @@ namespace WindowsFormsTest.Controls
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
                 var lc = (ILogicComponent)e.Data.GetData(e.Data.GetFormats()[0]);
                 CreateGate(pos, lc.GetType());
+            }
+
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is bool)
+            {
+                Point pos = this.PointToClient(new Point(e.X, e.Y));
+                bool high = (bool)e.Data.GetData(e.Data.GetFormats()[0]);
+                ConstantControl control = new ConstantControl(high);
+                control.Location = pos;
+                control.Parent = this.drawingSurface;
             }
         }
 
@@ -124,20 +133,32 @@ namespace WindowsFormsTest.Controls
             gates.Add(gc);
         }
 
-        void gc_Moving(object sender, EventArgs e)
+        void gc_Moving(object sender, GateControl.GateEventHandler e)
         {
             this.Refresh();
+
         }
 
-        void gc_Moved(object sender, EventArgs e)
+        void gc_Moved(object sender, GateControl.GateEventHandler e)
         {
             this.Refresh();
+
+            if (e.point.X > trashcan.Location.X && e.point.Y > trashcan.Location.Y)
+            {
+                ((UserControl)sender).Parent = null;
+                ((UserControl)sender).Dispose();
+            }
         }
 
         void gc_NodeConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
         {
-
-            connectedNodes.Add(new ConnectedNodes(e.nodeFrom, e.nodeTo));
+            if (!e.nodeFrom.IsInput)
+            {
+                if (e.nodeFrom.IsInput != e.nodeTo.IsInput)
+                {
+                    connectedNodes.Add(new ConnectedNodes(e.nodeFrom, e.nodeTo));
+                }
+            }
             this.Refresh();
             //drawLine(this.PointToClient(), this.PointToClient(e.nodeTo.Location));
         }
@@ -160,6 +181,7 @@ namespace WindowsFormsTest.Controls
                 {
                     e.Graphics.DrawLine(myPen, new Point(165, 37), new Point(299, 37));
                     e.Graphics.DrawLine(myPen, new Point(10, 10), new Point(20, 10));
+
                     //System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
                     //path.AddLine(item.NodeFrom.Parent.Parent.Location, new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y));
                     //path.AddLine(new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y), item.NodeTo.Parent.Parent.Location);
@@ -183,6 +205,8 @@ namespace WindowsFormsTest.Controls
             {
                 myPen.Width = 3;
 
+                myPen.Color = ((RadColorBox)(Globals.MainForm.Controls.Find("settings1", true)[0]).Controls.Find("WireColor", true)[0]).Value;
+
                 foreach (var item in connectedNodes)
                 {
                     /*e.Graphics.DrawLine(myPen, new Point(165, 37), new Point(299, 37));
@@ -191,6 +215,7 @@ namespace WindowsFormsTest.Controls
 
                     //path.AddLine(item.NodeFrom.gateControl.Location, new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.gateControl.Location.Y));
                     //path.AddLine(new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.Parent.Parent.Location.Y), item.NodeTo.gateControl.Location);
+                                        
                     e.Graphics.DrawPath(myPen, getConnectionPath(item));
 
 
@@ -362,22 +387,6 @@ namespace WindowsFormsTest.Controls
 
             this.Refresh();
 
-        }
-
-        private void trashcan_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is GateControl)
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
-        }
-
-        private void trashcan_DragDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is GateControl)
-            {
-                var lc = (Control)e.Data.GetData(e.Data.GetFormats()[0]);                
-            }
-        }
+        }    
     }
 }

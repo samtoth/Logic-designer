@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsTest.Controls
 {
-    partial class GateControl
+    partial class ConstantControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,47 +29,42 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.MainImage = new System.Windows.Forms.PictureBox();
             this.MoveTimer = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MainImage)).BeginInit();
             this.SuspendLayout();
+            // 
+            // MainImage
+            // 
+            this.MainImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainImage.Image = global::WindowsFormsTest.Properties.Resources.High;
+            this.MainImage.Location = new System.Drawing.Point(0, 0);
+            this.MainImage.Name = "MainImage";
+            this.MainImage.Size = new System.Drawing.Size(16, 16);
+            this.MainImage.TabIndex = 0;
+            this.MainImage.TabStop = false;
+            this.MainImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainImage_click);
             // 
             // MoveTimer
             // 
             this.MoveTimer.Interval = 50;
             this.MoveTimer.Tick += new System.EventHandler(this.MoveTimer_Tick);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(90, 40);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
-            // GateControl
+            // ConstantControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Transparent;
-            this.Controls.Add(this.pictureBox1);
-            this.Name = "GateControl";
-            this.Size = new System.Drawing.Size(90, 40);
-            this.Load += new System.EventHandler(this.Gate_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Controls.Add(this.MainImage);
+            this.Name = "ConstantControl";
+            this.Size = new System.Drawing.Size(16, 16);
+            ((System.ComponentModel.ISupportInitialize)(this.MainImage)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox MainImage;
         private System.Windows.Forms.Timer MoveTimer;
     }
 }

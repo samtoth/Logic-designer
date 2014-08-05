@@ -16,9 +16,21 @@ namespace WindowsFormsTest.Controls
 
         public Guid guid { get; set; }
 
-        public event EventHandler Moved;
+        public class GateEventHandler : EventArgs
+        {
+            public Point point;
 
-        public event EventHandler Moving;
+            public GateEventHandler(Point Ppoint)
+            {
+                point = Ppoint;
+            }
+        }
+
+        public delegate void MovementEventDelegate(Object sender, GateEventHandler  e);
+
+        public event MovementEventDelegate Moved;
+
+        public event MovementEventDelegate Moving;
 
         public event ConnectionNode.ConnectionMadeDelegate NodeConnectionMade;
 
@@ -81,7 +93,7 @@ namespace WindowsFormsTest.Controls
 
                 if (this.Moving != null)
                 {
-                    this.Moving(this, new EventArgs());
+                    this.Moving(this, new GateEventHandler(this.Location));
                 }
             }
             else
@@ -89,7 +101,7 @@ namespace WindowsFormsTest.Controls
                 MoveTimer.Enabled = false;
                 if (this.Moved != null)
                 {
-                    this.Moved(this, new EventArgs());
+                    this.Moved(this, new GateEventHandler(this.Location));
                 }
             }
         }
@@ -150,8 +162,7 @@ namespace WindowsFormsTest.Controls
             saveData.guid = this.guid;
 
             //result = Newtonsoft.Json.JsonConvert.SerializeObject(saveData, Newtonsoft.Json.Formatting.Indented);
-
-
+            
             return saveData;
         }
 

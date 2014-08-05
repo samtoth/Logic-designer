@@ -23,8 +23,9 @@ namespace WindowsFormsTest.Gates
 
         public AndGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(6, 5), "Input A", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 10), "Input B", true));            
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
+            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false));
         }
     }
 

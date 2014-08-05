@@ -59,8 +59,6 @@
             this.trashcan.Size = new System.Drawing.Size(70, 74);
             this.trashcan.TabIndex = 1;
             this.trashcan.TabStop = false;
-            this.trashcan.DragDrop += new System.Windows.Forms.DragEventHandler(this.trashcan_DragDrop);
-            this.trashcan.DragEnter += new System.Windows.Forms.DragEventHandler(this.trashcan_DragEnter);
             // 
             // MainLogicDesigner
             // 

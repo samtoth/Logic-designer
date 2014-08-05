@@ -25,7 +25,7 @@ namespace WindowsFormsTest.Controls
         {
             radTreeView1.Nodes.Clear();
 
-            RadTreeNode parentNode = radTreeView1.Nodes.Add("Logic gates");
+            RadTreeNode GatesParentNode = radTreeView1.Nodes.Add("Logic gates");
 
             var type = typeof(ILogicComponent);
             var types = AppDomain.CurrentDomain.GetAssemblies()
@@ -37,7 +37,7 @@ namespace WindowsFormsTest.Controls
                 //if (t.Name != "LogicComponentBase")
                 //{
                     Console.WriteLine(t.Name);
-                    RadTreeNode node = parentNode.Nodes.Add(t.Name);
+                    RadTreeNode node = GatesParentNode.Nodes.Add(t.Name);
 
                     var lc = Activator.CreateInstance(t);
 
@@ -45,6 +45,17 @@ namespace WindowsFormsTest.Controls
                     node.Image = (Image)lc.GetType().GetProperty("ToolboxIcon").GetValue(lc, null);
                 //}
             }
+
+            RadTreeNode ConstantsParentNode = radTreeView1.Nodes.Add("Constants");
+
+            RadTreeNode highNode = ConstantsParentNode.Nodes.Add("High");
+            highNode.Image = Properties.Resources.High;
+            highNode.Tag = true;
+
+            RadTreeNode lowNode = ConstantsParentNode.Nodes.Add("Low");
+            lowNode.Image = Properties.Resources.Low;
+            lowNode.Tag = false;
+
         }
 
         private void StandardTools_Load(object sender, EventArgs e)
@@ -62,7 +73,9 @@ namespace WindowsFormsTest.Controls
 
         private void radTreeView1_NodeMouseDown(object sender, RadTreeViewMouseEventArgs e)
         {
-            this.DoDragDrop(e.Node.Tag, DragDropEffects.Copy);
+            if(e.Node.Parent == radTreeView1.Nodes[0] || e.Node.Parent == radTreeView1.Nodes[1]){
+                this.DoDragDrop(e.Node.Tag, DragDropEffects.Copy);
+            }
         }
     }
 }
