@@ -56,6 +56,8 @@ namespace WindowsFormsTest.Controls
             lowNode.Image = Properties.Resources.Low;
             lowNode.Tag = false;
 
+            RadTreeNode InputParentNode = radTreeView1.Nodes.Add("Input");
+
         }
 
         private void StandardTools_Load(object sender, EventArgs e)

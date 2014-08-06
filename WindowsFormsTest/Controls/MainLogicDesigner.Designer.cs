@@ -38,7 +38,7 @@
             // 
             // drawingSurface
             // 
-            this.drawingSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.drawingSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.drawingSurface.Controls.Add(this.trashcan);
             this.drawingSurface.Dock = System.Windows.Forms.DockStyle.Fill;
             this.drawingSurface.Location = new System.Drawing.Point(0, 0);
@@ -65,7 +65,7 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.drawingSurface);
             this.Name = "MainLogicDesigner";
             this.Size = new System.Drawing.Size(390, 420);

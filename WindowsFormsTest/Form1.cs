@@ -19,7 +19,7 @@ namespace WindowsFormsTest
             InitializeComponent();
             if (!DesignMode)
             {
-                Globals.MainForm = this;
+               // Globals.MainForm = this;
             }
         }
 
@@ -120,19 +120,14 @@ namespace WindowsFormsTest
             }
         }
 
-        int i = 2;
         private void NewBlankDocument_Click(object sender, EventArgs e)
         {
-            DocumentWindow newWindow = new DocumentWindow("Document " +i);
-            newWindow.Parent = documentTabStrip1;
-
+            DocumentWindow newWindow = new DocumentWindow();
             MainLogicDesigner mainLogicDesigner = new MainLogicDesigner();
-
             newWindow.Controls.Add(mainLogicDesigner);
-
             mainLogicDesigner.Dock = DockStyle.Fill;
-
-            i++;
+            radDock1.AddDocument(newWindow);
+            newWindow.Text = newWindow.Text.Replace("documentWindow", "Schematic ");
         }
 
         private void Save_Click(object sender, EventArgs e)
@@ -148,12 +143,12 @@ namespace WindowsFormsTest
 
         private void playButton_MouseDown(object sender, MouseEventArgs e)
         {
-            playButton.BackgroundImage = Properties.Resources.playButton_pressed;
+           // playButton.BackgroundImage = Properties.Resources.playButton_pressed;
         }
 
         private void playButton_MouseUp(object sender, MouseEventArgs e)
         {
-            playButton.BackgroundImage = Properties.Resources.playButton;
+           // playButton.BackgroundImage = Properties.Resources.playButton;
         }
 
         private void mainLogicDesigner1_Load(object sender, EventArgs e)

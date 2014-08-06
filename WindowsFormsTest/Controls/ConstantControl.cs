@@ -15,6 +15,17 @@ namespace WindowsFormsTest.Controls
 
         public bool high = true;
 
+        public class ConnectionMadeEventArgs : EventArgs
+        {
+            public ConnectionNode nodeFrom { get; set; }
+            public ConnectionNode nodeTo { get; set; }
+
+            public ConnectionMadeEventArgs(ConnectionNode PnodeFrom, ConnectionNode PnodeTo)
+            {
+                nodeFrom = PnodeFrom;
+                nodeTo = PnodeTo;
+            }
+        }
 
         public class GateEventHandler : EventArgs
         {
@@ -31,6 +42,10 @@ namespace WindowsFormsTest.Controls
         public event MovementEventDelegate Moved;
 
         public event MovementEventDelegate Moving;
+
+        public delegate void ConnectionMadeDelegate(Object sender, ConnectionMadeEventArgs e);
+
+        public event ConnectionMadeDelegate ConnectionMade;
 
         public ConstantControl(bool pHigh)
         {
@@ -93,7 +108,29 @@ namespace WindowsFormsTest.Controls
                 //_moving = true;
                 MoveTimer.Enabled = true;
             }
+            else
+            {
+                if (e.Button == System.Windows.Forms.MouseButtons.Middle)
+                {
+                    this.DoDragDrop(this, DragDropEffects.Copy);
+                }
+            }
         }
+        
+        private void MainImage_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ConnectionNode || e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl)
+            {
+                e.Effect = DragDropEffects.All;
+            }
+        }
+
+        private void ConstantControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+
 
     }    
 }

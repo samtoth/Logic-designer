@@ -15,13 +15,13 @@ namespace WindowsFormsTest.Controls
     {
 
         public class ConnectionMadeEventArgs : EventArgs {
-            public ConnectionNode nodeFrom{get; set;}
+            public ConnectionNode nodeFrom{get; set;}                     
             public ConnectionNode nodeTo{get; set;}
 
-            public ConnectionMadeEventArgs(ConnectionNode PnodeFrom, ConnectionNode PnodeTo)
+            public ConnectionMadeEventArgs(ConnectionNode pNodeFrom, ConnectionNode pNodeTo)
             {
-                nodeFrom = PnodeFrom;
-                nodeTo = PnodeTo;
+                nodeFrom = pNodeFrom;
+                nodeTo = pNodeTo;
             }
         }
 
@@ -75,21 +75,36 @@ namespace WindowsFormsTest.Controls
 
         private void panel1_DragDrop(object sender, DragEventArgs e)
         {
-
-            var connectionNode = (ConnectionNode)e.Data.GetData(e.Data.GetFormats()[0]);
-            if (connectionNode != null)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ConnectionNode)
             {
-                if (connectionNode.Parent != this.Parent || connectionNode.IsInput != this.IsInput)
+                var connectionNode = (ConnectionNode)e.Data.GetData(e.Data.GetFormats()[0]);
+                if (connectionNode != null)
                 {
-                    Console.WriteLine("Worked and my parent is: " + ((ConnectionNode)e.Data.GetData(e.Data.GetFormats()[0])).Parent.ToString());
-
-                    if (ConnectionMade != null)
+                    if (connectionNode.Parent != this.Parent || connectionNode.IsInput != this.IsInput)
                     {
-                        ConnectionMade(this, new ConnectionNode.ConnectionMadeEventArgs(connectionNode ,this));
+                        Console.WriteLine("Worked and my parent is: " + ((ConnectionNode)e.Data.GetData(e.Data.GetFormats()[0])).Parent.ToString());
+
+                        if (ConnectionMade != null)
+                        {
+                            ConnectionMade(this, new ConnectionNode.ConnectionMadeEventArgs(connectionNode, this));
+                        }
                     }
                 }
             }
-
+            /*else if (e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl)
+            {
+                var connectionNode = (ConstantControl)e.Data.GetData(e.Data.GetFormats()[0]);
+                if (connectionNode != null)
+                {
+                    if (this.IsInput)
+                    {
+                        if (ConnectionMade != null)
+                        {
+                            //ConnectionMade(this, new ConnectionNode.ConnectionMadeEventArgs(connectionNode, this));
+                        }
+                    }
+                }
+            }*/
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -99,7 +114,7 @@ namespace WindowsFormsTest.Controls
 
         private void panel1_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ConnectionNode)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ConnectionNode || e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl)
             {
                 e.Effect = DragDropEffects.All;
             }

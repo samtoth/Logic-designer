@@ -19,6 +19,7 @@ namespace WindowsFormsTest.Controls
 
         private void WireColor_ValueChanged(object sender, EventArgs e)
         {
+            Globals.WireColor = WireColor.Value;
             Globals.MainForm.Refresh();
         }
     }

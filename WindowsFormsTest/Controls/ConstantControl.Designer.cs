@@ -57,6 +57,8 @@
             this.Controls.Add(this.MainImage);
             this.Name = "ConstantControl";
             this.Size = new System.Drawing.Size(16, 16);
+            this.DragOver += new System.Windows.Forms.DragEventHandler(this.MainImage_DragOver);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ConstantControl_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.MainImage)).EndInit();
             this.ResumeLayout(false);
 

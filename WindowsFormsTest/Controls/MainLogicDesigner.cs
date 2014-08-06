@@ -203,7 +203,7 @@ namespace WindowsFormsTest.Controls
                 {
                     myPen.Width = 3;
 
-                    myPen.Color = ((RadColorBox)(Globals.MainForm.Controls.Find("settings1", true)[0]).Controls.Find("WireColor", true)[0]).Value;
+                    myPen.Color = Globals.WireColor;
 
                     foreach (var item in connectedNodes)
                     {

@@ -35,7 +35,7 @@
             // 
             // radTreeView1
             // 
-            this.radTreeView1.BackColor = System.Drawing.SystemColors.GrayText;
+            this.radTreeView1.BackColor = System.Drawing.Color.Transparent;
             this.radTreeView1.Cursor = System.Windows.Forms.Cursors.Default;
             this.radTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radTreeView1.Font = new System.Drawing.Font("Segoe UI", 8.25F);
@@ -45,9 +45,9 @@
             this.radTreeView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.radTreeView1.ShowLines = true;
             this.radTreeView1.Size = new System.Drawing.Size(191, 388);
+            this.radTreeView1.SpacingBetweenNodes = -1;
             this.radTreeView1.TabIndex = 0;
             this.radTreeView1.Text = "radTreeView1";
-            this.radTreeView1.ThemeName = "VisualStudio2012Dark";
             this.radTreeView1.DragStarting += new Telerik.WinControls.UI.RadTreeView.DragStartingHandler(this.radTreeView1_DragStarting);
             this.radTreeView1.NodeMouseDown += new Telerik.WinControls.UI.RadTreeView.TreeViewMouseEventHandler(this.radTreeView1_NodeMouseDown);
             // 
@@ -55,7 +55,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GrayText;
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.radTreeView1);
             this.Name = "StandardTools";
             this.Size = new System.Drawing.Size(191, 388);
