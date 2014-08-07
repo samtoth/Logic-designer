@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Telerik.WinControls.UI.Docking;
 using WindowsFormsTest.Controls;
 using Telerik.WinControls;
+using Newtonsoft.Json;
 
 namespace WindowsFormsTest
 {
@@ -19,10 +20,10 @@ namespace WindowsFormsTest
         {
             if (!DesignMode)
             {
-                Globals.MainForm = this;                
+                Globals.MainForm = this;
+                Globals.CurrentLayoutPath = @"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml";
             }
             InitializeComponent();
-            ThemeResolutionService.ApplicationThemeName = "VisualStudio2012Dark";
         }
             
     
@@ -144,6 +145,7 @@ namespace WindowsFormsTest
         private void radDock2_Initialized(object sender, EventArgs e)
         {
             radDock2.LoadFromXml(@"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml");
+            Globals.CurrentLayoutPath = @"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml";
 
             //SettingsToolWindow toolWindow = new SettingsToolWindow();
 
@@ -176,6 +178,8 @@ namespace WindowsFormsTest
                 if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     radDock2.LoadFromXml(openFileDialog.FileName);
+
+                    Globals.CurrentLayoutPath = openFileDialog.FileName;
                 }
             }
         }
@@ -212,7 +216,57 @@ namespace WindowsFormsTest
 
         private void RadRibbonForm1_Load(object sender, EventArgs e)
         {
-            ThemeResolutionService.ApplicationThemeName = "VisualStudio2012Light";
+            ThemeResolutionService.ApplicationThemeName = "Windows8";
+
+            if (!File.Exists(GetUserDataPath() + @"\UserPrefs.json"))
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(GetUserDataPath() + @"\UserPrefs.json"))
+                {
+                    file.WriteLine(String.Empty);
+
+                    file.Close();
+                }
+            }
+            PreferenceData data = JsonConvert.DeserializeObject<PreferenceData>(GetUserDataPath() +@"\UserPrefs.json");
+            //Implement preferences
+
+            this.FormClosing += RadRibbonForm1_FormClosing;
+        }
+
+        void RadRibbonForm1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            String PrefData = JsonConvert.SerializeObject(new PreferenceData(ThemeResolutionService.ApplicationThemeName, Globals.WireColor, Globals.CurrentLayoutPath));
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(GetUserDataPath() + @"\UserPrefs.json"))
+            {
+                file.WriteLine(PrefData);
+
+                file.Close();
+            }
+
+        }
+
+        public static string GetUserDataPath()
+        {
+            string dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            dir = System.IO.Path.Combine(dir, "LogicDesigner");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            return dir;
+        }
+
+        class PreferenceData
+        {
+            public String Theme = String.Empty;
+            public Color Color = Color.Empty;
+            public String LayoutPath = String.Empty;
+
+            public PreferenceData(String pTheme, Color wireColor, String pLayoutPath)
+            {
+                Theme = pTheme;
+                Color = wireColor;
+                pLayoutPath = LayoutPath;
+            }
         }
 
         private void radContextMenu1_DropDownOpened(object sender, EventArgs e)
@@ -239,6 +293,7 @@ namespace WindowsFormsTest
         private void LoadDeafultLayout_Click(object sender, EventArgs e)
         {
             radDock2.LoadFromXml(@"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml");
+            Globals.CurrentLayoutPath = @"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml";
         }
 
 

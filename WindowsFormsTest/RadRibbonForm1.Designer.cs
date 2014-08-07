@@ -86,6 +86,10 @@
             this.visualStudio2012LightTheme1 = new Telerik.WinControls.Themes.VisualStudio2012LightTheme();
             this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
             this.windows8Theme1 = new Telerik.WinControls.Themes.Windows8Theme();
+            this.ribbonTab2 = new Telerik.WinControls.UI.RibbonTab();
+            this.radRibbonBarGroup6 = new Telerik.WinControls.UI.RadRibbonBarGroup();
+            this.NewInputWindow = new Telerik.WinControls.UI.RadButtonElement();
+            this.NewOutputWindow = new Telerik.WinControls.UI.RadButtonElement();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.documentContainer1)).BeginInit();
             this.documentContainer1.SuspendLayout();
@@ -300,7 +304,8 @@
             // radRibbonBar1
             // 
             this.radRibbonBar1.CommandTabs.AddRange(new Telerik.WinControls.RadItem[] {
-            this.ribbonTab1});
+            this.ribbonTab1,
+            this.ribbonTab2});
             this.radRibbonBar1.Location = new System.Drawing.Point(0, 0);
             this.radRibbonBar1.Name = "radRibbonBar1";
             this.radContextMenuManager1.SetRadContextMenu(this.radRibbonBar1, this.radContextMenu1);
@@ -318,7 +323,7 @@
             this.ribbonTab1.AccessibleDescription = "Create";
             this.ribbonTab1.AccessibleName = "Create";
             this.ribbonTab1.AutoEllipsis = false;
-            this.ribbonTab1.IsSelected = true;
+            this.ribbonTab1.IsSelected = false;
             this.ribbonTab1.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup1,
             this.radRibbonBarGroup2,
@@ -526,6 +531,46 @@
             this.OpenFromFile.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.OpenFromFile.Click += new System.EventHandler(this.Load_Click);
             // 
+            // ribbonTab2
+            // 
+            this.ribbonTab2.AccessibleDescription = "Run";
+            this.ribbonTab2.AccessibleName = "Run";
+            this.ribbonTab2.IsSelected = true;
+            this.ribbonTab2.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.radRibbonBarGroup6});
+            this.ribbonTab2.Name = "ribbonTab2";
+            this.ribbonTab2.Text = "Run";
+            this.ribbonTab2.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radRibbonBarGroup6
+            // 
+            this.radRibbonBarGroup6.AccessibleDescription = "Add";
+            this.radRibbonBarGroup6.AccessibleName = "Add";
+            this.radRibbonBarGroup6.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.NewInputWindow,
+            this.NewOutputWindow});
+            this.radRibbonBarGroup6.Name = "radRibbonBarGroup6";
+            this.radRibbonBarGroup6.Text = "Add";
+            this.radRibbonBarGroup6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // NewInputWindow
+            // 
+            this.NewInputWindow.AccessibleDescription = "<html><p>Input</p><p>Window</p></html>";
+            this.NewInputWindow.AccessibleName = "<html><p>Input</p><p>Window</p></html>";
+            this.NewInputWindow.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.NewInputWindow.Name = "NewInputWindow";
+            this.NewInputWindow.Text = "<html><p>Input</p><p>Window</p></html>";
+            this.NewInputWindow.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // NewOutputWindow
+            // 
+            this.NewOutputWindow.AccessibleDescription = "<html><p>Output</p><p>Window</p></html>";
+            this.NewOutputWindow.AccessibleName = "<html><p>Output</p><p>Window</p></html>";
+            this.NewOutputWindow.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.NewOutputWindow.Name = "NewOutputWindow";
+            this.NewOutputWindow.Text = "<html><p>Output</p><p>Window</p></html>";
+            this.NewOutputWindow.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
             // RadRibbonForm1
             // 
             this.AllowAero = false;
@@ -617,5 +662,9 @@
         private Telerik.WinControls.Themes.VisualStudio2012LightTheme visualStudio2012LightTheme1;
         private Telerik.WinControls.Themes.Windows7Theme windows7Theme1;
         private Telerik.WinControls.Themes.Windows8Theme windows8Theme1;
+        private Telerik.WinControls.UI.RibbonTab ribbonTab2;
+        private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup6;
+        private Telerik.WinControls.UI.RadButtonElement NewInputWindow;
+        private Telerik.WinControls.UI.RadButtonElement NewOutputWindow;
     }
 }

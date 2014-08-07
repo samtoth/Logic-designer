@@ -13,5 +13,7 @@ namespace WindowsFormsTest
         internal static RadRibbonForm1 MainForm { get; set; }
 
         internal static Color WireColor { get; set; }
+
+        internal static String CurrentLayoutPath { get; set; }
     }
 }

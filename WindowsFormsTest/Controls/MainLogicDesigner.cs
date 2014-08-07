@@ -386,6 +386,14 @@ namespace WindowsFormsTest.Controls
 
             this.Refresh();
 
+        }
+
+        private void drawingSurface_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Middle)
+            {
+                //TODO Implement draging around veiw Port.
+            }
         }    
     }
 }

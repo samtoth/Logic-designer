@@ -22,5 +22,16 @@ namespace WindowsFormsTest.Controls
             Globals.WireColor = WireColor.Value;
             Globals.MainForm.Refresh();
         }
+
+        private void Settings_Load(object sender, EventArgs e)
+        {
+            Globals.WireColor = WireColor.Value;
+            Globals.MainForm.Refresh();
+        }
+
+        private void WireColor_ValueChanging(object sender, Telerik.WinControls.UI.ValueChangingEventArgs e)
+        {
+            WireColor_ValueChanged(sender, e);
+        }
     }
 }

@@ -47,6 +47,7 @@
             this.drawingSurface.TabIndex = 0;
             this.drawingSurface.ThemeName = "VisualStudio2012Dark";
             this.drawingSurface.Paint += new System.Windows.Forms.PaintEventHandler(this.drawingSurface_Paint);
+            this.drawingSurface.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawingSurface_MouseDown);
             // 
             // trashcan
             // 

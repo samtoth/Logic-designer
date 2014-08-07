@@ -46,6 +46,7 @@
             this.WireColor.TabIndex = 0;
             this.WireColor.Text = "radColorBox1";
             this.WireColor.Value = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            this.WireColor.ValueChanging += new Telerik.WinControls.UI.ValueChangingEventHandler(this.WireColor_ValueChanging);
             this.WireColor.ValueChanged += new System.EventHandler(this.WireColor_ValueChanged);
             // 
             // WireColorLabel
@@ -54,7 +55,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.WireColorLabel.Location = new System.Drawing.Point(3, 3);
             this.WireColorLabel.Name = "WireColorLabel";
-            this.WireColorLabel.Size = new System.Drawing.Size(56, 18);
+            this.WireColorLabel.Size = new System.Drawing.Size(59, 18);
             this.WireColorLabel.TabIndex = 1;
             this.WireColorLabel.Text = "WireColor";
             // 
@@ -83,6 +84,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Settings";
             this.Size = new System.Drawing.Size(222, 357);
+            this.Load += new System.EventHandler(this.Settings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.WireColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WireColorLabel)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
