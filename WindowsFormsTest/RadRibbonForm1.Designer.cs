@@ -49,7 +49,6 @@
             this.Seperator = new Telerik.WinControls.UI.RadMenuSeparatorItem();
             this.RibbonBarOptions = new Telerik.WinControls.UI.RadMenuButtonItem();
             this.radContextMenuManager1 = new Telerik.WinControls.UI.RadContextMenuManager();
-            this.radThemeManager1 = new Telerik.WinControls.RadThemeManager();
             this.radRibbonBar1 = new Telerik.WinControls.UI.RadRibbonBar();
             this.ribbonTab1 = new Telerik.WinControls.UI.RibbonTab();
             this.radRibbonBarGroup1 = new Telerik.WinControls.UI.RadRibbonBarGroup();
@@ -405,6 +404,7 @@
             this.LoadDeafultLayout.Text = "<html><p>Load deafult</p><p> Layout</p></html>";
             this.LoadDeafultLayout.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.LoadDeafultLayout.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.LoadDeafultLayout.Click += new System.EventHandler(this.LoadDeafultLayout_Click);
             // 
             // radRibbonBarGroup5
             // 
@@ -472,6 +472,7 @@
             this.SaveContainer.Name = "SaveContainer";
             this.SaveContainer.Text = "Save";
             this.SaveContainer.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.SaveContainer.Click += new System.EventHandler(this.SaveContainer_Click);
             // 
             // SaveButton
             // 
@@ -485,6 +486,7 @@
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Text = "Save";
             this.SaveButton.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.SaveButton.Click += new System.EventHandler(this.Save_Click);
             // 
             // SaveAsButton
             // 
@@ -498,6 +500,7 @@
             this.SaveAsButton.Name = "SaveAsButton";
             this.SaveAsButton.Text = "Save As";
             this.SaveAsButton.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.SaveAsButton.Click += new System.EventHandler(this.SaveAs_Click);
             // 
             // OpenContainer
             // 
@@ -521,6 +524,7 @@
             this.OpenFromFile.Name = "OpenFromFile";
             this.OpenFromFile.Text = "From File";
             this.OpenFromFile.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.OpenFromFile.Click += new System.EventHandler(this.Load_Click);
             // 
             // RadRibbonForm1
             // 
@@ -595,7 +599,6 @@
         private Telerik.WinControls.UI.RadMenuSeparatorItem Seperator;
         private Telerik.WinControls.UI.RadMenuButtonItem RibbonBarOptions;
         private Telerik.WinControls.UI.RadContextMenuManager radContextMenuManager1;
-        private Telerik.WinControls.RadThemeManager radThemeManager1;
         private Telerik.WinControls.Themes.AquaTheme aquaTheme1;
         private Telerik.WinControls.Themes.BreezeTheme breezeTheme1;
         private Telerik.WinControls.Themes.DesertTheme desertTheme1;
