@@ -19,14 +19,13 @@ namespace WindowsFormsTest.Controls
 
         private void WireColor_ValueChanged(object sender, EventArgs e)
         {
-            Globals.WireColor = WireColor.Value;
+            DesignerSettings.WireColor = WireColor.Value;
             Globals.MainForm.Refresh();
         }
 
         private void Settings_Load(object sender, EventArgs e)
-        {
-            Globals.WireColor = WireColor.Value;
-            Globals.MainForm.Refresh();
+        {            
+            WireColor.Value = DesignerSettings.WireColor;
         }
 
         private void WireColor_ValueChanging(object sender, Telerik.WinControls.UI.ValueChangingEventArgs e)

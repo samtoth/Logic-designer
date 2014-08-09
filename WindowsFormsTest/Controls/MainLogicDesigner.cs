@@ -203,7 +203,7 @@ namespace WindowsFormsTest.Controls
                 {
                     myPen.Width = 3;
 
-                    myPen.Color = Globals.WireColor;
+                    myPen.Color = DesignerSettings.WireColor;
 
                     foreach (var item in connectedNodes)
                     {

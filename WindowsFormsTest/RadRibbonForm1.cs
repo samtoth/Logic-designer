@@ -21,26 +21,32 @@ namespace WindowsFormsTest
             if (!DesignMode)
             {
                 Globals.MainForm = this;
-                Globals.CurrentLayoutPath = @"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml";
+                if (File.Exists(Globals.UserDataFilename))
+                {
+                    PreferenceDataSerializer data = PreferenceDataSerializer.LoadFromFile(Globals.UserDataFilename);
+                    if (data != null)
+                    {
+                        DesignerSettings.LayoutPath = data.LayoutPath;
+                        DesignerSettings.WireColor = data.Color;
+                        DesignerSettings.Theme = data.Theme;
+                    }
+                }
+
+                this.FormClosing += RadRibbonForm1_FormClosing;
+                
             }
+
             InitializeComponent();
+        
         }
-            
-    
 
         public void addDocumentWindow(DocumentWindow pDocWindow)
         {
             radDock2.AddDocument(pDocWindow);
         }
 
-        private void radMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Load_Click(object sender, EventArgs e)
         {
-            //mainLogicDesigner1.OpenFile(@"C:\Users\Sam\Documents\test.bollocks");
             OpenFile();
         }
 
@@ -137,35 +143,10 @@ namespace WindowsFormsTest
            // playButton.BackgroundImage = Properties.Resources.playButton;
         }
 
-        private void mainLogicDesigner1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void radDock2_Initialized(object sender, EventArgs e)
         {
-            radDock2.LoadFromXml(@"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml");
-            Globals.CurrentLayoutPath = @"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml";
+            LoadDefaultLayout();
 
-            //SettingsToolWindow toolWindow = new SettingsToolWindow();
-
-            //radDock2.AddDocument(toolWindow);
-
-            /*Settings SettingsControl = new Settings();
-
-            SettingsControl.Dock = DockStyle.Fill;
-
-            foreach(ToolWindow window in Globals.MainForm.Controls.Find("ColorSetting", true)){
-                window.Controls.Add(SettingsControl);
-            }
-
-            StandardTools StandardToolsControl = new StandardTools();
-
-            StandardToolsControl.Dock = DockStyle.Fill;
-
-            foreach(ToolWindow window in Globals.MainForm.Controls.Find("StandardTools", true)){
-                window.Controls.Add(StandardToolsControl);
-            }*/
         }
 
         private void LoadLayout_Click(object sender, EventArgs e)
@@ -179,7 +160,7 @@ namespace WindowsFormsTest
                 {
                     radDock2.LoadFromXml(openFileDialog.FileName);
 
-                    Globals.CurrentLayoutPath = openFileDialog.FileName;
+                    DesignerSettings.LayoutPath = openFileDialog.FileName;
                 }
             }
         }
@@ -214,58 +195,36 @@ namespace WindowsFormsTest
             radDock2.DockWindow(settingsToolWindow, DockPosition.Right);
         }
 
-        private void RadRibbonForm1_Load(object sender, EventArgs e)
-        {
-            ThemeResolutionService.ApplicationThemeName = "Windows8";
-
-            if (!File.Exists(GetUserDataPath() + @"\UserPrefs.json"))
-            {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(GetUserDataPath() + @"\UserPrefs.json"))
-                {
-                    file.WriteLine(String.Empty);
-
-                    file.Close();
-                }
-            }
-            PreferenceData data = JsonConvert.DeserializeObject<PreferenceData>(GetUserDataPath() +@"\UserPrefs.json");
-            //Implement preferences
-
-            this.FormClosing += RadRibbonForm1_FormClosing;
-        }
-
         void RadRibbonForm1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            String PrefData = JsonConvert.SerializeObject(new PreferenceData(ThemeResolutionService.ApplicationThemeName, Globals.WireColor, Globals.CurrentLayoutPath));
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(GetUserDataPath() + @"\UserPrefs.json"))
-            {
-                file.WriteLine(PrefData);
-
-                file.Close();
-            }
-
+            var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName, DesignerSettings.WireColor, DesignerSettings.LayoutPath);
+            pd.SaveToFile(Globals.UserDataFilename);
         }
 
-        public static string GetUserDataPath()
-        {
-            string dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            dir = System.IO.Path.Combine(dir, "LogicDesigner");
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
-            return dir;
-        }
+        
 
-        class PreferenceData
+        class PreferenceDataSerializer
         {
             public String Theme = String.Empty;
             public Color Color = Color.Empty;
             public String LayoutPath = String.Empty;
 
-            public PreferenceData(String pTheme, Color wireColor, String pLayoutPath)
+            public PreferenceDataSerializer(String pTheme, Color wireColor, String pLayoutPath)
             {
                 Theme = pTheme;
                 Color = wireColor;
-                pLayoutPath = LayoutPath;
+                LayoutPath = pLayoutPath;
+            }
+
+            public static PreferenceDataSerializer LoadFromFile(string filename)
+            {
+                return JsonConvert.DeserializeObject<PreferenceDataSerializer>(File.ReadAllText(filename));
+            }
+            public void SaveToFile(string filename)
+            {
+                String prefData = JsonConvert.SerializeObject(this);
+                Directory.CreateDirectory(Path.GetDirectoryName(filename)); //Ensure it exists
+                File.WriteAllText(filename, prefData);
             }
         }
 
@@ -290,11 +249,20 @@ namespace WindowsFormsTest
 
         }
 
-        private void LoadDeafultLayout_Click(object sender, EventArgs e)
+        private void LoadDefaultLayout_Click(object sender, EventArgs e)
         {
-            radDock2.LoadFromXml(@"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml");
-            Globals.CurrentLayoutPath = @"E:\Development\LogicDesigner\WindowsFormsTest\Resources\Deafult.xml";
+            LoadDefaultLayout();
         }
+
+        private void LoadDefaultLayout()
+        {
+            using (Stream s = Utilities.GenerateStreamFromString(Properties.Resources.Default))
+            {
+                radDock2.LoadFromXml(s);
+            }
+            
+        }
+        
 
 
     }

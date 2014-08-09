@@ -121,6 +121,19 @@ namespace WindowsFormsTest.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;RadDock Padding=&quot;0, 0, 0, 0&quot; SplitterWidth=&quot;2&quot; IsCleanUpTarget=&quot;True&quot; Orientation=&quot;Vertical&quot; Text=&quot;radDock2&quot; CausesValidation=&quot;False&quot; BackColor=&quot;Gray&quot; ForeColor=&quot;White&quot; TabIndex=&quot;5&quot; TabStop=&quot;False&quot;&gt;
+        ///  &lt;Controls&gt;
+        ///    &lt;Telerik.WinControls.UI.Docking.ToolTabStrip SelectedIndex=&quot;0&quot; CanUpdateChildIndex=&quot;True&quot; Size=&quot;200, 293&quot; Location=&quot;0, 0&quot; CausesValidation=&quot;False&quot; Name=&quot;DockTabStrip17&quot; TabIndex=&quot;1&quot; TabStop=&quot;False&quot;&gt;
+        ///      &lt;SizeInfo SplitterCorrection=&quot;0, 0&quot; AutoSizeSca [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Default {
+            get {
+                return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap High {

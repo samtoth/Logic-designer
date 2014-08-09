@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RadDock Padding="0, 0, 0, 0" SplitterWidth="2" IsCleanUpTarget="True" Orientation="Vertical" Text="radDock2" CausesValidation="False" BackColor="Gray" ForeColor="White" TabIndex="5" TabStop="False">
+  <Controls>
+    <Telerik.WinControls.UI.Docking.ToolTabStrip SelectedIndex="0" CanUpdateChildIndex="True" Size="200, 293" Location="0, 0" CausesValidation="False" Name="DockTabStrip17" TabIndex="1" TabStop="False">
+      <SizeInfo SplitterCorrection="0, 0" AutoSizeScale="0, 0" />
+      <Controls>
+        <WindowsFormsTest.Controls.StandardToolsToolWindow Caption="" PreviousDockState="Docked" Name="StandardTools" Size="198, 267" Location="1, 24" Text="Standard Tools" />
+      </Controls>
+    </Telerik.WinControls.UI.Docking.ToolTabStrip>
+    <Telerik.WinControls.UI.Docking.DocumentContainer IsMainDocumentContainer="True" SplitterWidth="2" Orientation="Vertical" CausesValidation="False" Name="documentContainer1">
+      <SizeInfo SplitterCorrection="0, 0" AutoSizeScale="0, 0" SizeMode="Fill" />
+      <Controls>
+        <Telerik.WinControls.UI.Docking.DocumentTabStrip SelectedIndex="0" CanUpdateChildIndex="True" Size="605, 293" Location="0, 0" CausesValidation="False" Name="documentTabStrip1" TabIndex="0" TabStop="False">
+          <SizeInfo SplitterCorrection="0, 0" AutoSizeScale="0, 0" />
+          <Controls>
+            <Telerik.WinControls.UI.Docking.DocumentWindow PreviousDockState="TabbedDocument" Name="documentWindow1" Size="593, 258" Location="6, 29" Text="Schematic 1" >
+				<Controls>
+					<WindowsFormsTest.Controls.MainLogicDesigner  Dock="Fill"/>			
+				</Controls>
+			</Telerik.WinControls.UI.Docking.DocumentWindow>
+          </Controls>
+        </Telerik.WinControls.UI.Docking.DocumentTabStrip>
+      </Controls>
+    </Telerik.WinControls.UI.Docking.DocumentContainer>
+    <Telerik.WinControls.UI.Docking.ToolTabStrip SelectedIndex="0" CanUpdateChildIndex="True" Size="200, 293" Location="809, 0" Name="DockTabStrip18" TabIndex="2" TabStop="False">
+      <SizeInfo SplitterCorrection="0, 0" AutoSizeScale="0, 0" />
+      <Controls>
+        <WindowsFormsTest.Controls.SettingsToolWindow Caption="" PreviousDockState="Docked" Name="ColorSettings" Size="198, 267" Location="1, 24" Text="Color Settings" />
+      </Controls>
+    </Telerik.WinControls.UI.Docking.ToolTabStrip>
+  </Controls>
+</RadDock>
