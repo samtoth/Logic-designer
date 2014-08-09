@@ -20,22 +20,26 @@ namespace WindowsFormsTest
         {
             if (ThemeDropDownBox.SelectedText == "Dark")
             {
-                ThemeResolutionService.ApplicationThemeName = "VisualStudio2012Dark";
+                DesignerSettings.Theme = "VisualStudio2012Dark";
             }
             else if (ThemeDropDownBox.SelectedText == "Light")
             {
-                ThemeResolutionService.ApplicationThemeName = "VisualStudio2012Light";
+                DesignerSettings.Theme = "VisualStudio2012Light";
             }
             else if(ThemeDropDownBox.SelectedText == "silver"){
-                ThemeResolutionService.ApplicationThemeName = "Office2007Silver";
+                DesignerSettings.Theme = "Office2007Silver";
             }
             else if (ThemeDropDownBox.SelectedText == "Blue")
             {
-                ThemeResolutionService.ApplicationThemeName = "Office2010Blue";
+                DesignerSettings.Theme = "Office2010Blue";
+            }
+            else if(ThemeDropDownBox.SelectedText == String.Empty)
+            {
+                DesignerSettings.Theme = "Windows8";
             }
             else
             {
-                ThemeResolutionService.ApplicationThemeName = ThemeDropDownBox.SelectedText;
+                DesignerSettings.Theme = ThemeDropDownBox.SelectedText;
             }
 
 
