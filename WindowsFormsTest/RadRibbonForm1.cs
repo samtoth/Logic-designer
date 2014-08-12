@@ -109,6 +109,8 @@ namespace WindowsFormsTest
 
                 documentTabStrip1.ActiveWindow.Text = Path.GetFileNameWithoutExtension(p);
                 currentDesigner.filePath = p;
+
+                currentDesigner.ChangedFlag = false;
             }
         }
 
@@ -197,6 +199,26 @@ namespace WindowsFormsTest
 
         void RadRibbonForm1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //TODO: Enumerate trough each open docuent and see if it needs saving
+            foreach(var documentWindow in radDock2.DockWindows){
+                if (documentWindow != null && documentWindow is DocumentWindow)
+                {
+                    MainLogicDesigner designer = (MainLogicDesigner)((DocumentWindow)documentWindow).Controls[0];
+                    if (designer.ChangedFlag)
+                    {
+                        DialogResult result = MessageBox.Show("Do you want to save " /*+ documentWindow.Text*/, "Confirm", MessageBoxButtons.YesNoCancel);
+                        switch (result){
+                            case DialogResult.Yes:
+                                //TODO: Save Designer
+                                break;
+                            case DialogResult.Cancel:
+                                e.Cancel= true;
+                                break;
+
+                    }
+                    }
+                }
+            }
             var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName, DesignerSettings.WireColor, DesignerSettings.LayoutPath);
             pd.SaveToFile(Globals.UserDataFilename);
         }
@@ -261,6 +283,23 @@ namespace WindowsFormsTest
                 radDock2.LoadFromXml(s);
             }
             
+        }
+
+        private void RadRibbonForm1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void radDock2_DockWindowClosing(object sender, DockWindowCancelEventArgs e)
+        {
+            if (e.OldWindow is DocumentWindow)
+            {
+                var designer = e.OldWindow.Controls[0] as MainLogicDesigner;                
+                if (designer.filePath == null)
+                {
+                    
+                }
+            }
         }
         
 

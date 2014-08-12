@@ -19,6 +19,32 @@ namespace WindowsFormsTest.Controls
         public MainLogicDesigner()
         {
             InitializeComponent();
+            Changed += MainLogicDesigner_Changed;
+        }
+
+        void MainLogicDesigner_Changed(object sender, EventArgs e)
+        {
+            if (!this.Parent.Text.EndsWith("*"))
+            {
+                this.Parent.Text += "*";
+            }
+        }
+
+        public event EventHandler Changed;
+
+        private bool _changedFlag;
+
+        public bool ChangedFlag
+        {
+            get { return _changedFlag; }
+            set
+            {
+                _changedFlag = value;
+                if (value)
+                {
+                    if (Changed != null) { Changed(this, new EventArgs()); }
+                }
+            }
         }
 
         public String filePath = null;
@@ -99,7 +125,7 @@ namespace WindowsFormsTest.Controls
                 bool high = (bool)e.Data.GetData(e.Data.GetFormats()[0]);
                 ConstantControl control = new ConstantControl(high);
                 control.Location = pos;
-                control.Parent = this.drawingSurface;
+                this.drawingSurface.Controls.Add(control);
             }
         }
 
@@ -148,6 +174,8 @@ namespace WindowsFormsTest.Controls
                 ((UserControl)sender).Parent = null;
                 ((UserControl)sender).Dispose();
             }
+
+            ChangedFlag = true;
         }
 
         void gc_NodeConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
@@ -161,6 +189,8 @@ namespace WindowsFormsTest.Controls
             }
             this.Refresh();
             //drawLine(this.PointToClient(), this.PointToClient(e.nodeTo.Location));
+
+            ChangedFlag = true;
         }
 
 
@@ -394,6 +424,21 @@ namespace WindowsFormsTest.Controls
             {
                 //TODO Implement draging around veiw Port.
             }
-        }    
+        }
+
+        public bool CanClose()
+        {
+            return false;
+        }
+
+        private void MainLogicDesigner_ControlAdded(object sender, ControlEventArgs e)
+        {
+            ChangedFlag = true;
+        }
+
+        private void MainLogicDesigner_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            ChangedFlag = true;
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace WindowsFormsTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RadRibbonForm1());
+            Application.Run(new SplashScreen());
         }
     }
 }

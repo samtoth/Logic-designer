@@ -29,33 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.radTitleBar1 = new Telerik.WinControls.UI.RadTitleBar();
-            this.roundRectShapeTitle = new Telerik.WinControls.RoundRectShape(this.components);
             this.customShape1 = new Telerik.WinControls.CustomShape(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.radTitleBar1)).BeginInit();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
-            // 
-            // radTitleBar1
-            // 
-            this.radTitleBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.radTitleBar1.Location = new System.Drawing.Point(2, 2);
-            this.radTitleBar1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.radTitleBar1.Name = "radTitleBar1";
-            // 
-            // 
-            // 
-            this.radTitleBar1.RootElement.ApplyShapeToControl = true;
-            this.radTitleBar1.RootElement.Shape = this.roundRectShapeTitle;
-            this.radTitleBar1.Size = new System.Drawing.Size(636, 44);
-            this.radTitleBar1.TabIndex = 0;
-            this.radTitleBar1.TabStop = false;
-            this.radTitleBar1.Text = "SplashScreen";
-            // 
-            // roundRectShapeTitle
-            // 
-            this.roundRectShapeTitle.BottomLeftRounded = false;
-            this.roundRectShapeTitle.BottomRightRounded = false;
             // 
             // customShape1
             // 
@@ -67,20 +43,19 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 596);
-            this.Controls.Add(this.radTitleBar1);
-            this.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.Margin = new System.Windows.Forms.Padding(12);
             this.Name = "SplashScreen";
             this.Shape = this.customShape1;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SplashScreen";
-            ((System.ComponentModel.ISupportInitialize)(this.radTitleBar1)).EndInit();
+            this.Load += new System.EventHandler(this.SplashScreen_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private Telerik.WinControls.UI.RadTitleBar radTitleBar1;
-        private Telerik.WinControls.RoundRectShape roundRectShapeTitle;
         private Telerik.WinControls.CustomShape customShape1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

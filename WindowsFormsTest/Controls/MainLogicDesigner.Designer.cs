@@ -42,10 +42,13 @@
             this.drawingSurface.Controls.Add(this.trashcan);
             this.drawingSurface.Dock = System.Windows.Forms.DockStyle.Fill;
             this.drawingSurface.Location = new System.Drawing.Point(0, 0);
+            this.drawingSurface.Margin = new System.Windows.Forms.Padding(6);
             this.drawingSurface.Name = "drawingSurface";
-            this.drawingSurface.Size = new System.Drawing.Size(390, 420);
+            this.drawingSurface.Size = new System.Drawing.Size(780, 808);
             this.drawingSurface.TabIndex = 0;
             this.drawingSurface.ThemeName = "VisualStudio2012Dark";
+            this.drawingSurface.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.MainLogicDesigner_ControlAdded);
+            this.drawingSurface.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.MainLogicDesigner_ControlRemoved);
             this.drawingSurface.Paint += new System.Windows.Forms.PaintEventHandler(this.drawingSurface_Paint);
             this.drawingSurface.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawingSurface_MouseDown);
             // 
@@ -54,22 +57,25 @@
             this.trashcan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.trashcan.BackgroundImage = global::WindowsFormsTest.Properties.Resources.trash_recyclebin_empty_closed;
             this.trashcan.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.trashcan.Location = new System.Drawing.Point(320, 346);
+            this.trashcan.Location = new System.Drawing.Point(640, 665);
             this.trashcan.Margin = new System.Windows.Forms.Padding(0);
             this.trashcan.Name = "trashcan";
-            this.trashcan.Size = new System.Drawing.Size(70, 74);
+            this.trashcan.Size = new System.Drawing.Size(140, 142);
             this.trashcan.TabIndex = 1;
             this.trashcan.TabStop = false;
             // 
             // MainLogicDesigner
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.drawingSurface);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainLogicDesigner";
-            this.Size = new System.Drawing.Size(390, 420);
+            this.Size = new System.Drawing.Size(780, 808);
+            this.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.MainLogicDesigner_ControlAdded);
+            this.ControlRemoved += new System.Windows.Forms.ControlEventHandler(this.MainLogicDesigner_ControlRemoved);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainLogicDesigner_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainLogicDesigner_DragEnter);
             ((System.ComponentModel.ISupportInitialize)(this.drawingSurface)).EndInit();
