@@ -171,11 +171,33 @@ namespace WindowsFormsTest.Controls
 
             if (e.point.X > trashcan.Location.X && e.point.Y > trashcan.Location.Y)
             {
-                ((UserControl)sender).Parent = null;
-                ((UserControl)sender).Dispose();
+
+                deleteGateControl((GateControl)sender);
             }
 
             ChangedFlag = true;
+        }
+
+        private void deleteGateControl(GateControl pGateControl)
+        {
+            List<ConnectedNodes> nodesToRemove = new List<ConnectedNodes>();
+
+            foreach (ConnectedNodes nodes in connectedNodes)
+            {                
+                    if (pGateControl == nodes.NodeFrom.gateControl || pGateControl == nodes.NodeTo.gateControl)
+                    {                        
+                        nodesToRemove.Add(nodes);
+                    }                
+            }
+
+            foreach (var nodes in nodesToRemove)
+            {
+                connectedNodes.Remove(nodes);
+            }
+
+            drawingSurface.Controls.Remove(pGateControl);
+            pGateControl.Dispose();
+            Globals.MainForm.Refresh();
         }
 
         void gc_NodeConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
@@ -231,7 +253,7 @@ namespace WindowsFormsTest.Controls
             {
                 using (Pen myPen = new Pen(Color.Red))
                 {
-                    myPen.Width = 3;
+                    myPen.Width = 1;
 
                     myPen.Color = DesignerSettings.WireColor;
 
@@ -265,6 +287,7 @@ namespace WindowsFormsTest.Controls
 
             int linePadding = 20;
 
+            /*
             //is node on left side
             if (nodes.NodeFrom.Location.X < nodes.NodeFrom.gateControl.Width / 2)
             {
@@ -321,8 +344,17 @@ namespace WindowsFormsTest.Controls
                         result.AddLine(new Point(nodeToLocation.X, nodes.NodeTo.gateControl.Location.Y - 20), nodeToLocation);
                     }
                 }
-            }
+            }*/
 
+            //result.AddArc(nodes.NodeFrom.Location.X, nodes.NodeFrom.Location.Y, (nodes.NodeTo.Location.X - nodes.NodeFrom.Location.X) / 2, (nodes.NodeTo.Location.Y - nodes.NodeFrom.Location.Y) / 2, nodes.NodeFrom.Location.Y < nodes.NodeTo.Location.Y ? 280 : 60, 0);
+
+            Point[] points = new Point[3];
+            
+            points[0] = nodeFromLocation;
+            points[1] = new Point(((nodeToLocation.X - nodeFromLocation.X) / 2) + nodeFromLocation.X, nodeFromLocation.Y);
+            points[2] = nodeToLocation;
+
+            result.AddCurve(points, 0.5f); 
 
             return result;
         }
