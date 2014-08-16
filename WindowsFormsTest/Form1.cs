@@ -88,8 +88,8 @@ namespace WindowsFormsTest
                 saveFileDialog.Filter = String.Format("{0} (*{1})|*{1}", MainLogicDesigner.FileTypeName, MainLogicDesigner.FileExtension);
                 saveFileDialog.DefaultExt = ".sch";
 
-                if (((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath != null){
-                    saveFileDialog.FileName = ((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath;
+                if (((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).FilePath != null){
+                    saveFileDialog.FileName = ((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).FilePath;
                 }
 
                 if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
@@ -116,7 +116,7 @@ namespace WindowsFormsTest
                 }
 
                 documentTabStrip1.ActiveWindow.Text = Path.GetFileNameWithoutExtension(p);
-                currentDesigner.filePath = p;
+                currentDesigner.FilePath = p;
             }
         }
 
@@ -132,8 +132,8 @@ namespace WindowsFormsTest
 
         private void Save_Click(object sender, EventArgs e)
         {
-            if (((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath != null){
-                SaveFile(((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath);
+            if (((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).FilePath != null){
+                SaveFile(((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).FilePath);
             }
             else
             {

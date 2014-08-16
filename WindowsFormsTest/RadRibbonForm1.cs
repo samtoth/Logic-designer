@@ -33,11 +33,11 @@ namespace WindowsFormsTest
                 }
 
                 this.FormClosing += RadRibbonForm1_FormClosing;
-                
+
             }
 
             InitializeComponent();
-        
+
         }
 
         public void addDocumentWindow(DocumentWindow pDocWindow)
@@ -52,13 +52,16 @@ namespace WindowsFormsTest
 
         private void OpenFile()
         {
-            using(OpenFileDialog fileDialog = new OpenFileDialog()){
-                fileDialog.Filter = String.Format("{0} (*{1})|*{1}", MainLogicDesigner.FileTypeName, MainLogicDesigner.FileExtension);
+            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.Filter = String.Format("{0} (*{1})|*{1}", MainLogicDesigner.FileTypeName,
+                    MainLogicDesigner.FileExtension);
                 fileDialog.DefaultExt = ".sch";
 
                 if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    DocumentWindow newWindow = new DocumentWindow(System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName));
+                    DocumentWindow newWindow =
+                        new DocumentWindow(System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName));
                     newWindow.Parent = documentTabStrip1;
 
                     MainLogicDesigner mainLogicDesigner = new MainLogicDesigner();
@@ -68,50 +71,57 @@ namespace WindowsFormsTest
                     mainLogicDesigner.Dock = DockStyle.Fill;
 
                     mainLogicDesigner.OpenFile(fileDialog.FileName);
-                    
-                }  
+
+                }
             }
 
         }
 
         private void SaveAs_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog()){                
-                saveFileDialog.Filter = String.Format("{0} (*{1})|*{1}", MainLogicDesigner.FileTypeName, MainLogicDesigner.FileExtension);
+            GetSaveFilePath();
+        }
+
+        private string GetSaveFilePath()
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = String.Format("{0} (*{1})|*{1}", MainLogicDesigner.FileTypeName,
+                    MainLogicDesigner.FileExtension);
                 saveFileDialog.DefaultExt = ".sch";
 
-                if (((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath != null){
-                    saveFileDialog.FileName = ((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath;
+                if (((MainLogicDesigner) documentTabStrip1.ActiveWindow.Controls[0]).FilePath != null)
+                {
+                    saveFileDialog.FileName = ((MainLogicDesigner) documentTabStrip1.ActiveWindow.Controls[0]).FilePath;
                 }
 
-                if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                    SaveFile(saveFileDialog.FileName);
-                }                
+                return saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK ? saveFileDialog.FileName : null;
             }
         }
 
-        private void SaveFile(string p)
+        private bool SaveAs(string path, MainLogicDesigner designer)
         {
-            var currentDesigner = (MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0];
-            if (currentDesigner != null)
+            bool result = false;
+
+            // Compose a string that consists of three lines.
+            string lines = designer.getSaveData();
+
+            // Write the string to a file.
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(path))
             {
-                
-                // Compose a string that consists of three lines.
-                string lines = currentDesigner.getSaveData();
+                file.WriteLine(lines);
 
-                // Write the string to a file.
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(p))
-                {
-                    file.WriteLine(lines);
-
-                    file.Close();
-                }
-
-                documentTabStrip1.ActiveWindow.Text = Path.GetFileNameWithoutExtension(p);
-                currentDesigner.filePath = p;
-
-                currentDesigner.ChangedFlag = false;
+                file.Close();
             }
+
+            documentTabStrip1.ActiveWindow.Text = Path.GetFileNameWithoutExtension(path);
+            designer.FilePath = path;
+
+            designer.ChangedFlag = false;
+
+            result = true;
+
+            return result;
         }
 
         private void NewBlankDocument_Click(object sender, EventArgs e)
@@ -126,23 +136,39 @@ namespace WindowsFormsTest
 
         private void Save_Click(object sender, EventArgs e)
         {
-            if (((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath != null){
-                SaveFile(((MainLogicDesigner)documentTabStrip1.ActiveWindow.Controls[0]).filePath);
+            Save(getActiveDesigner());
+        }
+
+        MainLogicDesigner getActiveDesigner()
+        {
+            return documentTabStrip1.ActiveWindow.Controls[0] as MainLogicDesigner;
+        }
+
+        bool Save(MainLogicDesigner designer)
+        {
+            if (!string.IsNullOrEmpty(designer.FilePath))
+            {
+                return SaveAs(designer.FilePath, designer);
             }
             else
             {
-                SaveAs_Click(sender, e);
+                string saveFilePath = GetSaveFilePath();
+                if (!string.IsNullOrEmpty(saveFilePath))
+                {
+                    return SaveAs(saveFilePath, designer);
+                }
             }
+            return false;
         }
 
         private void playButton_MouseDown(object sender, MouseEventArgs e)
         {
-           // playButton.BackgroundImage = Properties.Resources.playButton_pressed;
+            // playButton.BackgroundImage = Properties.Resources.playButton_pressed;
         }
 
         private void playButton_MouseUp(object sender, MouseEventArgs e)
         {
-           // playButton.BackgroundImage = Properties.Resources.playButton;
+            // playButton.BackgroundImage = Properties.Resources.playButton;
         }
 
         private void radDock2_Initialized(object sender, EventArgs e)
@@ -157,7 +183,7 @@ namespace WindowsFormsTest
             {
                 openFileDialog.Filter = String.Format("{0} (*{1})|*{1}", "Xml files", ".xml");
                 openFileDialog.DefaultExt = ".xml";
-                
+
                 if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     radDock2.LoadFromXml(openFileDialog.FileName);
@@ -173,7 +199,7 @@ namespace WindowsFormsTest
             {
                 saveFileDialog.Filter = String.Format("{0} (*{1})|*{1}", "Xml files", ".xml");
                 saveFileDialog.DefaultExt = ".xml";
-                
+
                 if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     radDock2.SaveToXml(saveFileDialog.FileName);
@@ -197,35 +223,29 @@ namespace WindowsFormsTest
             radDock2.DockWindow(settingsToolWindow, DockPosition.Right);
         }
 
-        void RadRibbonForm1_FormClosing(object sender, FormClosingEventArgs e)
+        private void RadRibbonForm1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //TODO: Enumerate trough each open docuent and see if it needs saving
-            foreach(var documentWindow in radDock2.DockWindows){
-                if (documentWindow != null && documentWindow is DocumentWindow)
+            foreach (var documentWindow in radDock2.DockWindows)
+            {
+                if(documentWindow is DocumentWindow)
+                e.Cancel = !SaveIfRequired(documentWindow as DocumentWindow);
+                if (e.Cancel)
                 {
-                    MainLogicDesigner designer = (MainLogicDesigner)((DocumentWindow)documentWindow).Controls[0];
-                    if (designer.ChangedFlag)
-                    {
-                        DialogResult result = MessageBox.Show("Do you want to save " /*+ documentWindow.Text*/, "Confirm", MessageBoxButtons.YesNoCancel);
-                        switch (result){
-                            case DialogResult.Yes:
-                                //TODO: Save Designer
-                                break;
-                            case DialogResult.Cancel:
-                                e.Cancel= true;
-                                break;
-
-                    }
-                    }
+                    break;
                 }
             }
-            var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName, DesignerSettings.WireColor, DesignerSettings.LayoutPath);
-            pd.SaveToFile(Globals.UserDataFilename);
+
+            //SAve settings
+            if (!e.Cancel)
+            {
+
+                var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName,
+                    DesignerSettings.WireColor, DesignerSettings.LayoutPath);
+                pd.SaveToFile(Globals.UserDataFilename);
+            }
         }
-
         
-
-        class PreferenceDataSerializer
+        private class PreferenceDataSerializer
         {
             public String Theme = String.Empty;
             public Color Color = Color.Empty;
@@ -242,6 +262,7 @@ namespace WindowsFormsTest
             {
                 return JsonConvert.DeserializeObject<PreferenceDataSerializer>(File.ReadAllText(filename));
             }
+
             public void SaveToFile(string filename)
             {
                 String prefData = JsonConvert.SerializeObject(this);
@@ -282,7 +303,7 @@ namespace WindowsFormsTest
             {
                 radDock2.LoadFromXml(s);
             }
-            
+
         }
 
         private void RadRibbonForm1_FormClosed(object sender, FormClosedEventArgs e)
@@ -292,17 +313,38 @@ namespace WindowsFormsTest
 
         private void radDock2_DockWindowClosing(object sender, DockWindowCancelEventArgs e)
         {
-            if (e.OldWindow is DocumentWindow)
+
+
+            if (e.NewWindow is DocumentWindow)
             {
-                var designer = e.OldWindow.Controls[0] as MainLogicDesigner;                
-                if (designer.filePath == null)
-                {
-                    
-                }
+                e.Cancel = !SaveIfRequired(e.NewWindow as DocumentWindow);
             }
         }
-        
 
+        public bool SaveIfRequired(DocumentWindow designerWindow)
+        {
+            bool result = false;
+            var designer = ((MainLogicDesigner) designerWindow.Controls[0]);
 
+            if (designer.ChangedFlag)
+            {
+                var dr = MessageBox.Show("Do you want to save " + designerWindow.Text, "Confirm",
+                    MessageBoxButtons.YesNoCancel);
+                switch (dr)
+                {
+                    case DialogResult.Yes:
+                        result = Save(designer);
+                        break;
+                    case DialogResult.No:
+                        result = true;
+                        break;
+                }
+            }
+            else
+            {
+                result = true;
+            }
+            return result;
+        }
     }
 }

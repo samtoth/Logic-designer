@@ -136,6 +136,7 @@
             this.documentContainer1.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.documentContainer1.SizeInfo.SizeMode = Telerik.WinControls.UI.Docking.SplitPanelSizeMode.Fill;
             this.documentContainer1.SplitterWidth = 2;
+            this.documentContainer1.UseSplitterButtons = true;
             // 
             // documentTabStrip1
             // 
@@ -149,6 +150,7 @@
             // 
             this.documentTabStrip1.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.documentTabStrip1.SelectedIndex = 0;
+            this.documentTabStrip1.ShowItemCloseButton = true;
             this.documentTabStrip1.Size = new System.Drawing.Size(1573, 531);
             this.documentTabStrip1.TabIndex = 0;
             this.documentTabStrip1.TabStop = false;
@@ -178,6 +180,7 @@
             // 
             // 
             this.radDock2.RootElement.MinSize = new System.Drawing.Size(0, 0);
+            this.radDock2.ShowDocumentCloseButton = true;
             this.radDock2.Size = new System.Drawing.Size(1583, 541);
             this.radDock2.SplitterWidth = 2;
             this.radDock2.TabIndex = 5;
@@ -325,7 +328,7 @@
             this.ribbonTab1.AccessibleDescription = "Create";
             this.ribbonTab1.AccessibleName = "Create";
             this.ribbonTab1.AutoEllipsis = false;
-            this.ribbonTab1.IsSelected = true;
+            this.ribbonTab1.IsSelected = false;
             this.ribbonTab1.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup1,
             this.radRibbonBarGroup2,
@@ -449,7 +452,7 @@
             // 
             this.ribbonTab2.AccessibleDescription = "Run";
             this.ribbonTab2.AccessibleName = "Run";
-            this.ribbonTab2.IsSelected = false;
+            this.ribbonTab2.IsSelected = true;
             this.ribbonTab2.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup6});
             this.ribbonTab2.Name = "ribbonTab2";

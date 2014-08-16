@@ -173,6 +173,7 @@
     <Compile Include="Controls\partDesignerControl.Designer.cs">
       <DependentUpon>partDesignerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gates\NotGate.cs" />
     <Compile Include="Gates\XnorGate.cs" />
     <Compile Include="Gates\XorGate.cs" />
     <Compile Include="Gates\NorGate.cs" />

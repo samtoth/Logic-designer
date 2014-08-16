@@ -47,7 +47,7 @@ namespace WindowsFormsTest.Controls
             }
         }
 
-        public String filePath = null;
+        public String FilePath = null;
 
         public const String FileExtension = ".ldsch";
 
@@ -57,12 +57,13 @@ namespace WindowsFormsTest.Controls
 
         class ConnectedNodes
         {
-            public ConnectionNode NodeFrom { get; set; }
-            public ConnectionNode NodeTo { get; set; }
-            public ConnectedNodes(ConnectionNode nodeFrom, ConnectionNode nodeTo)
+            public bool On { get; set; }
+            public ConnectionNode Output { get; set; }
+            public ConnectionNode Input { get; set; }
+            public ConnectedNodes(ConnectionNode output, ConnectionNode input)
             {
-                NodeFrom = nodeFrom;
-                NodeTo = nodeTo;
+                Output = output;
+                Input = input;
             }
         }
 
@@ -86,9 +87,7 @@ namespace WindowsFormsTest.Controls
             Ag.Left = Og.Width + Og.Left;
 
         }
-
-
-
+        
         private void MainLogicDesigner_DragEnter(object sender, DragEventArgs e)
         {
             // e.Effect = DragDropEffects.Copy;
@@ -172,23 +171,15 @@ namespace WindowsFormsTest.Controls
             if (e.point.X > trashcan.Location.X && e.point.Y > trashcan.Location.Y)
             {
 
-                deleteGateControl((GateControl)sender);
+                DeleteGateControl((GateControl)sender);
             }
 
             ChangedFlag = true;
         }
 
-        private void deleteGateControl(GateControl pGateControl)
+        private void DeleteGateControl(GateControl pGateControl)
         {
-            List<ConnectedNodes> nodesToRemove = new List<ConnectedNodes>();
-
-            foreach (ConnectedNodes nodes in connectedNodes)
-            {                
-                    if (pGateControl == nodes.NodeFrom.gateControl || pGateControl == nodes.NodeTo.gateControl)
-                    {                        
-                        nodesToRemove.Add(nodes);
-                    }                
-            }
+            var nodesToRemove = connectedNodes.Where(nodes => pGateControl == nodes.Output.gateControl || pGateControl == nodes.Input.gateControl).ToList();
 
             foreach (var nodes in nodesToRemove)
             {
@@ -210,22 +201,22 @@ namespace WindowsFormsTest.Controls
                 }
             }
             this.Refresh();
-            //drawLine(this.PointToClient(), this.PointToClient(e.nodeTo.Location));
+            //drawLine(this.PointToClient(), this.PointToClient(e.Input.Location));
 
             ChangedFlag = true;
         }
 
 
-        private void drawLine(Point P1, Point P2)
+        private void DrawLine(Point p1, Point p2)
         {
-            System.Drawing.Graphics graphics = this.drawingSurface.CreateGraphics();
-            graphics.DrawLine(System.Drawing.Pens.Black, P1, P2);
+            Graphics graphics = this.drawingSurface.CreateGraphics();
+            graphics.DrawLine(System.Drawing.Pens.Black, p1, p2);
             graphics.DrawLine(System.Drawing.Pens.Black, new Point(10, 10), new Point(20, 10));
         }
 
         private void radScrollablePanel1_Paint(object sender, PaintEventArgs e)
         {
-            using (Pen myPen = new Pen(Color.Red))
+            using (var myPen = new Pen(Color.FromArgb(255, 148, 86)))
             {
                 myPen.Width = 30;
 
@@ -235,12 +226,12 @@ namespace WindowsFormsTest.Controls
                     e.Graphics.DrawLine(myPen, new Point(10, 10), new Point(20, 10));
 
                     //System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
-                    //path.AddLine(item.NodeFrom.Parent.Parent.Location, new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y));
-                    //path.AddLine(new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y), item.NodeTo.Parent.Parent.Location);
+                    //path.AddLine(item.Output.Parent.Parent.Location, new Point(item.Input.Parent.Parent.Location.X, item.Output.Parent.Parent.Location.Y));
+                    //path.AddLine(new Point(item.Input.Parent.Parent.Location.X, item.Output.Parent.Parent.Location.Y), item.Input.Parent.Parent.Location);
                     //e.Graphics.DrawPath(myPen, path);
 
 
-                    //e.Graphics.DrawLine(myPen, item.NodeFrom.Parent.Parent.Location, new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y));
+                    //e.Graphics.DrawLine(myPen, item.Output.Parent.Parent.Location, new Point(item.Input.Parent.Parent.Location.X, item.Output.Parent.Parent.Location.Y));
 
                 }
             }
@@ -253,25 +244,23 @@ namespace WindowsFormsTest.Controls
             {
                 using (Pen myPen = new Pen(Color.Red))
                 {
-                    myPen.Width = 1;
-
-                    myPen.Color = DesignerSettings.WireColor;
-
-                    foreach (var item in connectedNodes)
+                   // if (!isOn)
                     {
-                        /*e.Graphics.DrawLine(myPen, new Point(165, 37), new Point(299, 37));
-                        e.Graphics.DrawLine(myPen, new Point(10, 10), new Point(20, 10));
-                        e.Graphics.DrawLine(System.Drawing.Pens.Blue, new Point(10, 10), new Point(20, 20));*/
+                        myPen.Width = 1;
 
-                        //path.AddLine(item.NodeFrom.gateControl.Location, new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.gateControl.Location.Y));
-                        //path.AddLine(new Point(item.NodeTo.gateControl.Location.X, item.NodeFrom.Parent.Parent.Location.Y), item.NodeTo.gateControl.Location);
+                        myPen.Color = DesignerSettings.WireColor;
 
-                        e.Graphics.DrawPath(myPen, getConnectionPath(item));
-
-
-                        //e.Graphics.DrawLine(myPen, item.NodeFrom.Parent.Parent.Location, new Point(item.NodeTo.Parent.Parent.Location.X, item.NodeFrom.Parent.Parent.Location.Y));
-
-
+                        foreach (var item in connectedNodes)
+                        {
+                            e.Graphics.DrawPath(myPen, getConnectionPath(item));
+                        }
+                    }
+                    //else
+                    {
+                        foreach (var item in connectedNodes)
+                        {
+                            e.Graphics.DrawPath(myPen, getConnectionPath(item));
+                        }
                     }
                 }
             }
@@ -281,20 +270,20 @@ namespace WindowsFormsTest.Controls
         {
             GraphicsPath result = new GraphicsPath();
 
-            Point nodeFromLocation = new Point(nodes.NodeFrom.Location.X + nodes.NodeFrom.gateControl.Location.X, nodes.NodeFrom.Location.Y + nodes.NodeFrom.gateControl.Location.Y);
+            Point nodeFromLocation = new Point(nodes.Output.Location.X + nodes.Output.gateControl.Location.X, nodes.Output.Location.Y + nodes.Output.gateControl.Location.Y);
 
-            Point nodeToLocation = new Point(nodes.NodeTo.Location.X + nodes.NodeTo.gateControl.Location.X, nodes.NodeTo.Location.Y + nodes.NodeTo.gateControl.Location.Y);
+            Point nodeToLocation = new Point(nodes.Input.Location.X + nodes.Input.gateControl.Location.X, nodes.Input.Location.Y + nodes.Input.gateControl.Location.Y);
 
             int linePadding = 20;
 
             /*
             //is node on left side
-            if (nodes.NodeFrom.Location.X < nodes.NodeFrom.gateControl.Width / 2)
+            if (nodes.Output.Location.X < nodes.Output.gateControl.Width / 2)
             {
                 //Is other node on the Right side of first one
                 if (nodeToLocation.X > nodeFromLocation.X)
                 {
-                    result.AddLine(nodeFromLocation, new Point(nodes.NodeFrom.gateControl.Location.X - linePadding, nodeFromLocation.Y));
+                    result.AddLine(nodeFromLocation, new Point(nodes.Output.gateControl.Location.X - linePadding, nodeFromLocation.Y));
                 }
                 else
                 {
@@ -308,29 +297,29 @@ namespace WindowsFormsTest.Controls
                 //Is other Node left side of the first one
                 if (nodeToLocation.X < nodeFromLocation.X)
                 {
-                    if (nodes.NodeTo.Location.X > nodes.NodeTo.gateControl.Width / 2)
+                    if (nodes.Input.Location.X > nodes.Input.gateControl.Width / 2)
                     {
-                        result.AddLine(nodeFromLocation, new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodeFromLocation.Y), new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodes.NodeFrom.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodes.NodeFrom.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.NodeFrom.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.NodeFrom.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y));
+                        result.AddLine(nodeFromLocation, new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y));
+                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y));
                         result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y), nodeToLocation);
                     }
                     else
                     {
-                        result.AddLine(nodeFromLocation, new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodeFromLocation.Y), new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodes.NodeFrom.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodes.NodeFrom.gateControl.Location.X + nodes.NodeFrom.gateControl.Width + linePadding, nodes.NodeFrom.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.NodeFrom.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.NodeFrom.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.NodeTo.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.NodeTo.gateControl.Location.Y - 20), new Point(nodeToLocation.X, nodes.NodeTo.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X, nodes.NodeTo.gateControl.Location.Y - 20), nodeToLocation);
+                        result.AddLine(nodeFromLocation, new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y));
+                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.gateControl.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20), nodeToLocation);
                     }
                 }
                 //other node is on right side of first one
                 else
                 {
                     //if other node is on left side
-                    if (nodes.NodeTo.Location.X < nodes.NodeTo.gateControl.Width / 2)
+                    if (nodes.Input.Location.X < nodes.Input.gateControl.Width / 2)
                     {
                         result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
                         result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeToLocation.Y));
@@ -338,15 +327,15 @@ namespace WindowsFormsTest.Controls
                     }
                     else
                     {
-                        result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodes.NodeTo.gateControl.Location.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.NodeTo.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.NodeTo.gateControl.Location.Y - 20), new Point(nodeToLocation.X, nodes.NodeTo.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X, nodes.NodeTo.gateControl.Location.Y - 20), nodeToLocation);
+                        result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodes.Input.gateControl.Location.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
+                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.gateControl.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20), nodeToLocation);
                     }
                 }
             }*/
 
-            //result.AddArc(nodes.NodeFrom.Location.X, nodes.NodeFrom.Location.Y, (nodes.NodeTo.Location.X - nodes.NodeFrom.Location.X) / 2, (nodes.NodeTo.Location.Y - nodes.NodeFrom.Location.Y) / 2, nodes.NodeFrom.Location.Y < nodes.NodeTo.Location.Y ? 280 : 60, 0);
+            //result.AddArc(nodes.Output.Location.X, nodes.Output.Location.Y, (nodes.Input.Location.X - nodes.Output.Location.X) / 2, (nodes.Input.Location.Y - nodes.Output.Location.Y) / 2, nodes.Output.Location.Y < nodes.Input.Location.Y ? 280 : 60, 0);
 
             Point[] points = new Point[3];
             
@@ -363,7 +352,7 @@ namespace WindowsFormsTest.Controls
         {
             string result = String.Empty;
 
-            SaveData json = new SaveData();
+            var json = new SaveData();
 
             foreach (var gate in gates)
             {
@@ -372,17 +361,19 @@ namespace WindowsFormsTest.Controls
 
             foreach (var connection in connectedNodes)
             {
-                ConnectedSerializableNodes nodeConnection = new ConnectedSerializableNodes();
-                nodeConnection.NodeFrom.GateGuid = connection.NodeFrom.gateControl.guid;
-                nodeConnection.NodeTo.GateGuid = connection.NodeTo.gateControl.guid;
+                ConnectedSerializableNodes nodeConnection = new ConnectedSerializableNodes
+                {
+                    NodeFrom = {GateGuid = connection.Output.gateControl.guid},
+                    NodeTo = {GateGuid = connection.Input.gateControl.guid}
+                };
 
-                nodeConnection.NodeFrom.Name = connection.NodeFrom.ConnectionName;
-                nodeConnection.NodeTo.Name = connection.NodeTo.ConnectionName;
+                nodeConnection.NodeFrom.Name = connection.Output.ConnectionName;
+                nodeConnection.NodeTo.Name = connection.Input.ConnectionName;
 
                 json.connections.Add(nodeConnection);
             }
 
-            result = Newtonsoft.Json.JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented);
+            result = JsonConvert.SerializeObject(json, Formatting.Indented);
 
             return result;
         }
@@ -421,22 +412,17 @@ namespace WindowsFormsTest.Controls
                 {
                     if (gate.guid == connection.NodeFrom.GateGuid)
                     {
-                        foreach(var node in gate.LogicComponent.Nodes){
-                            if (node.ConnectionName == connection.NodeFrom.Name)
-                            {
-                                nodeFrom = node;
-                            }
+                        foreach (var node in gate.LogicComponent.Nodes.Where(node => node.ConnectionName == connection.NodeFrom.Name))
+                        {
+                            nodeFrom = node;
                         }
                     }
 
                     if (gate.guid == connection.NodeTo.GateGuid)
                     {
-                        foreach (var node in gate.LogicComponent.Nodes)
+                        foreach (var node in gate.LogicComponent.Nodes.Where(node => node.ConnectionName == connection.NodeTo.Name))
                         {
-                            if (node.ConnectionName == connection.NodeTo.Name)
-                            {
-                                nodeTo = node;
-                            }
+                            nodeTo = node;
                         }
                     }                        
                 }
