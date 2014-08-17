@@ -67,7 +67,7 @@ namespace WindowsFormsTest
                 if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     DocumentWindow newWindow = new DocumentWindow(System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName));
-                    newWindow.Parent = documentTabStrip1;
+                    documentTabStrip1.Controls.Add(newWindow.Parent);
 
                     MainLogicDesigner mainLogicDesigner = new MainLogicDesigner();
 

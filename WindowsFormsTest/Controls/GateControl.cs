@@ -52,11 +52,12 @@ namespace WindowsFormsTest.Controls
             this.pictureBox1.Image = _logicComponent.DesignerImage;
             foreach (var node in _logicComponent.InputNodes)
             {
-                node.Parent = pictureBox1;
+                pictureBox1.Controls.Add(node);
                 node.gateControl = this;
                 node.ConnectionMade += node_ConnectionMade;
             }
-            _logicComponent.OutputNode.Parent = pictureBox1;
+
+            pictureBox1.Controls.Add(_logicComponent.OutputNode.Parent);
             _logicComponent.OutputNode.gateControl = this;
             _logicComponent.OutputNode.ConnectionMade += node_ConnectionMade;
         }
