@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using Telerik.WinControls.UI.Docking;
 using WindowsFormsTest.Controls;
 
+//TODO: Find all references of tabStrip1 and change to something more stable from the main rad dock
+
 namespace WindowsFormsTest
 {
     public partial class Form1 : Form
@@ -67,7 +69,7 @@ namespace WindowsFormsTest
                 if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     DocumentWindow newWindow = new DocumentWindow(System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName));
-                    documentTabStrip1.Controls.Add(newWindow.Parent);
+                    radDock1.AddDocument(newWindow);
 
                     MainLogicDesigner mainLogicDesigner = new MainLogicDesigner();
 

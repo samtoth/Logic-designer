@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Telerik.WinControls.Enumerations;
 using Telerik.WinControls.UI.Docking;
 using WindowsFormsTest.Controls;
 using Telerik.WinControls;
@@ -81,10 +82,15 @@ namespace WindowsFormsTest
 
         private void SaveAs_Click(object sender, EventArgs e)
         {
-            string filePath = GetSaveFilePath("");//TODO: Get default file path for active window
+            var activeDewsigner = GetActiveDesigner();
+            if (activeDewsigner == null)
+            {
+                return;
+            }
+            string filePath = GetSaveFilePath(activeDewsigner.FilePath);
             if (!string.IsNullOrEmpty(filePath))
             {
-                SaveAs(filePath, getActiveDesigner());
+                SaveAs(filePath, activeDewsigner);
             }
 
         }
@@ -121,7 +127,7 @@ namespace WindowsFormsTest
                 file.Close();
             }
 
-            documentTabStrip1.ActiveWindow.Text = Path.GetFileNameWithoutExtension(path);
+            designer.Parent.Text = Path.GetFileNameWithoutExtension(path);
             designer.FilePath = path;
 
             designer.ChangedFlag = false;
@@ -143,12 +149,22 @@ namespace WindowsFormsTest
 
         private void Save_Click(object sender, EventArgs e)
         {
-            Save(getActiveDesigner());
+            var activeDewsigner = GetActiveDesigner();
+            if (activeDewsigner == null)
+            {
+                return;
+            }
+            Save(activeDewsigner);
         }
 
-        MainLogicDesigner getActiveDesigner()
+        MainLogicDesigner GetActiveDesigner()
         {
-            return documentTabStrip1.ActiveWindow.Controls[0] as MainLogicDesigner;
+            if (radDock2.DocumentManager.ActiveDocument == null)
+            {
+                return null;
+            }
+            
+            return radDock2.DocumentManager.ActiveDocument.Controls[0] as MainLogicDesigner;
         }
 
         bool Save(MainLogicDesigner designer)
@@ -353,5 +369,42 @@ namespace WindowsFormsTest
             }
             return result;
         }
+
+        private void Run_Btn_ToggleStateChanged(object sender, Telerik.WinControls.UI.StateChangedEventArgs args)
+        {
+            var activeDewsigner = GetActiveDesigner();
+            if (activeDewsigner == null)
+            {
+                
+                return;
+            }
+            activeDewsigner.Running = Run_Btn.ToggleState == ToggleState.On;
+        }
+
+        private void Run_Btn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void step_btn_Click(object sender, EventArgs e)
+        {
+            var activeDewsigner = GetActiveDesigner();
+            if (activeDewsigner == null)
+            {
+                return;
+            }
+            activeDewsigner.UpdateLogicAsync();
+        }
+
+        private void Run_Btn_ToggleStateChanging(object sender, Telerik.WinControls.UI.StateChangingEventArgs args)
+        {
+            if (GetActiveDesigner() == null)
+            {
+                args.Cancel = true;
+                System.Media.SystemSounds.Exclamation.Play();
+            }
+        }
+
+       
     }
 }

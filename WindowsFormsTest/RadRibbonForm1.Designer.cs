@@ -50,6 +50,9 @@
             this.RibbonBarOptions = new Telerik.WinControls.UI.RadMenuButtonItem();
             this.radContextMenuManager1 = new Telerik.WinControls.UI.RadContextMenuManager();
             this.radRibbonBar1 = new Telerik.WinControls.UI.RadRibbonBar();
+            this.radRibbonBarBackstageView1 = new Telerik.WinControls.UI.RadRibbonBarBackstageView();
+            this.backstageViewPage1 = new Telerik.WinControls.UI.BackstageViewPage();
+            this.backstageTabItem1 = new Telerik.WinControls.UI.BackstageTabItem();
             this.ribbonTab1 = new Telerik.WinControls.UI.RibbonTab();
             this.radRibbonBarGroup1 = new Telerik.WinControls.UI.RadRibbonBarGroup();
             this.newPart = new Telerik.WinControls.UI.RadButtonElement();
@@ -62,9 +65,6 @@
             this.NewStandardToolsButton = new Telerik.WinControls.UI.RadButtonElement();
             this.ColorSettings = new Telerik.WinControls.UI.RadButtonElement();
             this.ribbonTab2 = new Telerik.WinControls.UI.RibbonTab();
-            this.radRibbonBarGroup6 = new Telerik.WinControls.UI.RadRibbonBarGroup();
-            this.NewInputWindow = new Telerik.WinControls.UI.RadButtonElement();
-            this.NewOutputWindow = new Telerik.WinControls.UI.RadButtonElement();
             this.NewContainer = new Telerik.WinControls.UI.RadMenuItem();
             this.NewBlankDocument = new Telerik.WinControls.UI.RadMenuButtonItem();
             this.SaveContainer = new Telerik.WinControls.UI.RadMenuItem();
@@ -91,9 +91,10 @@
             this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
             this.windows8Theme1 = new Telerik.WinControls.Themes.Windows8Theme();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.radRibbonBarBackstageView1 = new Telerik.WinControls.UI.RadRibbonBarBackstageView();
-            this.backstageTabItem1 = new Telerik.WinControls.UI.BackstageTabItem();
-            this.backstageViewPage1 = new Telerik.WinControls.UI.BackstageViewPage();
+            this.radRibbonBarGroup7 = new Telerik.WinControls.UI.RadRibbonBarGroup();
+            this.Run_Btn = new Telerik.WinControls.UI.RadToggleButtonElement();
+            this.step_btn = new Telerik.WinControls.UI.RadButtonElement();
+            this.radRibbonBarGroup6 = new Telerik.WinControls.UI.RadRibbonBarGroup();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.documentContainer1)).BeginInit();
             this.documentContainer1.SuspendLayout();
@@ -329,12 +330,43 @@
             this.radRibbonBar1.TabIndex = 2;
             this.radRibbonBar1.Text = "RadRibbonForm1";
             // 
+            // radRibbonBarBackstageView1
+            // 
+            this.radRibbonBarBackstageView1.Controls.Add(this.backstageViewPage1);
+            this.radRibbonBarBackstageView1.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.backstageTabItem1});
+            this.radRibbonBarBackstageView1.Location = new System.Drawing.Point(0, 54);
+            this.radRibbonBarBackstageView1.Name = "radRibbonBarBackstageView1";
+            this.radRibbonBarBackstageView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.radRibbonBarBackstageView1.SelectedItem = this.backstageTabItem1;
+            this.radRibbonBarBackstageView1.Size = new System.Drawing.Size(1583, 725);
+            this.radRibbonBarBackstageView1.TabIndex = 6;
+            // 
+            // backstageViewPage1
+            // 
+            this.backstageViewPage1.BackColor = System.Drawing.Color.Transparent;
+            this.backstageViewPage1.Location = new System.Drawing.Point(132, 1);
+            this.backstageViewPage1.Name = "backstageViewPage1";
+            this.backstageViewPage1.Size = new System.Drawing.Size(1451, 724);
+            this.backstageViewPage1.TabIndex = 1;
+            // 
+            // backstageTabItem1
+            // 
+            this.backstageTabItem1.AccessibleDescription = "New";
+            this.backstageTabItem1.AccessibleName = "New";
+            this.backstageTabItem1.DisabledTextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.backstageTabItem1.Name = "backstageTabItem1";
+            this.backstageTabItem1.Page = this.backstageViewPage1;
+            this.backstageTabItem1.Text = "New";
+            this.backstageTabItem1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.backstageTabItem1.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
             // ribbonTab1
             // 
             this.ribbonTab1.AccessibleDescription = "Create";
             this.ribbonTab1.AccessibleName = "Create";
             this.ribbonTab1.AutoEllipsis = false;
-            this.ribbonTab1.IsSelected = true;
+            this.ribbonTab1.IsSelected = false;
             this.ribbonTab1.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup1,
             this.radRibbonBarGroup2,
@@ -458,41 +490,13 @@
             // 
             this.ribbonTab2.AccessibleDescription = "Run";
             this.ribbonTab2.AccessibleName = "Run";
-            this.ribbonTab2.IsSelected = false;
+            this.ribbonTab2.IsSelected = true;
             this.ribbonTab2.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.radRibbonBarGroup7,
             this.radRibbonBarGroup6});
             this.ribbonTab2.Name = "ribbonTab2";
             this.ribbonTab2.Text = "Run";
             this.ribbonTab2.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // radRibbonBarGroup6
-            // 
-            this.radRibbonBarGroup6.AccessibleDescription = "Add";
-            this.radRibbonBarGroup6.AccessibleName = "Add";
-            this.radRibbonBarGroup6.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.NewInputWindow,
-            this.NewOutputWindow});
-            this.radRibbonBarGroup6.Name = "radRibbonBarGroup6";
-            this.radRibbonBarGroup6.Text = "Add";
-            this.radRibbonBarGroup6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // NewInputWindow
-            // 
-            this.NewInputWindow.AccessibleDescription = "<html><p>Input</p><p>Window</p></html>";
-            this.NewInputWindow.AccessibleName = "<html><p>Input</p><p>Window</p></html>";
-            this.NewInputWindow.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.NewInputWindow.Name = "NewInputWindow";
-            this.NewInputWindow.Text = "<html><p>Input</p><p>Window</p></html>";
-            this.NewInputWindow.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // NewOutputWindow
-            // 
-            this.NewOutputWindow.AccessibleDescription = "<html><p>Output</p><p>Window</p></html>";
-            this.NewOutputWindow.AccessibleName = "<html><p>Output</p><p>Window</p></html>";
-            this.NewOutputWindow.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.NewOutputWindow.Name = "NewOutputWindow";
-            this.NewOutputWindow.Text = "<html><p>Output</p><p>Window</p></html>";
-            this.NewOutputWindow.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
             // NewContainer
             // 
@@ -582,36 +586,45 @@
             this.OpenFromFile.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.OpenFromFile.Click += new System.EventHandler(this.Load_Click);
             // 
-            // radRibbonBarBackstageView1
+            // radRibbonBarGroup7
             // 
-            this.radRibbonBarBackstageView1.Controls.Add(this.backstageViewPage1);
-            this.radRibbonBarBackstageView1.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.backstageTabItem1});
-            this.radRibbonBarBackstageView1.Location = new System.Drawing.Point(0, 54);
-            this.radRibbonBarBackstageView1.Name = "radRibbonBarBackstageView1";
-            this.radRibbonBarBackstageView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radRibbonBarBackstageView1.SelectedItem = this.backstageTabItem1;
-            this.radRibbonBarBackstageView1.Size = new System.Drawing.Size(1583, 725);
-            this.radRibbonBarBackstageView1.TabIndex = 6;
+            this.radRibbonBarGroup7.AccessibleDescription = "Run";
+            this.radRibbonBarGroup7.AccessibleName = "Run";
+            this.radRibbonBarGroup7.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.Run_Btn,
+            this.step_btn});
+            this.radRibbonBarGroup7.Name = "radRibbonBarGroup7";
+            this.radRibbonBarGroup7.Text = "Run";
+            this.radRibbonBarGroup7.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
-            // backstageTabItem1
+            // Run_Btn
             // 
-            this.backstageTabItem1.AccessibleDescription = "New";
-            this.backstageTabItem1.AccessibleName = "New";
-            this.backstageTabItem1.DisabledTextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.backstageTabItem1.Name = "backstageTabItem1";
-            this.backstageTabItem1.Page = this.backstageViewPage1;
-            this.backstageTabItem1.Text = "New";
-            this.backstageTabItem1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.backstageTabItem1.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Run_Btn.Image = global::WindowsFormsTest.Properties.Resources.playButton;
+            this.Run_Btn.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Run_Btn.Name = "Run_Btn";
+            this.Run_Btn.ReadOnly = false;
+            this.Run_Btn.Text = "";
+            this.Run_Btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Run_Btn.ToggleStateChanging += new Telerik.WinControls.UI.StateChangingEventHandler(this.Run_Btn_ToggleStateChanging);
+            this.Run_Btn.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.Run_Btn_ToggleStateChanged);
+            this.Run_Btn.Click += new System.EventHandler(this.Run_Btn_Click);
             // 
-            // backstageViewPage1
+            // step_btn
             // 
-            this.backstageViewPage1.BackColor = System.Drawing.Color.Transparent;
-            this.backstageViewPage1.Location = new System.Drawing.Point(132, 1);
-            this.backstageViewPage1.Name = "backstageViewPage1";
-            this.backstageViewPage1.Size = new System.Drawing.Size(1451, 724);
-            this.backstageViewPage1.TabIndex = 1;
+            this.step_btn.AccessibleDescription = "step";
+            this.step_btn.AccessibleName = "step";
+            this.step_btn.Name = "step_btn";
+            this.step_btn.Text = "step";
+            this.step_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.step_btn.Click += new System.EventHandler(this.step_btn_Click);
+            // 
+            // radRibbonBarGroup6
+            // 
+            this.radRibbonBarGroup6.AccessibleDescription = "Runtime Settings";
+            this.radRibbonBarGroup6.AccessibleName = "Runtime Settings";
+            this.radRibbonBarGroup6.Name = "radRibbonBarGroup6";
+            this.radRibbonBarGroup6.Text = "Runtime Settings";
+            this.radRibbonBarGroup6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
             // RadRibbonForm1
             // 
@@ -709,12 +722,13 @@
         private Telerik.WinControls.Themes.Windows7Theme windows7Theme1;
         private Telerik.WinControls.Themes.Windows8Theme windows8Theme1;
         private Telerik.WinControls.UI.RibbonTab ribbonTab2;
-        private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup6;
-        private Telerik.WinControls.UI.RadButtonElement NewInputWindow;
-        private Telerik.WinControls.UI.RadButtonElement NewOutputWindow;
         private System.Windows.Forms.HelpProvider helpProvider1;
         private Telerik.WinControls.UI.RadRibbonBarBackstageView radRibbonBarBackstageView1;
         private Telerik.WinControls.UI.BackstageViewPage backstageViewPage1;
         private Telerik.WinControls.UI.BackstageTabItem backstageTabItem1;
+        private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup7;
+        private Telerik.WinControls.UI.RadToggleButtonElement Run_Btn;
+        private Telerik.WinControls.UI.RadButtonElement step_btn;
+        private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup6;
     }
 }

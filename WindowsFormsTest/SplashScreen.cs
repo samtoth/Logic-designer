@@ -17,7 +17,7 @@ namespace WindowsFormsTest
 
         private void SplashScreen_Load(object sender, EventArgs e)
         {
-            timer1.Interval = 500;
+            timer1.Interval = 10;
                         
             timer1.Tick += timer1_Tick;
 

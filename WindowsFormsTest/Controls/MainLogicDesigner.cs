@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Telerik.WinControls.UI;
@@ -22,7 +23,11 @@ namespace WindowsFormsTest.Controls
             Changed += MainLogicDesigner_Changed;
         }
 
-        #region SettingUpAndSavingEct
+        private CancellationTokenSource _cts;
+
+        private bool _running;
+
+        #region SettingUpUiAndSavingEctMainThread
 
         private void MainLogicDesigner_Changed(object sender, EventArgs e)
         {
@@ -39,7 +44,7 @@ namespace WindowsFormsTest.Controls
                 {
                     this.Parent.Text = this.Parent.Text.TrimEnd('*');
                 }
-                
+
             }
         }
 
@@ -135,7 +140,7 @@ namespace WindowsFormsTest.Controls
         private void CreateGate(Point pos, Type gateType, Guid guid)
         {
             var newLc = Activator.CreateInstance(gateType);
-            GateControl gc = new GateControl((ILogicComponent)(newLc), guid);
+            GateControl gc = new GateControl((ILogicComponent) (newLc), guid);
             drawingSurface.Controls.Add(gc);
             gc.Left = pos.X;
             gc.Top = pos.Y;
@@ -236,21 +241,19 @@ namespace WindowsFormsTest.Controls
             {
                 using (Pen myPen = new Pen(Color.Red))
                 {
-                    // if (!isOn)
-                    {
                         myPen.Width = 1;
 
-                        myPen.Color = DesignerSettings.WireColor;
+                        /*myPen.Color = DesignerSettings.WireColor;
 
                         foreach (var item in connectedNodes)
                         {
                             e.Graphics.DrawPath(myPen, getConnectionPath(item));
-                        }
-                    }
-                    //else
+                        }*/
+                    
                     {
                         foreach (var item in connectedNodes)
                         {
+                            myPen.Color = item.On ? Color.LawnGreen : Color.Red;
                             e.Graphics.DrawPath(myPen, getConnectionPath(item));
                         }
                     }
@@ -415,7 +418,8 @@ namespace WindowsFormsTest.Controls
                     {
                         foreach (
                             var node in
-                                gate.LogicComponent.InputNodes.Where(node => node.ConnectionName == connection.Input.Name))
+                                gate.LogicComponent.InputNodes.Where(
+                                    node => node.ConnectionName == connection.Input.Name))
                         {
                             input = node;
                         }
@@ -456,39 +460,59 @@ namespace WindowsFormsTest.Controls
 
         #endregion
 
-        #region BackgroundThreadWireUpdating
-        void SimulateTick()
+        public bool Running
         {
-            foreach (var connectedNode in from gateControl in gates where GetOutput(gateControl) from connectedNode in connectedNodes where connectedNode.Output.Name.Contains("Output") where connectedNode.Output.Parent == gateControl select connectedNode)
+            get { return _running; }
+            set
             {
-                connectedNode.On = true;
-            }
-        }
-
-        private bool GetOutput(GateControl gateControl)
-        {
-
-            bool inputA = false;
-            bool inputB = false;
-
-            foreach (var connectedNode in connectedNodes)
-            {
-                foreach (var node in gateControl.LogicComponent.InputNodes.Where(node => connectedNode.Input == node))
+                _running = value;
+                if (value)
                 {
-                    if (node.ConnectionName.Contains("Input A"))
-                    {
-                        inputA = connectedNode.On;
-                    }else if (node.ConnectionName.Contains("Input B"))
-                    {
-                        inputB = connectedNode.On;
-                    }
+                    _cts = new CancellationTokenSource();
+                    UpdateLogicLoop(_cts.Token);
+                }
+                else
+                {
+                    _cts.Cancel();
                 }
             }
-
-            return true;
-
         }
 
+        #region BackgroundThreadWireUpdating
+
+        public async Task UpdateLogicAsync()
+        {
+            await UpdateLogic();
+            Refresh();
+        }
+
+        private async Task UpdateLogic()
+        {
+            foreach (var gate in gates)
+            {
+                gate.LogicComponent.UpdateOutputState();
+                foreach (var item in connectedNodes.Where(item => item.Output == gate.LogicComponent.OutputNode))
+                {
+                    item.Input.IsOn = item.Output.IsOn;
+                    item.On = item.Input.IsOn;
+                }
+            }
+        }
+
+        private async Task UpdateLogicLoop(CancellationToken ct)
+        {
+            while (true)
+            {
+                if (ct.IsCancellationRequested)
+                {
+                    break;
+                }
+                await Task.Delay(250, ct);
+                await UpdateLogic();
+                Refresh();
+            }
+
+        }
         #endregion
     }
 }

@@ -57,7 +57,7 @@ namespace WindowsFormsTest.Controls
                 node.ConnectionMade += node_ConnectionMade;
             }
 
-            pictureBox1.Controls.Add(_logicComponent.OutputNode.Parent);
+            pictureBox1.Controls.Add(_logicComponent.OutputNode);
             _logicComponent.OutputNode.gateControl = this;
             _logicComponent.OutputNode.ConnectionMade += node_ConnectionMade;
         }
