@@ -9,8 +9,12 @@ namespace WindowsFormsTest.Gates
 {
     public class NorGate : LogicComponentBase
     {
+        public override void UpdateOutputState()
+        {
+            //Not so when none of them are on
+            OutputNode.IsOn = InputNodes.All(node => !node.IsOn);
+        }
 
-        
         public override System.Drawing.Image ToolboxIcon
         {
             get { return Properties.Resources.NOR_16x16; }
@@ -23,9 +27,9 @@ namespace WindowsFormsTest.Gates
 
         public NorGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
+            OutputNode = new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false);
         }
     }
 

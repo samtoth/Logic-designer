@@ -9,12 +9,17 @@ namespace WindowsFormsTest.Gates
 {
     public class XnorGate : LogicComponentBase
     {
+        public override void UpdateOutputState()
+        {
+            //If there both on or both off
+            OutputNode.IsOn = InputNodes.All(node => node.IsOn) || InputNodes.All(node => !node.IsOn);
+        }
 
         public XnorGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false));        
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
+            OutputNode = new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false); 
         }
 
         public override System.Drawing.Image ToolboxIcon

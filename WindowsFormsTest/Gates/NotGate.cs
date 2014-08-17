@@ -9,8 +9,12 @@ namespace WindowsFormsTest.Gates
 {
     public class NotGate : LogicComponentBase
     {
+        public override void UpdateOutputState()
+        {
+            //Ouput = not input
+            OutputNode.IsOn = !InputNodes[0].IsOn;
+        }
 
-        
         public override System.Drawing.Image ToolboxIcon
         {
             get { return Properties.Resources.NOT_16x16; }
@@ -23,8 +27,8 @@ namespace WindowsFormsTest.Gates
 
         public NotGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 15), "Input A", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output B", false));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 15), "Input A", true));
+            OutputNode = new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output B", false);
         }
     }
 

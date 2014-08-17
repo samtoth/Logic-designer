@@ -38,13 +38,7 @@ namespace WindowsFormsTest.Controls
 
         ILogicComponent _logicComponent;
 
-        public GateControl(ILogicComponent logicComponent)
-        {
-            guid = Guid.NewGuid();
-            _logicComponent = logicComponent;
-            InitializeComponent();            
-        }
-
+       
         public GateControl(ILogicComponent logicComponent, Guid pGuid)
         {
             guid = pGuid;
@@ -56,12 +50,15 @@ namespace WindowsFormsTest.Controls
         private void Gate_Load(object sender, EventArgs e)
         {
             this.pictureBox1.Image = _logicComponent.DesignerImage;
-            foreach (var node in _logicComponent.Nodes)
+            foreach (var node in _logicComponent.InputNodes)
             {
                 node.Parent = pictureBox1;
                 node.gateControl = this;
                 node.ConnectionMade += node_ConnectionMade;
             }
+            _logicComponent.OutputNode.Parent = pictureBox1;
+            _logicComponent.OutputNode.gateControl = this;
+            _logicComponent.OutputNode.ConnectionMade += node_ConnectionMade;
         }
 
         void node_ConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
@@ -153,24 +150,26 @@ namespace WindowsFormsTest.Controls
             return true;
         }
 
-        public SaveData getSaveData()
+        public GateSaveData getSaveData()
         {
-            SaveData saveData = new SaveData();
+            //TODO: Fix!
 
-            saveData.type = this.LogicComponent.GetType();
-            saveData.pos = this.Location;
-            saveData.guid = this.guid;
+            GateSaveData gateSaveData = new GateSaveData();
 
-            //result = Newtonsoft.Json.JsonConvert.SerializeObject(saveData, Newtonsoft.Json.Formatting.Indented);
+            gateSaveData.Type = this.LogicComponent.GetType();
+            gateSaveData.Pos = this.Location;
+            gateSaveData.Guid = this.guid;
+
+            //result = Newtonsoft.Json.JsonConvert.SerializeObject(GateSaveData, Newtonsoft.Json.Formatting.Indented);
             
-            return saveData;
+            return gateSaveData;
         }
 
-        public class SaveData
+        public class GateSaveData
         {
-            public Type type;
-            public Point pos;
-            public Guid guid;
+            public Type Type;
+            public Point Pos;
+            public Guid Guid;
         }
     }
 

@@ -62,9 +62,11 @@ namespace WindowsFormsTest
                 {
                     DocumentWindow newWindow =
                         new DocumentWindow(System.IO.Path.GetFileNameWithoutExtension(fileDialog.FileName));
-                    newWindow.Parent = documentTabStrip1;
-
+                    radDock2.AddDocument(newWindow);
+                   
                     MainLogicDesigner mainLogicDesigner = new MainLogicDesigner();
+
+                    mainLogicDesigner.FilePath = fileDialog.FileName;
 
                     newWindow.Controls.Add(mainLogicDesigner);
 
@@ -79,10 +81,15 @@ namespace WindowsFormsTest
 
         private void SaveAs_Click(object sender, EventArgs e)
         {
-            GetSaveFilePath();
+            string filePath = GetSaveFilePath("");//TODO: Get default file path for active window
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                SaveAs(filePath, getActiveDesigner());
+            }
+
         }
 
-        private string GetSaveFilePath()
+        private string GetSaveFilePath(string defaultPath)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
@@ -90,9 +97,9 @@ namespace WindowsFormsTest
                     MainLogicDesigner.FileExtension);
                 saveFileDialog.DefaultExt = ".sch";
 
-                if (((MainLogicDesigner) documentTabStrip1.ActiveWindow.Controls[0]).FilePath != null)
+                if (!String.IsNullOrEmpty(defaultPath))
                 {
-                    saveFileDialog.FileName = ((MainLogicDesigner) documentTabStrip1.ActiveWindow.Controls[0]).FilePath;
+                    saveFileDialog.FileName = defaultPath;
                 }
 
                 return saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK ? saveFileDialog.FileName : null;
@@ -152,7 +159,7 @@ namespace WindowsFormsTest
             }
             else
             {
-                string saveFilePath = GetSaveFilePath();
+                string saveFilePath = GetSaveFilePath("");
                 if (!string.IsNullOrEmpty(saveFilePath))
                 {
                     return SaveAs(saveFilePath, designer);

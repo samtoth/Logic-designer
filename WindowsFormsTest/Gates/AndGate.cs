@@ -9,8 +9,12 @@ namespace WindowsFormsTest.Gates
 {
     public class AndGate : LogicComponentBase
     {
+        public override void UpdateOutputState()
+        {
+            //andGate so all inputs must be on
+            OutputNode.IsOn =  InputNodes.All(node => node.IsOn);
+        }
 
-        
         public override System.Drawing.Image ToolboxIcon
         {
             get { return Properties.Resources.AND_16x16; }
@@ -23,9 +27,9 @@ namespace WindowsFormsTest.Gates
 
         public AndGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
+            OutputNode = new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false);
         }
     }
 

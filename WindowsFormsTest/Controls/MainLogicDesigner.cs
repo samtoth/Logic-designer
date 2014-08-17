@@ -22,11 +22,24 @@ namespace WindowsFormsTest.Controls
             Changed += MainLogicDesigner_Changed;
         }
 
-        void MainLogicDesigner_Changed(object sender, EventArgs e)
+        #region SettingUpAndSavingEct
+
+        private void MainLogicDesigner_Changed(object sender, EventArgs e)
         {
-            if (!this.Parent.Text.EndsWith("*"))
+            if ((sender as MainLogicDesigner).ChangedFlag)
             {
-                this.Parent.Text += "*";
+                if (!this.Parent.Text.EndsWith("*"))
+                {
+                    this.Parent.Text += "*";
+                }
+            }
+            else
+            {
+                if (this.Parent.Text.EndsWith("*"))
+                {
+                    this.Parent.Text = this.Parent.Text.TrimEnd('*');
+                }
+                
             }
         }
 
@@ -40,9 +53,12 @@ namespace WindowsFormsTest.Controls
             set
             {
                 _changedFlag = value;
-                if (value)
+                //if (value)
                 {
-                    if (Changed != null) { Changed(this, new EventArgs()); }
+                    if (Changed != null)
+                    {
+                        Changed(this, new EventArgs());
+                    }
                 }
             }
         }
@@ -55,11 +71,12 @@ namespace WindowsFormsTest.Controls
 
         public List<GateControl> gates = new List<GateControl>();
 
-        class ConnectedNodes
+        private class ConnectedNodes
         {
             public bool On { get; set; }
             public ConnectionNode Output { get; set; }
             public ConnectionNode Input { get; set; }
+
             public ConnectedNodes(ConnectionNode output, ConnectionNode input)
             {
                 Output = output;
@@ -67,32 +84,14 @@ namespace WindowsFormsTest.Controls
             }
         }
 
-        List<ConnectedNodes> connectedNodes = new List<ConnectedNodes>();
+        private List<ConnectedNodes> connectedNodes = new List<ConnectedNodes>();
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //System.Drawing.Graphics graphics = this.CreateGraphics();
-            //System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(100, 100, 200, 200);
-            //graphics.DrawEllipse(System.Drawing.Pens.Black, rectangle);
-            //graphics.DrawRectangle(System.Drawing.Pens.Red, rectangle);
-
-            GateControl Og = new GateControl(new Gates.OrGate());
-
-            Og.Parent = drawingSurface;
-
-            GateControl Ag = new GateControl(new Gates.AndGate());
-
-            Ag.Parent = drawingSurface;
-
-            Ag.Left = Og.Width + Og.Left;
-
-        }
-        
         private void MainLogicDesigner_DragEnter(object sender, DragEventArgs e)
         {
             // e.Effect = DragDropEffects.Copy;
 
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent || e.Data.GetData(e.Data.GetFormats()[0]) is bool)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent ||
+                e.Data.GetData(e.Data.GetFormats()[0]) is bool)
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -114,14 +113,14 @@ namespace WindowsFormsTest.Controls
             if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent)
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
-                var lc = (ILogicComponent)e.Data.GetData(e.Data.GetFormats()[0]);
+                var lc = (ILogicComponent) e.Data.GetData(e.Data.GetFormats()[0]);
                 CreateGate(pos, lc.GetType());
             }
 
             if (e.Data.GetData(e.Data.GetFormats()[0]) is bool)
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
-                bool high = (bool)e.Data.GetData(e.Data.GetFormats()[0]);
+                bool high = (bool) e.Data.GetData(e.Data.GetFormats()[0]);
                 ConstantControl control = new ConstantControl(high);
                 control.Location = pos;
                 this.drawingSurface.Controls.Add(control);
@@ -130,24 +129,14 @@ namespace WindowsFormsTest.Controls
 
         private void CreateGate(Point pos, Type gateType)
         {
-            var newLc = Activator.CreateInstance(gateType);
-            GateControl gc = new GateControl((ILogicComponent)(newLc));
-            gc.Parent = this.drawingSurface;
-            gc.Left = pos.X;
-            gc.Top = pos.Y;
-
-            gc.NodeConnectionMade += gc_NodeConnectionMade;
-            gc.Moving += gc_Moving;
-            gc.Moved += gc_Moved;
-
-            gates.Add(gc);
+            CreateGate(pos, gateType, Guid.NewGuid());
         }
 
         private void CreateGate(Point pos, Type gateType, Guid guid)
         {
             var newLc = Activator.CreateInstance(gateType);
             GateControl gc = new GateControl((ILogicComponent)(newLc), guid);
-            gc.Parent = this.drawingSurface;
+            drawingSurface.Controls.Add(gc);
             gc.Left = pos.X;
             gc.Top = pos.Y;
 
@@ -158,20 +147,20 @@ namespace WindowsFormsTest.Controls
             gates.Add(gc);
         }
 
-        void gc_Moving(object sender, GateControl.GateEventHandler e)
+        private void gc_Moving(object sender, GateControl.GateEventHandler e)
         {
             this.Refresh();
 
         }
 
-        void gc_Moved(object sender, GateControl.GateEventHandler e)
+        private void gc_Moved(object sender, GateControl.GateEventHandler e)
         {
             this.Refresh();
 
             if (e.point.X > trashcan.Location.X && e.point.Y > trashcan.Location.Y)
             {
 
-                DeleteGateControl((GateControl)sender);
+                DeleteGateControl((GateControl) sender);
             }
 
             ChangedFlag = true;
@@ -179,7 +168,10 @@ namespace WindowsFormsTest.Controls
 
         private void DeleteGateControl(GateControl pGateControl)
         {
-            var nodesToRemove = connectedNodes.Where(nodes => pGateControl == nodes.Output.gateControl || pGateControl == nodes.Input.gateControl).ToList();
+            var nodesToRemove =
+                connectedNodes.Where(
+                    nodes => pGateControl == nodes.Output.gateControl || pGateControl == nodes.Input.gateControl)
+                    .ToList();
 
             foreach (var nodes in nodesToRemove)
             {
@@ -191,7 +183,7 @@ namespace WindowsFormsTest.Controls
             Globals.MainForm.Refresh();
         }
 
-        void gc_NodeConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
+        private void gc_NodeConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
         {
             if (!e.nodeFrom.IsInput)
             {
@@ -237,14 +229,14 @@ namespace WindowsFormsTest.Controls
             }
         }
 
-    
+
         private void drawingSurface_Paint(object sender, PaintEventArgs e)
         {
             if (!DesignMode)
             {
                 using (Pen myPen = new Pen(Color.Red))
                 {
-                   // if (!isOn)
+                    // if (!isOn)
                     {
                         myPen.Width = 1;
 
@@ -266,13 +258,15 @@ namespace WindowsFormsTest.Controls
             }
         }
 
-        GraphicsPath getConnectionPath(ConnectedNodes nodes)
+        private GraphicsPath getConnectionPath(ConnectedNodes nodes)
         {
             GraphicsPath result = new GraphicsPath();
 
-            Point nodeFromLocation = new Point(nodes.Output.Location.X + nodes.Output.gateControl.Location.X, nodes.Output.Location.Y + nodes.Output.gateControl.Location.Y);
+            Point nodeFromLocation = new Point(nodes.Output.Location.X + nodes.Output.gateControl.Location.X,
+                nodes.Output.Location.Y + nodes.Output.gateControl.Location.Y);
 
-            Point nodeToLocation = new Point(nodes.Input.Location.X + nodes.Input.gateControl.Location.X, nodes.Input.Location.Y + nodes.Input.gateControl.Location.Y);
+            Point nodeToLocation = new Point(nodes.Input.Location.X + nodes.Input.gateControl.Location.X,
+                nodes.Input.Location.Y + nodes.Input.gateControl.Location.Y);
 
             int linePadding = 20;
 
@@ -338,12 +332,12 @@ namespace WindowsFormsTest.Controls
             //result.AddArc(nodes.Output.Location.X, nodes.Output.Location.Y, (nodes.Input.Location.X - nodes.Output.Location.X) / 2, (nodes.Input.Location.Y - nodes.Output.Location.Y) / 2, nodes.Output.Location.Y < nodes.Input.Location.Y ? 280 : 60, 0);
 
             Point[] points = new Point[3];
-            
+
             points[0] = nodeFromLocation;
-            points[1] = new Point(((nodeToLocation.X - nodeFromLocation.X) / 2) + nodeFromLocation.X, nodeFromLocation.Y);
+            points[1] = new Point(((nodeToLocation.X - nodeFromLocation.X)/2) + nodeFromLocation.X, nodeFromLocation.Y);
             points[2] = nodeToLocation;
 
-            result.AddCurve(points, 0.5f); 
+            result.AddCurve(points, 0.5f);
 
             return result;
         }
@@ -363,12 +357,12 @@ namespace WindowsFormsTest.Controls
             {
                 ConnectedSerializableNodes nodeConnection = new ConnectedSerializableNodes
                 {
-                    NodeFrom = {GateGuid = connection.Output.gateControl.guid},
-                    NodeTo = {GateGuid = connection.Input.gateControl.guid}
+                    Output = {GateGuid = connection.Output.gateControl.guid},
+                    Input = {GateGuid = connection.Input.gateControl.guid}
                 };
 
-                nodeConnection.NodeFrom.Name = connection.Output.ConnectionName;
-                nodeConnection.NodeTo.Name = connection.Input.ConnectionName;
+                nodeConnection.Output.Name = connection.Output.ConnectionName;
+                nodeConnection.Input.Name = connection.Input.ConnectionName;
 
                 json.connections.Add(nodeConnection);
             }
@@ -380,7 +374,7 @@ namespace WindowsFormsTest.Controls
 
         private class SaveData
         {
-            public List<GateControl.SaveData> gateControls = new List<GateControl.SaveData>();
+            public List<GateControl.GateSaveData> gateControls = new List<GateControl.GateSaveData>();
             public List<ConnectedSerializableNodes> connections = new List<ConnectedSerializableNodes>();
         }
 
@@ -389,10 +383,11 @@ namespace WindowsFormsTest.Controls
             public Guid GateGuid;
             public string Name;
         }
+
         private class ConnectedSerializableNodes
         {
-            public SerializableNode NodeFrom = new SerializableNode();
-            public SerializableNode NodeTo = new SerializableNode();
+            public SerializableNode Output = new SerializableNode();
+            public SerializableNode Input = new SerializableNode();
         }
 
         public void OpenFile(string fileName)
@@ -402,38 +397,38 @@ namespace WindowsFormsTest.Controls
 
             foreach (var gate in data.gateControls)
             {
-                CreateGate(gate.pos, gate.type, gate.guid);
+                CreateGate(gate.Pos, gate.Type, gate.Guid);
             }
             foreach (var connection in data.connections)
             {
-                ConnectionNode nodeFrom = null;
-                ConnectionNode nodeTo = null;
+                ConnectionNode output = null;
+                ConnectionNode input = null;
                 foreach (var gate in gates)
                 {
-                    if (gate.guid == connection.NodeFrom.GateGuid)
+                    if (gate.guid == connection.Output.GateGuid)
                     {
-                        foreach (var node in gate.LogicComponent.Nodes.Where(node => node.ConnectionName == connection.NodeFrom.Name))
-                        {
-                            nodeFrom = node;
-                        }
+                        //Dealing with the outuput node
+                        output = gate.LogicComponent.OutputNode;
                     }
 
-                    if (gate.guid == connection.NodeTo.GateGuid)
+                    if (gate.guid == connection.Input.GateGuid)
                     {
-                        foreach (var node in gate.LogicComponent.Nodes.Where(node => node.ConnectionName == connection.NodeTo.Name))
+                        foreach (
+                            var node in
+                                gate.LogicComponent.InputNodes.Where(node => node.ConnectionName == connection.Input.Name))
                         {
-                            nodeTo = node;
+                            input = node;
                         }
-                    }                        
+                    }
                 }
-                if (nodeFrom != null && nodeTo != null)
+                if (output != null && input != null)
                 {
-                    connectedNodes.Add(new ConnectedNodes(nodeFrom, nodeTo));
+                    connectedNodes.Add(new ConnectedNodes(output, input));
                 }
             }
 
+            this.ChangedFlag = false;
             this.Refresh();
-
         }
 
         private void drawingSurface_MouseDown(object sender, MouseEventArgs e)
@@ -458,5 +453,42 @@ namespace WindowsFormsTest.Controls
         {
             ChangedFlag = true;
         }
+
+        #endregion
+
+        #region BackgroundThreadWireUpdating
+        void SimulateTick()
+        {
+            foreach (var connectedNode in from gateControl in gates where GetOutput(gateControl) from connectedNode in connectedNodes where connectedNode.Output.Name.Contains("Output") where connectedNode.Output.Parent == gateControl select connectedNode)
+            {
+                connectedNode.On = true;
+            }
+        }
+
+        private bool GetOutput(GateControl gateControl)
+        {
+
+            bool inputA = false;
+            bool inputB = false;
+
+            foreach (var connectedNode in connectedNodes)
+            {
+                foreach (var node in gateControl.LogicComponent.InputNodes.Where(node => connectedNode.Input == node))
+                {
+                    if (node.ConnectionName.Contains("Input A"))
+                    {
+                        inputA = connectedNode.On;
+                    }else if (node.ConnectionName.Contains("Input B"))
+                    {
+                        inputB = connectedNode.On;
+                    }
+                }
+            }
+
+            return true;
+
+        }
+
+        #endregion
     }
 }

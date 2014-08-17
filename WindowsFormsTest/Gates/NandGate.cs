@@ -9,7 +9,11 @@ namespace WindowsFormsTest.Gates
 {
     class NandGate : LogicComponentBase
     {
-
+        public override void UpdateOutputState()
+        {
+            //Nand gate so output when nnot all on
+            OutputNode.IsOn = !InputNodes.All(node => node.IsOn);
+        }
 
         public override System.Drawing.Image ToolboxIcon
         {
@@ -23,9 +27,9 @@ namespace WindowsFormsTest.Gates
 
         public NandGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
+            OutputNode = new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false);
         }
 
     }

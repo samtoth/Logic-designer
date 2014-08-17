@@ -91,6 +91,9 @@
             this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
             this.windows8Theme1 = new Telerik.WinControls.Themes.Windows8Theme();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.radRibbonBarBackstageView1 = new Telerik.WinControls.UI.RadRibbonBarBackstageView();
+            this.backstageTabItem1 = new Telerik.WinControls.UI.BackstageTabItem();
+            this.backstageViewPage1 = new Telerik.WinControls.UI.BackstageViewPage();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.documentContainer1)).BeginInit();
             this.documentContainer1.SuspendLayout();
@@ -99,6 +102,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.radDock2)).BeginInit();
             this.radDock2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radRibbonBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radRibbonBarBackstageView1)).BeginInit();
+            this.radRibbonBarBackstageView1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             this.SuspendLayout();
             // 
@@ -308,6 +313,7 @@
             // 
             // radRibbonBar1
             // 
+            this.radRibbonBar1.BackstageControl = this.radRibbonBarBackstageView1;
             this.radRibbonBar1.CommandTabs.AddRange(new Telerik.WinControls.RadItem[] {
             this.ribbonTab1,
             this.ribbonTab2});
@@ -328,7 +334,7 @@
             this.ribbonTab1.AccessibleDescription = "Create";
             this.ribbonTab1.AccessibleName = "Create";
             this.ribbonTab1.AutoEllipsis = false;
-            this.ribbonTab1.IsSelected = false;
+            this.ribbonTab1.IsSelected = true;
             this.ribbonTab1.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup1,
             this.radRibbonBarGroup2,
@@ -452,7 +458,7 @@
             // 
             this.ribbonTab2.AccessibleDescription = "Run";
             this.ribbonTab2.AccessibleName = "Run";
-            this.ribbonTab2.IsSelected = true;
+            this.ribbonTab2.IsSelected = false;
             this.ribbonTab2.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup6});
             this.ribbonTab2.Name = "ribbonTab2";
@@ -576,6 +582,37 @@
             this.OpenFromFile.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.OpenFromFile.Click += new System.EventHandler(this.Load_Click);
             // 
+            // radRibbonBarBackstageView1
+            // 
+            this.radRibbonBarBackstageView1.Controls.Add(this.backstageViewPage1);
+            this.radRibbonBarBackstageView1.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.backstageTabItem1});
+            this.radRibbonBarBackstageView1.Location = new System.Drawing.Point(0, 54);
+            this.radRibbonBarBackstageView1.Name = "radRibbonBarBackstageView1";
+            this.radRibbonBarBackstageView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.radRibbonBarBackstageView1.SelectedItem = this.backstageTabItem1;
+            this.radRibbonBarBackstageView1.Size = new System.Drawing.Size(1583, 725);
+            this.radRibbonBarBackstageView1.TabIndex = 6;
+            // 
+            // backstageTabItem1
+            // 
+            this.backstageTabItem1.AccessibleDescription = "New";
+            this.backstageTabItem1.AccessibleName = "New";
+            this.backstageTabItem1.DisabledTextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.backstageTabItem1.Name = "backstageTabItem1";
+            this.backstageTabItem1.Page = this.backstageViewPage1;
+            this.backstageTabItem1.Text = "New";
+            this.backstageTabItem1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.backstageTabItem1.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // backstageViewPage1
+            // 
+            this.backstageViewPage1.BackColor = System.Drawing.Color.Transparent;
+            this.backstageViewPage1.Location = new System.Drawing.Point(132, 1);
+            this.backstageViewPage1.Name = "backstageViewPage1";
+            this.backstageViewPage1.Size = new System.Drawing.Size(1451, 724);
+            this.backstageViewPage1.TabIndex = 1;
+            // 
             // RadRibbonForm1
             // 
             this.AllowAero = false;
@@ -585,6 +622,7 @@
             this.Controls.Add(this.radDock2);
             this.Controls.Add(this.radRibbonBar1);
             this.Controls.Add(this.radStatusStrip1);
+            this.Controls.Add(this.radRibbonBarBackstageView1);
             this.MainMenuStrip = null;
             this.Name = "RadRibbonForm1";
             this.radContextMenuManager1.SetRadContextMenu(this, this.radContextMenu1);
@@ -604,6 +642,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.radDock2)).EndInit();
             this.radDock2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radRibbonBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radRibbonBarBackstageView1)).EndInit();
+            this.radRibbonBarBackstageView1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -673,5 +713,8 @@
         private Telerik.WinControls.UI.RadButtonElement NewInputWindow;
         private Telerik.WinControls.UI.RadButtonElement NewOutputWindow;
         private System.Windows.Forms.HelpProvider helpProvider1;
+        private Telerik.WinControls.UI.RadRibbonBarBackstageView radRibbonBarBackstageView1;
+        private Telerik.WinControls.UI.BackstageViewPage backstageViewPage1;
+        private Telerik.WinControls.UI.BackstageTabItem backstageTabItem1;
     }
 }

@@ -17,8 +17,9 @@ namespace WindowsFormsTest.component
 
     public interface ILogicComponent
     {
-
-        List<ConnectionNode> Nodes { get;}
+        void UpdateOutputState();
+        List<ConnectionNode> InputNodes { get;}
+        ConnectionNode OutputNode { get; }
         Image ToolboxIcon { get; }
         Image DesignerImage { get; }
 

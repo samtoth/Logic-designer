@@ -9,8 +9,11 @@ namespace WindowsFormsTest.Gates
 {
     public class OrGate : LogicComponentBase
     {
-
-   
+        public override void UpdateOutputState()
+        {
+            //Or gate so if any are on output
+            OutputNode.IsOn = InputNodes.Any(node => node.IsOn);
+        }
 
         public override System.Drawing.Image ToolboxIcon
         {
@@ -24,9 +27,9 @@ namespace WindowsFormsTest.Gates
 
         public OrGate()
         {
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
-            Nodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false));        
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 5), "Input A", true));
+            InputNodes.Add(new Controls.ConnectionNode(new System.Drawing.Point(0, 25), "Input B", true));
+            OutputNode = new Controls.ConnectionNode(new System.Drawing.Point(80, 13), "Output C", false); 
         }
     }
 }

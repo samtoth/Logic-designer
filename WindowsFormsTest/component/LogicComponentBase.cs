@@ -3,17 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WindowsFormsTest.Controls;
 
 namespace WindowsFormsTest.component
 {
     public class LogicComponentBase : ILogicComponent
     {
 
-        private List<Controls.ConnectionNode> _nodes = new List<Controls.ConnectionNode>();
+        private readonly List<Controls.ConnectionNode> _inputNodes = new List<Controls.ConnectionNode>();
+        private ConnectionNode _outputNode;
 
-        public List<Controls.ConnectionNode> Nodes
+        public virtual void UpdateOutputState(){}
+
+        public List<Controls.ConnectionNode> InputNodes
         {
-            get { return _nodes; }
+            get { return _inputNodes; }
+        }
+
+        public ConnectionNode OutputNode
+        {
+            get { return _outputNode; }
+            set { _outputNode = value; }
         }
 
         public virtual System.Drawing.Image ToolboxIcon

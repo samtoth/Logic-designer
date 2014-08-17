@@ -36,6 +36,8 @@ namespace WindowsFormsTest.Controls
 
         bool _isInput;
 
+        public bool IsOn { get; set; }
+
         public Point RelativePosition { get { return _RPos; } }
 
         public bool IsInput { get { return _isInput; } }
