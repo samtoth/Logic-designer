@@ -117,8 +117,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="component\ILogicComponent.cs" />
-    <Compile Include="component\LogicComponentBase.cs" />
+    <Compile Include="component\ILogicGate.cs" />
+    <Compile Include="component\LogicGateBase.cs" />
     <Compile Include="Controls\ConnectionNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -130,6 +130,12 @@
     </Compile>
     <Compile Include="Controls\ConstantControl.Designer.cs">
       <DependentUpon>ConstantControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LogicControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LogicControl.Designer.cs">
+      <DependentUpon>LogicControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\MainLogicDesigner.cs">
       <SubType>UserControl</SubType>
@@ -160,12 +166,6 @@
     </Compile>
     <Compile Include="Controls\StandardToolsToolWindow.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\partDesignerControl.cs">
       <SubType>UserControl</SubType>
@@ -213,6 +213,9 @@
     <EmbeddedResource Include="Controls\ConstantControl.resx">
       <DependentUpon>ConstantControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogicControl.resx">
+      <DependentUpon>LogicControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\MainLogicDesigner.resx">
       <DependentUpon>MainLogicDesigner.cs</DependentUpon>
     </EmbeddedResource>
@@ -224,9 +227,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StandardTools.resx">
       <DependentUpon>StandardTools.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\partDesignerControl.resx">
       <DependentUpon>partDesignerControl.cs</DependentUpon>
@@ -338,7 +338,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Deafult.xml" />
-    <None Include="Resources\Default.xml" />
+    <None Include="Resources\Default.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -7,7 +7,7 @@ using WindowsFormsTest.component;
 
 namespace WindowsFormsTest.Gates
 {
-    public class AndGate : LogicComponentBase
+    public class AndGate : LogicGateBase
     {
         public override void UpdateOutputState()
         {

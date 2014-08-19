@@ -15,7 +15,7 @@ namespace WindowsFormsTest.component
 
 
 
-    public interface ILogicComponent
+    public interface ILogicGate
     {
         void UpdateOutputState();
         List<ConnectionNode> InputNodes { get;}

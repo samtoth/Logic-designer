@@ -41,7 +41,9 @@ namespace WindowsFormsTest
 
         }
 
-        public void addDocumentWindow(DocumentWindow pDocWindow)
+        private MainLogicDesigner _activeDesigner;
+
+        public void AddDocumentWindow(DocumentWindow pDocWindow)
         {
             radDock2.AddDocument(pDocWindow);
         }
@@ -117,7 +119,7 @@ namespace WindowsFormsTest
             bool result = false;
 
             // Compose a string that consists of three lines.
-            string lines = designer.getSaveData();
+            string lines = designer.GetSaveData();
 
             // Write the string to a file.
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(path))
@@ -325,8 +327,25 @@ namespace WindowsFormsTest
             using (Stream s = Utilities.GenerateStreamFromString(Properties.Resources.Default))
             {
                 radDock2.LoadFromXml(s);
+                Settings settings = FindSettingsWindow();
+                if (settings != null)
+                {
+                    var designer = GetActiveDesigner();
+                    if (designer != null)
+                    {
+                        settings.SetSettingsTarget(designer.Properties);
+                    }
+                }
             }
+        }
 
+        public Settings FindSettingsWindow()
+        {
+            foreach (var toolWindow in radDock2.DockWindows.ToolWindows.Where(toolWindow => toolWindow is SettingsToolWindow && (toolWindow as SettingsToolWindow).Controls[0] != null && ((toolWindow as SettingsToolWindow).Controls[0] as Settings) != null))
+            {
+                    return (toolWindow.Controls[0] as Settings);
+            }
+            return null;
         }
 
         private void RadRibbonForm1_FormClosed(object sender, FormClosedEventArgs e)
@@ -402,6 +421,19 @@ namespace WindowsFormsTest
             {
                 args.Cancel = true;
                 System.Media.SystemSounds.Exclamation.Play();
+            }
+        }
+
+        private void radDock2_ActiveWindowChanged(object sender, DockWindowEventArgs e)
+        {
+            if (e.DockWindow is DocumentWindow)
+            {
+                _activeDesigner = GetActiveDesigner();
+                var settings = FindSettingsWindow();
+                if (settings != null)
+                {
+                    settings.SetSettingsTarget(_activeDesigner.Properties);
+                }
             }
         }
 

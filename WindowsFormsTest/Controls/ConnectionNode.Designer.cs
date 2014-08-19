@@ -40,8 +40,9 @@
             this.ConnectionNodeImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConnectionNodeImage.Image = global::WindowsFormsTest.Properties.Resources.connectionPoint;
             this.ConnectionNodeImage.Location = new System.Drawing.Point(0, 0);
+            this.ConnectionNodeImage.Margin = new System.Windows.Forms.Padding(6);
             this.ConnectionNodeImage.Name = "ConnectionNodeImage";
-            this.ConnectionNodeImage.Size = new System.Drawing.Size(10, 10);
+            this.ConnectionNodeImage.Size = new System.Drawing.Size(20, 20);
             this.ConnectionNodeImage.TabIndex = 0;
             this.ConnectionNodeImage.TabStop = false;
             this.ConnectionNodeImage.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragOver);
@@ -52,11 +53,12 @@
             // ConnectionNode
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ConnectionNodeImage);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "ConnectionNode";
-            this.Size = new System.Drawing.Size(10, 10);
+            this.Size = new System.Drawing.Size(20, 20);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.panel1_DragOver);
             ((System.ComponentModel.ISupportInitialize)(this.ConnectionNodeImage)).EndInit();

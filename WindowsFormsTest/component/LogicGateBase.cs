@@ -7,7 +7,7 @@ using WindowsFormsTest.Controls;
 
 namespace WindowsFormsTest.component
 {
-    public class LogicComponentBase : ILogicComponent
+    public class LogicGateBase : ILogicGate
     {
 
         private readonly List<Controls.ConnectionNode> _inputNodes = new List<Controls.ConnectionNode>();

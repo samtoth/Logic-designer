@@ -16,21 +16,14 @@ namespace WindowsFormsTest.Controls
         {
             InitializeComponent();
         }
-
-        private void WireColor_ValueChanged(object sender, EventArgs e)
-        {
-            DesignerSettings.WireColor = WireColor.Value;
-            Globals.MainForm.Refresh();
-        }
-
         private void Settings_Load(object sender, EventArgs e)
-        {            
-            WireColor.Value = DesignerSettings.WireColor;
+        {
         }
 
-        private void WireColor_ValueChanging(object sender, Telerik.WinControls.UI.ValueChangingEventArgs e)
+        public void SetSettingsTarget(MainLogicDesigner.DesignerProperties designerProperties)
         {
-            WireColor_ValueChanged(sender, e);
+            radPropertyGrid1.SelectedObject = designerProperties;
         }
+
     }
 }

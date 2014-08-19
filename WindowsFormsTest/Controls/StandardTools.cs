@@ -27,7 +27,7 @@ namespace WindowsFormsTest.Controls
 
             RadTreeNode GatesParentNode = radTreeView1.Nodes.Add("Logic gates");
 
-            var type = typeof(ILogicComponent);
+            var type = typeof(ILogicGate);
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p)&&p.Name!=type.Name&&p.Name!="LogicComponentBase");

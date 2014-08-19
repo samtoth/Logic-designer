@@ -65,6 +65,10 @@
             this.NewStandardToolsButton = new Telerik.WinControls.UI.RadButtonElement();
             this.ColorSettings = new Telerik.WinControls.UI.RadButtonElement();
             this.ribbonTab2 = new Telerik.WinControls.UI.RibbonTab();
+            this.radRibbonBarGroup7 = new Telerik.WinControls.UI.RadRibbonBarGroup();
+            this.Run_Btn = new Telerik.WinControls.UI.RadToggleButtonElement();
+            this.step_btn = new Telerik.WinControls.UI.RadButtonElement();
+            this.radRibbonBarGroup6 = new Telerik.WinControls.UI.RadRibbonBarGroup();
             this.NewContainer = new Telerik.WinControls.UI.RadMenuItem();
             this.NewBlankDocument = new Telerik.WinControls.UI.RadMenuButtonItem();
             this.SaveContainer = new Telerik.WinControls.UI.RadMenuItem();
@@ -91,10 +95,6 @@
             this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
             this.windows8Theme1 = new Telerik.WinControls.Themes.Windows8Theme();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.radRibbonBarGroup7 = new Telerik.WinControls.UI.RadRibbonBarGroup();
-            this.Run_Btn = new Telerik.WinControls.UI.RadToggleButtonElement();
-            this.step_btn = new Telerik.WinControls.UI.RadButtonElement();
-            this.radRibbonBarGroup6 = new Telerik.WinControls.UI.RadRibbonBarGroup();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.documentContainer1)).BeginInit();
             this.documentContainer1.SuspendLayout();
@@ -193,6 +193,7 @@
             this.radDock2.TabStop = false;
             this.radDock2.Text = "radDock2";
             this.radDock2.DockWindowClosing += new Telerik.WinControls.UI.Docking.DockWindowCancelEventHandler(this.radDock2_DockWindowClosing);
+            this.radDock2.ActiveWindowChanged += new Telerik.WinControls.UI.Docking.DockWindowEventHandler(this.radDock2_ActiveWindowChanged);
             this.radDock2.Initialized += new System.EventHandler(this.radDock2_Initialized);
             // 
             // radRibbonBarGroup3
@@ -366,7 +367,7 @@
             this.ribbonTab1.AccessibleDescription = "Create";
             this.ribbonTab1.AccessibleName = "Create";
             this.ribbonTab1.AutoEllipsis = false;
-            this.ribbonTab1.IsSelected = false;
+            this.ribbonTab1.IsSelected = true;
             this.ribbonTab1.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup1,
             this.radRibbonBarGroup2,
@@ -490,13 +491,53 @@
             // 
             this.ribbonTab2.AccessibleDescription = "Run";
             this.ribbonTab2.AccessibleName = "Run";
-            this.ribbonTab2.IsSelected = true;
+            this.ribbonTab2.IsSelected = false;
             this.ribbonTab2.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radRibbonBarGroup7,
             this.radRibbonBarGroup6});
             this.ribbonTab2.Name = "ribbonTab2";
             this.ribbonTab2.Text = "Run";
             this.ribbonTab2.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radRibbonBarGroup7
+            // 
+            this.radRibbonBarGroup7.AccessibleDescription = "Run";
+            this.radRibbonBarGroup7.AccessibleName = "Run";
+            this.radRibbonBarGroup7.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.Run_Btn,
+            this.step_btn});
+            this.radRibbonBarGroup7.Name = "radRibbonBarGroup7";
+            this.radRibbonBarGroup7.Text = "Run";
+            this.radRibbonBarGroup7.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // Run_Btn
+            // 
+            this.Run_Btn.Image = global::WindowsFormsTest.Properties.Resources.playButton;
+            this.Run_Btn.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Run_Btn.Name = "Run_Btn";
+            this.Run_Btn.ReadOnly = false;
+            this.Run_Btn.Text = "";
+            this.Run_Btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Run_Btn.ToggleStateChanging += new Telerik.WinControls.UI.StateChangingEventHandler(this.Run_Btn_ToggleStateChanging);
+            this.Run_Btn.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.Run_Btn_ToggleStateChanged);
+            this.Run_Btn.Click += new System.EventHandler(this.Run_Btn_Click);
+            // 
+            // step_btn
+            // 
+            this.step_btn.AccessibleDescription = "step";
+            this.step_btn.AccessibleName = "step";
+            this.step_btn.Name = "step_btn";
+            this.step_btn.Text = "step";
+            this.step_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.step_btn.Click += new System.EventHandler(this.step_btn_Click);
+            // 
+            // radRibbonBarGroup6
+            // 
+            this.radRibbonBarGroup6.AccessibleDescription = "Runtime Settings";
+            this.radRibbonBarGroup6.AccessibleName = "Runtime Settings";
+            this.radRibbonBarGroup6.Name = "radRibbonBarGroup6";
+            this.radRibbonBarGroup6.Text = "Runtime Settings";
+            this.radRibbonBarGroup6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
             // NewContainer
             // 
@@ -585,46 +626,6 @@
             this.OpenFromFile.Text = "From File";
             this.OpenFromFile.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.OpenFromFile.Click += new System.EventHandler(this.Load_Click);
-            // 
-            // radRibbonBarGroup7
-            // 
-            this.radRibbonBarGroup7.AccessibleDescription = "Run";
-            this.radRibbonBarGroup7.AccessibleName = "Run";
-            this.radRibbonBarGroup7.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.Run_Btn,
-            this.step_btn});
-            this.radRibbonBarGroup7.Name = "radRibbonBarGroup7";
-            this.radRibbonBarGroup7.Text = "Run";
-            this.radRibbonBarGroup7.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // Run_Btn
-            // 
-            this.Run_Btn.Image = global::WindowsFormsTest.Properties.Resources.playButton;
-            this.Run_Btn.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.Run_Btn.Name = "Run_Btn";
-            this.Run_Btn.ReadOnly = false;
-            this.Run_Btn.Text = "";
-            this.Run_Btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.Run_Btn.ToggleStateChanging += new Telerik.WinControls.UI.StateChangingEventHandler(this.Run_Btn_ToggleStateChanging);
-            this.Run_Btn.ToggleStateChanged += new Telerik.WinControls.UI.StateChangedEventHandler(this.Run_Btn_ToggleStateChanged);
-            this.Run_Btn.Click += new System.EventHandler(this.Run_Btn_Click);
-            // 
-            // step_btn
-            // 
-            this.step_btn.AccessibleDescription = "step";
-            this.step_btn.AccessibleName = "step";
-            this.step_btn.Name = "step_btn";
-            this.step_btn.Text = "step";
-            this.step_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.step_btn.Click += new System.EventHandler(this.step_btn_Click);
-            // 
-            // radRibbonBarGroup6
-            // 
-            this.radRibbonBarGroup6.AccessibleDescription = "Runtime Settings";
-            this.radRibbonBarGroup6.AccessibleName = "Runtime Settings";
-            this.radRibbonBarGroup6.Name = "radRibbonBarGroup6";
-            this.radRibbonBarGroup6.Text = "Runtime Settings";
-            this.radRibbonBarGroup6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
             // RadRibbonForm1
             // 

@@ -23,12 +23,126 @@ namespace WindowsFormsTest.Controls
             Changed += MainLogicDesigner_Changed;
         }
 
-        private CancellationTokenSource _cts;
+        #region Classes
+        public class DesignerProperties
+        {
+            
+            public DesignerProperties()
+            {
+                WireOnColor = Color.Red;
+                WireOffColor = Color.Blue;
+                TickRate = 250;
+            }
+            [Description("The wire color when its state is on.")]
+            public Color WireOnColor { get; set; }
+            [Description("The wire color when its state is off.")]
+            public Color WireOffColor { get; set; }
+            [Description("The delay in miliseconds bewtween each update in logic.")]
+            [RadRange(1, int.MaxValue)]
+            public int TickRate { get; set; }
+        }
 
+        private class ConnectedNodes
+        {
+            public bool On { get; set; }
+            public ConnectionNode Output { get; set; }
+            public ConnectionNode Input { get; set; }
+
+            public ConnectedNodes(ConnectionNode output, ConnectionNode input)
+            {
+                Output = output;
+                Input = input;
+            }
+        }
+
+        private class SaveData
+        {
+            public List<GateControl.LogicSaveData> gateControls = new List<GateControl.LogicSaveData>();
+            public List<ConnectedSerializableNodes> connections = new List<ConnectedSerializableNodes>();
+            public DesignerProperties Properties = new DesignerProperties();
+        }
+
+        private class SerializableNode
+        {
+            public Guid GateGuid;
+            public string Name;
+        }
+
+        private class ConnectedSerializableNodes
+        {
+            public SerializableNode Output = new SerializableNode();
+            public SerializableNode Input = new SerializableNode();
+        }
+
+        #endregion
+        
+        #region ClassLevelVariablesAndProperties
+        private CancellationTokenSource _cts;
         private bool _running;
+        private bool _changedFlag;
+        private List<ConnectedNodes> connectedNodes = new List<ConnectedNodes>();
+
+        public event EventHandler Changed;
+        public String FilePath = null;
+        public const String FileExtension = ".ldsch";
+        public const String FileTypeName = "Logic designer schematic";
+        public List<LogicControl> LogicComponents = new List<LogicControl>();
+        public DesignerProperties Properties = new DesignerProperties();
+
+        public bool ChangedFlag
+        {
+            get { return _changedFlag; }
+            set
+            {
+                _changedFlag = value;
+                //if (value)
+                {
+                    if (Changed != null)
+                    {
+                        Changed(this, new EventArgs());
+                    }
+                }
+            }
+        }
+        public bool Running
+        {
+            get { return _running; }
+            set
+            {
+                _running = value;
+                if (value)
+                {
+                    _cts = new CancellationTokenSource();
+                    UpdateLogicLoop(_cts.Token);
+                }
+                else
+                {
+                    _cts.Cancel();
+                }
+            }
+        }
+        #endregion
 
         #region SettingUpUiAndSavingEctMainThread
+        private void MainLogicDesigner_DragEnter(object sender, DragEventArgs e)
+        {
+            // e.Effect = DragDropEffects.Copy;
 
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate ||
+                e.Data.GetData(e.Data.GetFormats()[0]) is bool)
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+
+            //if (e.Data is ParentLogicControl)
+            //{
+            //    e.Effect = DragDropEffects.Move;
+            //}
+            //else
+            //{
+            //    e.Effect = DragDropEffects.None;
+            //}
+        }
         private void MainLogicDesigner_Changed(object sender, EventArgs e)
         {
             if ((sender as MainLogicDesigner).ChangedFlag)
@@ -47,78 +161,14 @@ namespace WindowsFormsTest.Controls
 
             }
         }
-
-        public event EventHandler Changed;
-
-        private bool _changedFlag;
-
-        public bool ChangedFlag
-        {
-            get { return _changedFlag; }
-            set
-            {
-                _changedFlag = value;
-                //if (value)
-                {
-                    if (Changed != null)
-                    {
-                        Changed(this, new EventArgs());
-                    }
-                }
-            }
-        }
-
-        public String FilePath = null;
-
-        public const String FileExtension = ".ldsch";
-
-        public const String FileTypeName = "Logic designer schematic";
-
-        public List<GateControl> gates = new List<GateControl>();
-
-        private class ConnectedNodes
-        {
-            public bool On { get; set; }
-            public ConnectionNode Output { get; set; }
-            public ConnectionNode Input { get; set; }
-
-            public ConnectedNodes(ConnectionNode output, ConnectionNode input)
-            {
-                Output = output;
-                Input = input;
-            }
-        }
-
-        private List<ConnectedNodes> connectedNodes = new List<ConnectedNodes>();
-
-        private void MainLogicDesigner_DragEnter(object sender, DragEventArgs e)
-        {
-            // e.Effect = DragDropEffects.Copy;
-
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent ||
-                e.Data.GetData(e.Data.GetFormats()[0]) is bool)
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
-
-            //if (e.Data is GateControl)
-            //{
-            //    e.Effect = DragDropEffects.Move;
-            //}
-            //else
-            //{
-            //    e.Effect = DragDropEffects.None;
-            //}
-        }
-
         private void MainLogicDesigner_DragDrop(object sender, DragEventArgs e)
         {
             //Creqate a new LogicGAe
             //RadTreeNode node = (RadTreeNode)e.Data.GetData(typeof(RadTreeNode));            
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicComponent)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate)
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
-                var lc = (ILogicComponent) e.Data.GetData(e.Data.GetFormats()[0]);
+                var lc = (ILogicGate) e.Data.GetData(e.Data.GetFormats()[0]);
                 CreateGate(pos, lc.GetType());
             }
 
@@ -126,9 +176,13 @@ namespace WindowsFormsTest.Controls
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
                 bool high = (bool) e.Data.GetData(e.Data.GetFormats()[0]);
-                ConstantControl control = new ConstantControl(high);
-                control.Location = pos;
+                ConstantControl control = new ConstantControl(high)
+                {
+                    Location = pos
+                };
+
                 this.drawingSurface.Controls.Add(control);
+                LogicComponents.Add(control);
             }
         }
 
@@ -140,7 +194,7 @@ namespace WindowsFormsTest.Controls
         private void CreateGate(Point pos, Type gateType, Guid guid)
         {
             var newLc = Activator.CreateInstance(gateType);
-            GateControl gc = new GateControl((ILogicComponent) (newLc), guid);
+            GateControl gc = new GateControl((ILogicGate) (newLc), guid);
             drawingSurface.Controls.Add(gc);
             gc.Left = pos.X;
             gc.Top = pos.Y;
@@ -149,7 +203,7 @@ namespace WindowsFormsTest.Controls
             gc.Moving += gc_Moving;
             gc.Moved += gc_Moved;
 
-            gates.Add(gc);
+            LogicComponents.Add(gc);
         }
 
         private void gc_Moving(object sender, GateControl.GateEventHandler e)
@@ -175,11 +229,12 @@ namespace WindowsFormsTest.Controls
         {
             var nodesToRemove =
                 connectedNodes.Where(
-                    nodes => pGateControl == nodes.Output.gateControl || pGateControl == nodes.Input.gateControl)
+                    nodes => pGateControl == nodes.Output.ParentLogicControl || pGateControl == nodes.Input.ParentLogicControl)
                     .ToList();
 
             foreach (var nodes in nodesToRemove)
             {
+                nodes.Input.IsOn = false;
                 connectedNodes.Remove(nodes);
             }
 
@@ -202,8 +257,7 @@ namespace WindowsFormsTest.Controls
 
             ChangedFlag = true;
         }
-
-
+        
         private void DrawLine(Point p1, Point p2)
         {
             Graphics graphics = this.drawingSurface.CreateGraphics();
@@ -233,8 +287,7 @@ namespace WindowsFormsTest.Controls
                 }
             }
         }
-
-
+        
         private void drawingSurface_Paint(object sender, PaintEventArgs e)
         {
             if (!DesignMode)
@@ -253,7 +306,7 @@ namespace WindowsFormsTest.Controls
                     {
                         foreach (var item in connectedNodes)
                         {
-                            myPen.Color = item.On ? Color.LawnGreen : Color.Red;
+                            myPen.Color = item.On ? Properties.WireOnColor : Properties.WireOffColor;
                             e.Graphics.DrawPath(myPen, getConnectionPath(item));
                         }
                     }
@@ -261,26 +314,70 @@ namespace WindowsFormsTest.Controls
             }
         }
 
+        public void OpenFile(string fileName)
+        {
+            string jsonData = System.IO.File.ReadAllText(fileName);
+            SaveData data = JsonConvert.DeserializeObject<SaveData>(jsonData);
+
+            foreach (var gate in data.gateControls)
+            {
+                CreateGate(gate.Pos, gate.Type, gate.Guid);
+            }
+            foreach (var connection in data.connections)
+            {
+                ConnectionNode output = null;
+                ConnectionNode input = null;
+                foreach (var gate in LogicComponents)
+                {
+                    if (gate.Guid == connection.Output.GateGuid)
+                    {
+                        //Dealing with the outuput node
+                        output = gate.OutputNode;
+                    }
+
+                    if (gate.Guid == connection.Input.GateGuid)
+                    {
+                        if (gate is GateControl)
+                        {
+                            foreach (var node in(gate as GateControl).LogicGate.InputNodes.Where(node => node.ConnectionName == connection.Input.Name))
+                            {
+                                input = node;
+                            }
+                        }
+                    }
+                }
+                if (output != null && input != null)
+                {
+                    connectedNodes.Add(new ConnectedNodes(output, input));
+                }
+            }
+
+            Properties = data.Properties;
+
+            this.ChangedFlag = false;
+            this.Refresh();
+        }
+
         private GraphicsPath getConnectionPath(ConnectedNodes nodes)
         {
             GraphicsPath result = new GraphicsPath();
 
-            Point nodeFromLocation = new Point(nodes.Output.Location.X + nodes.Output.gateControl.Location.X,
-                nodes.Output.Location.Y + nodes.Output.gateControl.Location.Y);
+            Point nodeFromLocation = new Point(nodes.Output.Location.X + nodes.Output.ParentLogicControl.Location.X,
+                nodes.Output.Location.Y + nodes.Output.ParentLogicControl.Location.Y);
 
-            Point nodeToLocation = new Point(nodes.Input.Location.X + nodes.Input.gateControl.Location.X,
-                nodes.Input.Location.Y + nodes.Input.gateControl.Location.Y);
+            Point nodeToLocation = new Point(nodes.Input.Location.X + nodes.Input.ParentLogicControl.Location.X,
+                nodes.Input.Location.Y + nodes.Input.ParentLogicControl.Location.Y);
 
             int linePadding = 20;
 
             /*
             //is node on left side
-            if (nodes.Output.Location.X < nodes.Output.gateControl.Width / 2)
+            if (nodes.Output.Location.X < nodes.Output.Control.Width / 2)
             {
                 //Is other node on the Right side of first one
                 if (nodeToLocation.X > nodeFromLocation.X)
                 {
-                    result.AddLine(nodeFromLocation, new Point(nodes.Output.gateControl.Location.X - linePadding, nodeFromLocation.Y));
+                    result.AddLine(nodeFromLocation, new Point(nodes.Output.Control.Location.X - linePadding, nodeFromLocation.Y));
                 }
                 else
                 {
@@ -294,29 +391,29 @@ namespace WindowsFormsTest.Controls
                 //Is other Node left side of the first one
                 if (nodeToLocation.X < nodeFromLocation.X)
                 {
-                    if (nodes.Input.Location.X > nodes.Input.gateControl.Width / 2)
+                    if (nodes.Input.Location.X > nodes.Input.Control.Width / 2)
                     {
-                        result.AddLine(nodeFromLocation, new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y));
+                        result.AddLine(nodeFromLocation, new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y));
+                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y));
                         result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y), nodeToLocation);
                     }
                     else
                     {
-                        result.AddLine(nodeFromLocation, new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodes.Output.gateControl.Location.X + nodes.Output.gateControl.Width + linePadding, nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.gateControl.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.gateControl.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20), nodeToLocation);
+                        result.AddLine(nodeFromLocation, new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y));
+                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.Control.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20), nodeToLocation);
                     }
                 }
                 //other node is on right side of first one
                 else
                 {
                     //if other node is on left side
-                    if (nodes.Input.Location.X < nodes.Input.gateControl.Width / 2)
+                    if (nodes.Input.Location.X < nodes.Input.Control.Width / 2)
                     {
                         result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
                         result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeToLocation.Y));
@@ -324,10 +421,10 @@ namespace WindowsFormsTest.Controls
                     }
                     else
                     {
-                        result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodes.Input.gateControl.Location.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.gateControl.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.gateControl.Location.Y - 20), nodeToLocation);
+                        result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodes.Input.Control.Location.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
+                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.Control.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20));
+                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20), nodeToLocation);
                     }
                 }
             }*/
@@ -345,23 +442,23 @@ namespace WindowsFormsTest.Controls
             return result;
         }
 
-        public string getSaveData()
+        public string GetSaveData()
         {
             string result = String.Empty;
 
             var json = new SaveData();
 
-            foreach (var gate in gates)
+            foreach (var gate in LogicComponents)
             {
-                json.gateControls.Add(gate.getSaveData());
+                json.gateControls.Add(gate.GetSaveData());
             }
 
             foreach (var connection in connectedNodes)
             {
                 ConnectedSerializableNodes nodeConnection = new ConnectedSerializableNodes
                 {
-                    Output = {GateGuid = connection.Output.gateControl.guid},
-                    Input = {GateGuid = connection.Input.gateControl.guid}
+                    Output = {GateGuid = connection.Output.ParentLogicControl.Guid},
+                    Input = {GateGuid = connection.Input.ParentLogicControl.Guid}
                 };
 
                 nodeConnection.Output.Name = connection.Output.ConnectionName;
@@ -370,71 +467,13 @@ namespace WindowsFormsTest.Controls
                 json.connections.Add(nodeConnection);
             }
 
+            json.Properties = Properties;
+
             result = JsonConvert.SerializeObject(json, Formatting.Indented);
 
             return result;
         }
-
-        private class SaveData
-        {
-            public List<GateControl.GateSaveData> gateControls = new List<GateControl.GateSaveData>();
-            public List<ConnectedSerializableNodes> connections = new List<ConnectedSerializableNodes>();
-        }
-
-        private class SerializableNode
-        {
-            public Guid GateGuid;
-            public string Name;
-        }
-
-        private class ConnectedSerializableNodes
-        {
-            public SerializableNode Output = new SerializableNode();
-            public SerializableNode Input = new SerializableNode();
-        }
-
-        public void OpenFile(string fileName)
-        {
-            string jsonData = System.IO.File.ReadAllText(fileName);
-            SaveData data = JsonConvert.DeserializeObject<SaveData>(jsonData);
-
-            foreach (var gate in data.gateControls)
-            {
-                CreateGate(gate.Pos, gate.Type, gate.Guid);
-            }
-            foreach (var connection in data.connections)
-            {
-                ConnectionNode output = null;
-                ConnectionNode input = null;
-                foreach (var gate in gates)
-                {
-                    if (gate.guid == connection.Output.GateGuid)
-                    {
-                        //Dealing with the outuput node
-                        output = gate.LogicComponent.OutputNode;
-                    }
-
-                    if (gate.guid == connection.Input.GateGuid)
-                    {
-                        foreach (
-                            var node in
-                                gate.LogicComponent.InputNodes.Where(
-                                    node => node.ConnectionName == connection.Input.Name))
-                        {
-                            input = node;
-                        }
-                    }
-                }
-                if (output != null && input != null)
-                {
-                    connectedNodes.Add(new ConnectedNodes(output, input));
-                }
-            }
-
-            this.ChangedFlag = false;
-            this.Refresh();
-        }
-
+        
         private void drawingSurface_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Middle)
@@ -459,25 +498,7 @@ namespace WindowsFormsTest.Controls
         }
 
         #endregion
-
-        public bool Running
-        {
-            get { return _running; }
-            set
-            {
-                _running = value;
-                if (value)
-                {
-                    _cts = new CancellationTokenSource();
-                    UpdateLogicLoop(_cts.Token);
-                }
-                else
-                {
-                    _cts.Cancel();
-                }
-            }
-        }
-
+        
         #region BackgroundThreadWireUpdating
 
         public async Task UpdateLogicAsync()
@@ -488,10 +509,31 @@ namespace WindowsFormsTest.Controls
 
         private async Task UpdateLogic()
         {
-            foreach (var gate in gates)
+            //First loop through all the constants that are low
+            foreach (var component in LogicComponents.Where(item => item is ConstantControl && (item as ConstantControl).High == false))
             {
-                gate.LogicComponent.UpdateOutputState();
-                foreach (var item in connectedNodes.Where(item => item.Output == gate.LogicComponent.OutputNode))
+                component.UpdateOutputState();
+                foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
+                {
+                    item.Input.IsOn = item.Output.IsOn;
+                    item.On = item.Input.IsOn;
+                }
+            }
+            //Then the high ones so that high takes precident over those that are low
+            foreach (var component in LogicComponents.Where(item => item is ConstantControl && (item as ConstantControl).High == true))
+            {
+                component.UpdateOutputState();
+                foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
+                {
+                    item.Input.IsOn = item.Output.IsOn;
+                    item.On = item.Input.IsOn;
+                }
+            }
+            //Then loop through the rest of the components
+            foreach (var component in LogicComponents.Where(item => !(item is ConstantControl)))
+            {
+                component.UpdateOutputState();
+                foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
                 {
                     item.Input.IsOn = item.Output.IsOn;
                     item.On = item.Input.IsOn;
@@ -507,7 +549,7 @@ namespace WindowsFormsTest.Controls
                 {
                     break;
                 }
-                await Task.Delay(250, ct);
+                await Task.Delay(Properties.TickRate, ct);
                 await UpdateLogic();
                 Refresh();
             }

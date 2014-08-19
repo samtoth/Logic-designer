@@ -30,7 +30,7 @@ namespace WindowsFormsTest
             newDock.Controls.Add(designerWindow);
             designerWindow.Dock = DockStyle.Fill;
 
-            Globals.MainForm.addDocumentWindow(newDock);
+            Globals.MainForm.AddDocumentWindow(newDock);
 
             
         }

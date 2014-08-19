@@ -28,7 +28,7 @@ namespace WindowsFormsTest.Controls
         
         
         [JsonIgnore]
-        public GateControl gateControl { get; set; }
+        public LogicControl ParentLogicControl { get; set; }
 
         Point _RPos;
 
@@ -102,7 +102,7 @@ namespace WindowsFormsTest.Controls
                     {
                         if (ConnectionMade != null)
                         {
-                            //ConnectionMade(this, new ConnectionNode.ConnectionMadeEventArgs(connectionNode, this));
+                            ConnectionMade(this, new ConnectionNode.ConnectionMadeEventArgs(connectionNode, this));
                         }
                     }
                 }
@@ -116,10 +116,14 @@ namespace WindowsFormsTest.Controls
 
         private void panel1_DragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ConnectionNode || e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ConnectionNode)
             {
                 e.Effect = DragDropEffects.All;
             }
+            /*else if(e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl)
+            {
+                e.Effect = DragDropEffects.All;
+            }*/
         }
 
 

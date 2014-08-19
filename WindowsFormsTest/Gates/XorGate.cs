@@ -7,7 +7,7 @@ using WindowsFormsTest.component;
 
 namespace WindowsFormsTest.Gates
 {
-    public class XorGate : LogicComponentBase
+    public class XorGate : LogicGateBase
     {
         public override void UpdateOutputState()
         {
