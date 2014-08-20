@@ -15,6 +15,11 @@ using Newtonsoft.Json;
 
 namespace WindowsFormsTest.Controls
 {
+
+    //TODO implement proper algorithm/s for updating gates and the ability to re-order them
+    //TODO Add selection support
+    //TODO Add proper deletions for other things that are not gates
+
     public partial class MainLogicDesigner : UserControl
     {
         public MainLogicDesigner()
@@ -128,20 +133,10 @@ namespace WindowsFormsTest.Controls
         {
             // e.Effect = DragDropEffects.Copy;
 
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate ||
-                e.Data.GetData(e.Data.GetFormats()[0]) is bool)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate || e.Data.GetData(e.Data.GetFormats()[0]) is bool || e.Data.GetData(e.Data.GetFormats()[0]) is InputControl)
             {
                 e.Effect = DragDropEffects.Copy;
             }
-
-            //if (e.Data is ParentLogicControl)
-            //{
-            //    e.Effect = DragDropEffects.Move;
-            //}
-            //else
-            //{
-            //    e.Effect = DragDropEffects.None;
-            //}
         }
         private void MainLogicDesigner_Changed(object sender, EventArgs e)
         {
@@ -175,12 +170,22 @@ namespace WindowsFormsTest.Controls
             if (e.Data.GetData(e.Data.GetFormats()[0]) is bool)
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
-                bool high = (bool) e.Data.GetData(e.Data.GetFormats()[0]);
+                bool high = (bool) e.Data.GetData(e.Data.GetFormats()[0]); //Todo Change from data being bool to being constant control
                 ConstantControl control = new ConstantControl(high)
                 {
                     Location = pos
                 };
 
+                this.drawingSurface.Controls.Add(control);
+                LogicComponents.Add(control);
+            }
+
+            if (e.Data.GetData((e.Data.GetFormats()[0])) is InputControl) //TODO Change Data from being input control to just a type
+            {
+                var control = new InputControl
+                {
+                    Location = PointToClient(new Point(e.X, e.Y))
+                };
                 this.drawingSurface.Controls.Add(control);
                 LogicComponents.Add(control);
             }
@@ -512,32 +517,32 @@ namespace WindowsFormsTest.Controls
             //First loop through all the constants that are low
             foreach (var component in LogicComponents.Where(item => item is ConstantControl && (item as ConstantControl).High == false))
             {
-                component.UpdateOutputState();
-                foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
-                {
-                    item.Input.IsOn = item.Output.IsOn;
-                    item.On = item.Input.IsOn;
-                }
+                UpdateComponent(component);
             }
             //Then the high ones so that high takes precident over those that are low
             foreach (var component in LogicComponents.Where(item => item is ConstantControl && (item as ConstantControl).High == true))
             {
-                component.UpdateOutputState();
-                foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
-                {
-                    item.Input.IsOn = item.Output.IsOn;
-                    item.On = item.Input.IsOn;
-                }
+                UpdateComponent(component);
             }
-            //Then loop through the rest of the components
-            foreach (var component in LogicComponents.Where(item => !(item is ConstantControl)))
+            //Then the high ones so that high takes precident over those that are low
+            foreach (var component in LogicComponents.Where(item => item is InputControl))
             {
-                component.UpdateOutputState();
-                foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
-                {
-                    item.Input.IsOn = item.Output.IsOn;
-                    item.On = item.Input.IsOn;
-                }
+                UpdateComponent(component);
+            }
+            //Finnaly Do the gate Controls
+            foreach (var component in LogicComponents.Where(item => item is GateControl))
+            {
+                UpdateComponent(component);
+            }
+        }
+
+        private void UpdateComponent(LogicControl component)
+        {
+            component.UpdateOutputState();
+            foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
+            {
+                item.Input.IsOn = item.Output.IsOn;
+                item.On = item.Input.IsOn;
             }
         }
 

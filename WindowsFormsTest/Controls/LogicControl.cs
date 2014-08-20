@@ -92,7 +92,7 @@ namespace WindowsFormsTest.Controls
 
         private void MainImage_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && !(ModifierKeys == Keys.Control))
             {
                 //_moving = true;
                 MoveTimer.Enabled = true;

@@ -131,6 +131,12 @@
     <Compile Include="Controls\ConstantControl.Designer.cs">
       <DependentUpon>ConstantControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\InputControl.Designer.cs">
+      <DependentUpon>InputControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LogicControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -213,6 +219,9 @@
     <EmbeddedResource Include="Controls\ConstantControl.resx">
       <DependentUpon>ConstantControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\InputControl.resx">
+      <DependentUpon>InputControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\LogicControl.resx">
       <DependentUpon>LogicControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -253,6 +262,7 @@
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Hierarchy.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -338,6 +348,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Deafult.xml" />
+    <None Include="Resources\On_Switch_16x16.png" />
+    <None Include="Resources\Off_Switch_16x16.png" />
+    <None Include="Resources\On_Switch.png" />
+    <None Include="Resources\Off_Switch.png" />
     <None Include="Resources\Default.xml">
       <SubType>Designer</SubType>
     </None>
