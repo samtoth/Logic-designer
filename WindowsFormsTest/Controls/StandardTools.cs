@@ -50,11 +50,11 @@ namespace WindowsFormsTest.Controls
 
             RadTreeNode highNode = ConstantsParentNode.Nodes.Add("High");
             highNode.Image = Properties.Resources.High;
-            highNode.Tag = true;
+            highNode.Tag = new ConstantControlHigh();
 
             RadTreeNode lowNode = ConstantsParentNode.Nodes.Add("Low");
             lowNode.Image = Properties.Resources.Low;
-            lowNode.Tag = false;
+            lowNode.Tag = new ConstantControlLow();
 #endregion
 
             #region Inputs

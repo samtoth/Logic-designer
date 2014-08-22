@@ -15,7 +15,6 @@ namespace WindowsFormsTest.Controls
     public partial class ConstantControl : LogicControl
     {
 
-        public bool High = true;
 
         ConnectionNode _outputNode = new ConnectionNode(new Point(22, 1), "Output", false);
 
@@ -24,20 +23,36 @@ namespace WindowsFormsTest.Controls
             get { return _outputNode; }
         }
 
-        public ConstantControl(bool pHigh)
+        public Color ControlColor { get { return MainImage.BackColor; } set { MainImage.BackColor = value; } }
+
+        protected ConstantControl()
         {
             InitializeComponent();
             this.Width = 32;
             this.Height = 12;
-            High = pHigh;
-            _outputNode.IsOn = High;
         }
-
         private void ConstantControl_Load(object sender, EventArgs e)
         {
-            MainImage.BackColor = High ? Color.Red : Color.Blue;//TODO: get from designer properties
+            
             _outputNode.ParentLogicControl = this;
             MainImage.Controls.Add(_outputNode);
         }
-    }    
+    }
+    
+    public class ConstantControlHigh : ConstantControl
+    {
+        public ConstantControlHigh()
+        {
+            OutputNode.IsOn = true;
+            MainImage.BackColor = Color.Red;
+        }
+    }
+    public class ConstantControlLow : ConstantControl
+    {
+        public ConstantControlLow()
+        {
+            OutputNode.IsOn = false;
+            MainImage.BackColor = Color.Blue;
+        }
+    }
 }

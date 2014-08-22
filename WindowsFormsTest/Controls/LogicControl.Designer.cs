@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.MoveTimer = new System.Windows.Forms.Timer(this.components);
             this.MainImage = new System.Windows.Forms.PictureBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.MainImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,7 +45,7 @@
             this.MainImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainImage.Location = new System.Drawing.Point(0, 0);
             this.MainImage.Name = "MainImage";
-            this.MainImage.Size = new System.Drawing.Size(150, 150);
+            this.MainImage.Size = new System.Drawing.Size(148, 148);
             this.MainImage.TabIndex = 0;
             this.MainImage.TabStop = false;
             this.MainImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainImage_MouseDown);
@@ -54,8 +55,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.MainImage);
+            this.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Name = "LogicControl";
+            this.Size = new System.Drawing.Size(148, 148);
             ((System.ComponentModel.ISupportInitialize)(this.MainImage)).EndInit();
             this.ResumeLayout(false);
 
@@ -65,5 +69,6 @@
 
         private System.Windows.Forms.Timer MoveTimer;
         protected System.Windows.Forms.PictureBox MainImage;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

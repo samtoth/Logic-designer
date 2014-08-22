@@ -16,10 +16,21 @@ namespace WindowsFormsTest.Controls
         {
             InitializeComponent();
             Guid = new Guid();
+            MainImage.MouseClick += MainImage_MouseClick;
+            Selected = false;
+        }
+
+        void MainImage_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(!Selected)
+            Selected = true;
         }
 
         public virtual ConnectionNode OutputNode { get { return null; } }
-    
+
+        public bool MoveEnabled { get { return MoveTimer.Enabled; }
+            set { MoveTimer.Enabled = value; }
+        }
 
         public class GateEventHandler : EventArgs
         {
@@ -32,8 +43,33 @@ namespace WindowsFormsTest.Controls
         }
 
         public virtual void UpdateOutputState(){}
-        
-        
+
+        public class SelectionEventHandler : EventArgs
+        {
+            public LogicControl SelectedLogicControl;
+
+            public SelectionEventHandler(LogicControl pLogicControl)
+            {
+                SelectedLogicControl = pLogicControl;
+            }
+        }
+
+        public delegate void SelectionEventDelegate(Object sender, SelectionEventHandler e);
+
+        public event SelectionEventDelegate ControlSelected;
+
+        public bool Selected
+        {
+            get { return BorderStyle == BorderStyle.FixedSingle; }
+            set
+            {
+                BorderStyle = value ? BorderStyle.FixedSingle : BorderStyle.None;
+                if (ControlSelected != null && value)
+                {
+                    ControlSelected(this, new SelectionEventHandler(this));
+                }
+            }
+        }
 
         protected void node_ConnectionMade(object sender, ConnectionNode.ConnectionMadeEventArgs e)
         {
@@ -43,27 +79,37 @@ namespace WindowsFormsTest.Controls
             }
         }
 
+        private Point preveousePos;
+
         protected void moveHandler()
         {
             if (MouseButtons == MouseButtons.Left)
             {
-                Point pos = this.Parent.PointToClient(MousePosition);
+                Point CurrentPos = Parent.PointToClient(MousePosition);
+                
+                if (!preveousePos.IsEmpty)
+                {
+                    var Ydif = preveousePos.Y - CurrentPos.Y;
+                    var Xdif = CurrentPos.X - preveousePos.X;
 
-                if (pos.X < 0)
-                {
-                    pos.X = 0;
+                    Left += Xdif;
+                    Top -= Ydif;
                 }
-                if (pos.Y < 0)
+
+                if (Left < 0)
                 {
-                    pos.Y = 0;
+                    Left = 0;
                 }
-                this.Left = pos.X;
-                this.Top = pos.Y;
+                if (Top < 0)
+                {
+                    Top = 0;
+                }
 
                 if (this.Moving != null)
                 {
                     this.Moving(this, new GateEventHandler(this.Location));
                 }
+                preveousePos = CurrentPos;
             }
             else
             {
@@ -84,6 +130,8 @@ namespace WindowsFormsTest.Controls
 
         public event MovementEventDelegate Moving;
 
+        public event EventHandler MoveStart;
+
         public event ConnectionNode.ConnectionMadeDelegate NodeConnectionMade;
 
         public delegate void MovementEventDelegate(Object sender, GateEventHandler e);
@@ -92,10 +140,15 @@ namespace WindowsFormsTest.Controls
 
         private void MainImage_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && !(ModifierKeys == Keys.Control))
+            if (e.Button == MouseButtons.Left && ModifierKeys != Keys.Control && Selected)
             {
-                //_moving = true;
-                MoveTimer.Enabled = true;
+                ////_moving = true;
+                //preveousePos = Point.Empty;
+                //MoveTimer.Enabled = true;
+                if (MoveStart != null)
+                {
+                    MoveStart(this, new EventArgs());
+                }
             }
         }
 
@@ -110,7 +163,7 @@ namespace WindowsFormsTest.Controls
         {
              var result = new LogicSaveData
             {
-                //Type = this.LogicGate.GetType(),
+                Type = this.GetType(),
                 Pos = this.Location,
                 Guid = this.Guid
             };

@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.visualStudio2012DarkTheme1 = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.drawingSurface = new Telerik.WinControls.UI.RadPanel();
             this.trashcan = new System.Windows.Forms.PictureBox();
+            this.MoveTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.drawingSurface)).BeginInit();
             this.drawingSurface.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trashcan)).BeginInit();
@@ -64,6 +66,11 @@
             this.trashcan.TabIndex = 1;
             this.trashcan.TabStop = false;
             // 
+            // MoveTimer
+            // 
+            this.MoveTimer.Interval = 50;
+            this.MoveTimer.Tick += new System.EventHandler(this.MoveTimer_Tick);
+            // 
             // MainLogicDesigner
             // 
             this.AllowDrop = true;
@@ -90,5 +97,6 @@
         private Telerik.WinControls.Themes.VisualStudio2012DarkTheme visualStudio2012DarkTheme1;
         private Telerik.WinControls.UI.RadPanel drawingSurface;
         private System.Windows.Forms.PictureBox trashcan;
+        private System.Windows.Forms.Timer MoveTimer;
     }
 }

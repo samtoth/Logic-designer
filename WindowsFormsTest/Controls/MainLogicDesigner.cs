@@ -16,18 +16,15 @@ using Newtonsoft.Json;
 namespace WindowsFormsTest.Controls
 {
 
-    //TODO implement proper algorithm/s for updating gates and the ability to re-order them
-    //TODO Add selection support
-    //TODO Add proper deletions for other things that are not gates
-
     public partial class MainLogicDesigner : UserControl
     {
         public MainLogicDesigner()
         {
             InitializeComponent();
             Changed += MainLogicDesigner_Changed;
+            drawingSurface.Click += drawingSurface_Click;
         }
-
+        
         #region Classes
         public class DesignerProperties
         {
@@ -62,8 +59,8 @@ namespace WindowsFormsTest.Controls
 
         private class SaveData
         {
-            public List<GateControl.LogicSaveData> gateControls = new List<GateControl.LogicSaveData>();
-            public List<ConnectedSerializableNodes> connections = new List<ConnectedSerializableNodes>();
+            public List<GateControl.LogicSaveData> LogicControls = new List<GateControl.LogicSaveData>();
+            public List<ConnectedSerializableNodes> Connections = new List<ConnectedSerializableNodes>();
             public DesignerProperties Properties = new DesignerProperties();
         }
 
@@ -133,7 +130,7 @@ namespace WindowsFormsTest.Controls
         {
             // e.Effect = DragDropEffects.Copy;
 
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate || e.Data.GetData(e.Data.GetFormats()[0]) is bool || e.Data.GetData(e.Data.GetFormats()[0]) is InputControl)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate || e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl || e.Data.GetData(e.Data.GetFormats()[0]) is InputControl)
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -164,73 +161,187 @@ namespace WindowsFormsTest.Controls
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
                 var lc = (ILogicGate) e.Data.GetData(e.Data.GetFormats()[0]);
-                CreateGate(pos, lc.GetType());
+                CreateLogicControl(lc.GetType(), pos);
             }
 
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is bool)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl)
             {
+                
+                
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
-                bool high = (bool) e.Data.GetData(e.Data.GetFormats()[0]); //Todo Change from data being bool to being constant control
-                ConstantControl control = new ConstantControl(high)
-                {
-                    Location = pos
-                };
 
-                this.drawingSurface.Controls.Add(control);
-                LogicComponents.Add(control);
+                Object o = e.Data.GetData(e.Data.GetFormats()[0]);
+                
+                var ctrl = CreateLogicControl(o.GetType(), pos);
+                
             }
 
-            if (e.Data.GetData((e.Data.GetFormats()[0])) is InputControl) //TODO Change Data from being input control to just a type
+            if (e.Data.GetData((e.Data.GetFormats()[0])) is InputControl)
             {
-                var control = new InputControl
-                {
-                    Location = PointToClient(new Point(e.X, e.Y))
-                };
-                this.drawingSurface.Controls.Add(control);
-                LogicComponents.Add(control);
+                CreateLogicControl(typeof(InputControl), PointToClient(new Point(e.X, e.Y)));
             }
         }
 
-        private void CreateGate(Point pos, Type gateType)
+        private LogicControl CreateLogicControl(Type t, Point pos)
         {
-            CreateGate(pos, gateType, Guid.NewGuid());
+            LogicControl control;
+            if (typeof(ILogicGate).IsAssignableFrom(t))
+            {
+                control = CreateGate(t);
+            }
+            else
+            {
+                //create
+                control = (LogicControl)Activator.CreateInstance(t);
+                control.Guid = Guid.NewGuid();//TODO see if this is required
+            }
+            control.Location = pos;
+            drawingSurface.Controls.Add(control);
+
+            //add to list
+            LogicComponents.Add(control);
+
+            //hook events
+            control.ControlSelected += control_ControlSelected;
+            control.NodeConnectionMade += gc_NodeConnectionMade;
+            control.Moving += gc_Moving;
+            control.Moved += gc_Moved;
+            control.MoveStart += Control_MoveStart;
+
+            if (control is ConstantControl)
+            {
+
+                (control as ConstantControl).ControlColor = control is ConstantControlHigh ? Properties.WireOnColor : Properties.WireOffColor;
+            }
+
+            return control;
         }
 
-        private void CreateGate(Point pos, Type gateType, Guid guid)
+        void control_ControlSelected(object sender, LogicControl.SelectionEventHandler e)
+        {
+            //If control key not down then unselect all other controls
+            if (ModifierKeys != Keys.Control)
+            {
+                foreach (var item in LogicComponents.Where(item => item != sender))
+                {
+                    item.Selected = false;
+                }
+            }
+        }
+        void drawingSurface_Click(object sender, EventArgs e)
+        {
+            control_ControlSelected(this, new LogicControl.SelectionEventHandler(new LogicControl()));
+        }
+        private GateControl CreateGate(Type gateType)
+        {
+            return CreateGate(gateType, Guid.NewGuid());
+        }
+
+        private GateControl CreateGate(Type gateType, Guid guid)
         {
             var newLc = Activator.CreateInstance(gateType);
-            GateControl gc = new GateControl((ILogicGate) (newLc), guid);
-            drawingSurface.Controls.Add(gc);
-            gc.Left = pos.X;
-            gc.Top = pos.Y;
+            GateControl result = new GateControl((ILogicGate) (newLc), guid);
 
-            gc.NodeConnectionMade += gc_NodeConnectionMade;
-            gc.Moving += gc_Moving;
-            gc.Moved += gc_Moved;
-
-            LogicComponents.Add(gc);
+            return result;
         }
 
-        private void gc_Moving(object sender, GateControl.GateEventHandler e)
+        private void MoveTimer_Tick(object sender, EventArgs e)
+        {
+            moveHandler();
+        }
+
+        private void Control_MoveStart(object sender, EventArgs e)
+        {
+            MoveTimer.Enabled = true;
+        }
+
+        private Point previousPos;
+
+        protected void moveHandler()
+        {
+            if (MouseButtons == MouseButtons.Left)
+            {
+                Point CurrentPos = Parent.PointToClient(MousePosition);
+
+                if (!previousPos.IsEmpty)
+                {
+                    var Ydif = previousPos.Y - CurrentPos.Y;
+                    var Xdif = CurrentPos.X - previousPos.X;
+
+                    foreach (var item in LogicComponents.Where(item => item.Selected))
+                    {
+                        item.Left += Xdif;
+                        item.Top -= Ydif;
+                        if (item.Left < 0)
+                        {
+                            item.Left = 0;
+                        }
+                        if (item.Top < 0)
+                        {
+                            item.Top = 0;
+                        }
+                    }
+                    if (!Running)
+                    {
+                        Refresh();
+                    }
+                }
+
+
+
+                //if (this.Moving != null)
+                //{
+                //    this.Moving(this, new GateEventHandler(this.Location));
+                //}
+                previousPos = CurrentPos;
+            }
+            else
+            {
+                if (previousPos.X > trashcan.Location.X && previousPos.Y > trashcan.Location.Y)
+                {
+                    foreach (var logicComponent in LogicComponents.Where(item => item.Selected))
+                    {
+                        DeleteLogicControl(logicComponent);
+                    }
+                }
+
+                MoveTimer.Enabled = false;
+                previousPos = Point.Empty;
+                this.Refresh();
+
+                
+
+                ChangedFlag = true;
+                //if (this.Moved != null)
+                //{
+                //    this.Moved(this, new GateEventHandler(this.Location));
+                //}
+            }
+        }
+
+        private void gc_Moving(object sender, LogicControl.GateEventHandler e)
         {
             this.Refresh();
-
+            foreach (var item in LogicComponents.Where(item => item.Selected))
+            {
+                item.MoveEnabled = true;
+            }
         }
 
-        private void gc_Moved(object sender, GateControl.GateEventHandler e)
+        private void gc_Moved(object sender, LogicControl.GateEventHandler e)
         {
             this.Refresh();
 
             if (e.point.X > trashcan.Location.X && e.point.Y > trashcan.Location.Y)
             {
 
-                DeleteGateControl((GateControl) sender);
+                DeleteLogicControl((LogicControl) sender);
             }
 
             ChangedFlag = true;
         }
 
-        private void DeleteGateControl(GateControl pGateControl)
+        private void DeleteLogicControl(LogicControl pGateControl)
         {
             var nodesToRemove =
                 connectedNodes.Where(
@@ -242,7 +353,7 @@ namespace WindowsFormsTest.Controls
                 nodes.Input.IsOn = false;
                 connectedNodes.Remove(nodes);
             }
-
+            
             drawingSurface.Controls.Remove(pGateControl);
             pGateControl.Dispose();
             Globals.MainForm.Refresh();
@@ -324,27 +435,27 @@ namespace WindowsFormsTest.Controls
             string jsonData = System.IO.File.ReadAllText(fileName);
             SaveData data = JsonConvert.DeserializeObject<SaveData>(jsonData);
 
-            foreach (var gate in data.gateControls)
+            foreach (var ctrl in data.LogicControls)
             {
-                CreateGate(gate.Pos, gate.Type, gate.Guid);
+                CreateLogicControl(ctrl.Type, ctrl.Pos).Guid = ctrl.Guid;
             }
-            foreach (var connection in data.connections)
+            foreach (var connection in data.Connections)
             {
                 ConnectionNode output = null;
                 ConnectionNode input = null;
-                foreach (var gate in LogicComponents)
+                foreach (var ctrl in LogicComponents)
                 {
-                    if (gate.Guid == connection.Output.GateGuid)
+                    if (ctrl.Guid == connection.Output.GateGuid)
                     {
                         //Dealing with the outuput node
-                        output = gate.OutputNode;
+                        output = ctrl.OutputNode;
                     }
 
-                    if (gate.Guid == connection.Input.GateGuid)
+                    if (ctrl.Guid == connection.Input.GateGuid)
                     {
-                        if (gate is GateControl)
+                        if (ctrl is GateControl)
                         {
-                            foreach (var node in(gate as GateControl).LogicGate.InputNodes.Where(node => node.ConnectionName == connection.Input.Name))
+                            foreach (var node in(ctrl as GateControl).LogicGate.InputNodes.Where(node => node.ConnectionName == connection.Input.Name))
                             {
                                 input = node;
                             }
@@ -361,7 +472,7 @@ namespace WindowsFormsTest.Controls
 
             this.ChangedFlag = false;
             this.Refresh();
-        }
+        }//TODO
 
         private GraphicsPath getConnectionPath(ConnectedNodes nodes)
         {
@@ -453,9 +564,9 @@ namespace WindowsFormsTest.Controls
 
             var json = new SaveData();
 
-            foreach (var gate in LogicComponents)
+            foreach (var item in LogicComponents)
             {
-                json.gateControls.Add(gate.GetSaveData());
+                json.LogicControls.Add(item.GetSaveData());
             }
 
             foreach (var connection in connectedNodes)
@@ -469,7 +580,7 @@ namespace WindowsFormsTest.Controls
                 nodeConnection.Output.Name = connection.Output.ConnectionName;
                 nodeConnection.Input.Name = connection.Input.ConnectionName;
 
-                json.connections.Add(nodeConnection);
+                json.Connections.Add(nodeConnection);
             }
 
             json.Properties = Properties;
@@ -485,6 +596,7 @@ namespace WindowsFormsTest.Controls
             {
                 //TODO Implement draging around veiw Port.
             }
+            
         }
 
         public bool CanClose()
@@ -515,25 +627,114 @@ namespace WindowsFormsTest.Controls
         private async Task UpdateLogic()
         {
             //First loop through all the constants that are low
-            foreach (var component in LogicComponents.Where(item => item is ConstantControl && (item as ConstantControl).High == false))
+            foreach (var component in LogicComponents.Where(item => item is ConstantControlHigh))
             {
                 UpdateComponent(component);
             }
             //Then the high ones so that high takes precident over those that are low
-            foreach (var component in LogicComponents.Where(item => item is ConstantControl && (item as ConstantControl).High == true))
+            foreach (var component in LogicComponents.Where(item => item is ConstantControlLow))
             {
                 UpdateComponent(component);
             }
-            //Then the high ones so that high takes precident over those that are low
+            //Then the inputs
             foreach (var component in LogicComponents.Where(item => item is InputControl))
             {
                 UpdateComponent(component);
             }
-            //Finnaly Do the gate Controls
-            foreach (var component in LogicComponents.Where(item => item is GateControl))
+            UpdateGates();
+        }
+
+        private void UpdateGates()
+        {
+
+            List<GateControl> calculatedGates = new List<GateControl>();
+
+            //Get All input nodes that are connected to gate controls
+            Dictionary<ConnectionNode, ConnectionNode> nodesConnectedToGates = connectedNodes.Where(connectedNode => connectedNode.Input.ParentLogicControl is GateControl && connectedNode.Output.ParentLogicControl is GateControl).ToDictionary(connectedNode => connectedNode.Input, connectedNode => connectedNode.Output);
+
+            //get List of gates that could start (Gates that have no other gates connected to its inputs)
+            List<GateControl> startGates = GetStartGates(nodesConnectedToGates);
+            
+            //TODO Handle No start gates
+            if (startGates.Count == 0)
             {
-                UpdateComponent(component);
+                throw new NotImplementedException("No start gates found");
             }
+            //Maybe TODO Look out for more than one individual circuit on on doc Ie. two circuits two circuits that are indipendant of each other
+
+            //Update each starting gate
+            foreach (var gateControl in startGates)
+            {
+                UpdateComponent(gateControl);
+                calculatedGates.Add(gateControl);
+            }
+
+            //Call a recurcive method gate that is connected to the start gates output
+            foreach (var gateControl in startGates)
+            {
+                foreach (var connectedNode in connectedNodes.Where(node => node.Output == gateControl.OutputNode && node.Input.ParentLogicControl is GateControl))
+                {
+                    UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesConnectedToGates);
+                }
+            }
+        }
+
+        private void UpdateGate(GateControl gateControl, List<GateControl> calculatedGates, Dictionary<ConnectionNode, ConnectionNode> nodesThatAreConnected)
+        {
+            //Check that all inputs have been calculated
+            foreach (var node in gateControl.LogicGate.InputNodes)
+            {
+                if (nodesThatAreConnected.ContainsKey(node))
+                {
+                    if (!calculatedGates.Contains(nodesThatAreConnected[node].ParentLogicControl))
+                    {
+                        UpdateGate(nodesThatAreConnected[node].ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected);
+                    }
+                }
+            }
+
+            if (!calculatedGates.Contains(gateControl))
+            {
+                UpdateComponent(gateControl);
+                calculatedGates.Add(gateControl);
+
+                foreach (var connectedNode in connectedNodes.Where(node => node.Output == gateControl.OutputNode && node.Input.ParentLogicControl is GateControl))
+                {
+                    UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected);
+                }
+            }
+        }
+
+        private List<GateControl> GetStartGates(Dictionary<ConnectionNode, ConnectionNode> nodesConnectedToGates)
+        {
+             var result = new List<GateControl>();
+            
+            foreach (GateControl gate in LogicComponents.Where(item => item is GateControl))
+            {
+                bool addToResult = true;
+                foreach (var node in gate.LogicGate.InputNodes)
+                {
+                    //if node is in the list of nodes connected to gates
+                    if (!nodesConnectedToGates.ContainsKey(node))
+                    {
+                        continue;
+                    }
+
+                    //If the thing its connected to is itself then continue
+                    if (nodesConnectedToGates[node].ParentLogicControl == gate)
+                    {
+                        continue;
+                    }
+
+                    addToResult = false;
+                    break;
+                }
+                if (addToResult)
+                {
+                    result.Add(gate);
+                }
+            }
+            return result;
         }
 
         private void UpdateComponent(LogicControl component)
@@ -542,7 +743,7 @@ namespace WindowsFormsTest.Controls
             foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
             {
                 item.Input.IsOn = item.Output.IsOn;
-                item.On = item.Input.IsOn;
+                item.On = item.Output.IsOn;
             }
         }
 
@@ -561,5 +762,7 @@ namespace WindowsFormsTest.Controls
 
         }
         #endregion
+
+        
     }
 }
