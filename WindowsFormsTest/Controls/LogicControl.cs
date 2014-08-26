@@ -26,6 +26,10 @@ namespace WindowsFormsTest.Controls
             Selected = true;
         }
 
+        public virtual String DisplayName {
+            get { return this.GetType().ToString() + " : " + Guid.ToString(); }
+        }
+
         public virtual ConnectionNode OutputNode { get { return null; } }
 
         public bool MoveEnabled { get { return MoveTimer.Enabled; }

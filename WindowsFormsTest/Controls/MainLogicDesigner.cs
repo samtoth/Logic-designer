@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsTest.Forms;
 using Telerik.WinControls.UI;
 using WindowsFormsTest.component;
 using System.Drawing.Drawing2D;
@@ -34,6 +35,7 @@ namespace WindowsFormsTest.Controls
                 WireOnColor = Color.Red;
                 WireOffColor = Color.Blue;
                 TickRate = 250;
+                StartGates = new List<GateControl>();
             }
             [Description("The wire color when its state is on.")]
             public Color WireOnColor { get; set; }
@@ -42,6 +44,8 @@ namespace WindowsFormsTest.Controls
             [Description("The delay in miliseconds bewtween each update in logic.")]
             [RadRange(1, int.MaxValue)]
             public int TickRate { get; set; }
+            [Description("If it is not found automatically, This will set the gates which will be calculated first in the step. (Is important for syncing issues)")]
+            public List<GateControl> StartGates { get; set; }
         }
 
         private class ConnectedNodes
@@ -207,14 +211,44 @@ namespace WindowsFormsTest.Controls
             control.Moving += gc_Moving;
             control.Moved += gc_Moved;
             control.MoveStart += Control_MoveStart;
+            control.OutputNode.deleteNodeRequest += OutputNode_deleteNodeRequest;
 
             if (control is ConstantControl)
             {
 
                 (control as ConstantControl).ControlColor = control is ConstantControlHigh ? Properties.WireOnColor : Properties.WireOffColor;
             }
+            else if (control is GateControl)
+            {
+                foreach (var node in (control as GateControl).LogicGate.InputNodes)
+                {
+                    node.deleteNodeRequest += OutputNode_deleteNodeRequest;
+                }
+            }
+            else if(control is InputControl)
+            {
+                (control as InputControl).InputToggle += MainLogicDesigner_InputToggle;
+            }
 
             return control;
+        }
+
+        void MainLogicDesigner_InputToggle(object sender, EventArgs e)
+        {
+            foreach (InputControl logicComponent in LogicComponents.Where(gate => gate.Selected))
+            {
+                logicComponent.IsOn = !logicComponent.IsOn;
+            }
+        }
+
+        void OutputNode_deleteNodeRequest(object sender, EventArgs e)
+        {
+            List<ConnectedNodes> nodesToRemove = connectedNodes.Where(node => sender == node.Input || sender == node.Output).ToList();
+            foreach (var node in nodesToRemove)
+            {
+                connectedNodes.Remove(node);
+            }
+            Refresh();
         }
 
         void control_ControlSelected(object sender, LogicControl.SelectionEventHandler e)
@@ -620,7 +654,14 @@ namespace WindowsFormsTest.Controls
 
         public async Task UpdateLogicAsync()
         {
-            await UpdateLogic();
+            try
+            {
+                await UpdateLogic();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             Refresh();
         }
 
@@ -652,13 +693,28 @@ namespace WindowsFormsTest.Controls
             //Get All input nodes that are connected to gate controls
             Dictionary<ConnectionNode, ConnectionNode> nodesConnectedToGates = connectedNodes.Where(connectedNode => connectedNode.Input.ParentLogicControl is GateControl && connectedNode.Output.ParentLogicControl is GateControl).ToDictionary(connectedNode => connectedNode.Input, connectedNode => connectedNode.Output);
 
+            var pendingGates = new List<GateControl>();
+
             //get List of gates that could start (Gates that have no other gates connected to its inputs)
             List<GateControl> startGates = GetStartGates(nodesConnectedToGates);
             
             //TODO Handle No start gates
             if (startGates.Count == 0)
             {
-                throw new NotImplementedException("No start gates found");
+                using (ListPicker frm = new ListPicker("Select a starter Gate", "No start gates were identified. (This could be caused by a circular refrence)\n Please choose a start gate from the list of gates"))
+                {
+                    frm.ListControl.DataSource = LogicComponents.Where(item => item is GateControl).ToList();
+                    frm.ListControl.DisplayMember = "DisplayName";
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        startGates.Add(frm.ListControl.SelectedItem.DataBoundItem as GateControl);
+                        Properties.StartGates.Add(frm.ListControl.SelectedItem.DataBoundItem as GateControl);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("No start gates found (This might be caused by a circular refrence)");
+                    }
+                }
             }
             //Maybe TODO Look out for more than one individual circuit on on doc Ie. two circuits two circuits that are indipendant of each other
 
@@ -674,13 +730,20 @@ namespace WindowsFormsTest.Controls
             {
                 foreach (var connectedNode in connectedNodes.Where(node => node.Output == gateControl.OutputNode && node.Input.ParentLogicControl is GateControl))
                 {
-                    UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesConnectedToGates);
+                    UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesConnectedToGates, pendingGates);
                 }
             }
         }
 
-        private void UpdateGate(GateControl gateControl, List<GateControl> calculatedGates, Dictionary<ConnectionNode, ConnectionNode> nodesThatAreConnected)
+        private void UpdateGate(GateControl gateControl, List<GateControl> calculatedGates, Dictionary<ConnectionNode, ConnectionNode> nodesThatAreConnected, List<GateControl> pendingGates)
         {
+            if (pendingGates.Contains(gateControl))
+            {
+                throw new NotImplementedException("Circular refrence detected");
+            }
+
+            pendingGates.Add(gateControl);
+
             //Check that all inputs have been calculated
             foreach (var node in gateControl.LogicGate.InputNodes)
             {
@@ -688,7 +751,11 @@ namespace WindowsFormsTest.Controls
                 {
                     if (!calculatedGates.Contains(nodesThatAreConnected[node].ParentLogicControl))
                     {
-                        UpdateGate(nodesThatAreConnected[node].ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected);
+                        //Check that its not in the pending gate list
+                        if (!pendingGates.Contains(nodesThatAreConnected[node].ParentLogicControl))
+                        {
+                            UpdateGate(nodesThatAreConnected[node].ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected, pendingGates);
+                        }
                     }
                 }
             }
@@ -697,44 +764,54 @@ namespace WindowsFormsTest.Controls
             {
                 UpdateComponent(gateControl);
                 calculatedGates.Add(gateControl);
-
+                if (pendingGates.Contains(gateControl))
+                {
+                    pendingGates.Remove(gateControl);
+                }
                 foreach (var connectedNode in connectedNodes.Where(node => node.Output == gateControl.OutputNode && node.Input.ParentLogicControl is GateControl))
                 {
-                    UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected);
+                    UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected, pendingGates);
                 }
             }
         }
 
         private List<GateControl> GetStartGates(Dictionary<ConnectionNode, ConnectionNode> nodesConnectedToGates)
         {
-             var result = new List<GateControl>();
-            
-            foreach (GateControl gate in LogicComponents.Where(item => item is GateControl))
+            if (Properties.StartGates.Count == 0)
             {
-                bool addToResult = true;
-                foreach (var node in gate.LogicGate.InputNodes)
-                {
-                    //if node is in the list of nodes connected to gates
-                    if (!nodesConnectedToGates.ContainsKey(node))
-                    {
-                        continue;
-                    }
+                var result = new List<GateControl>();
 
-                    //If the thing its connected to is itself then continue
-                    if (nodesConnectedToGates[node].ParentLogicControl == gate)
-                    {
-                        continue;
-                    }
-
-                    addToResult = false;
-                    break;
-                }
-                if (addToResult)
+                foreach (GateControl gate in LogicComponents.Where(item => item is GateControl))
                 {
-                    result.Add(gate);
+                    bool addToResult = true;
+                    foreach (var node in gate.LogicGate.InputNodes)
+                    {
+                        //if node is in the list of nodes connected to gates
+                        if (!nodesConnectedToGates.ContainsKey(node))
+                        {
+                            continue;
+                        }
+
+                        //If the thing its connected to is itself then continue
+                        if (nodesConnectedToGates[node].ParentLogicControl == gate)
+                        {
+                            continue;
+                        }
+
+                        addToResult = false;
+                        break;
+                    }
+                    if (addToResult)
+                    {
+                        result.Add(gate);
+                    }
                 }
+                return result;
             }
-            return result;
+            else
+            {
+                return Properties.StartGates;
+            }
         }
 
         private void UpdateComponent(LogicControl component)
@@ -756,13 +833,12 @@ namespace WindowsFormsTest.Controls
                     break;
                 }
                 await Task.Delay(Properties.TickRate, ct);
-                await UpdateLogic();
+                await UpdateLogicAsync();
                 Refresh();
             }
 
         }
         #endregion
-
         
     }
 }

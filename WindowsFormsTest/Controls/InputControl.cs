@@ -43,11 +43,17 @@ namespace WindowsFormsTest.Controls
 
         void MainImage_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && ModifierKeys == Keys.Control)
+            if (e.Button == MouseButtons.Left && ModifierKeys == Keys.Shift)
             {
-                IsOn = !IsOn;
+             //   IsOn = !IsOn;
+                if (InputToggle != null)
+                {
+                    InputToggle(this, new EventArgs());
+                }
             }
         }
-        
+
+        public event EventHandler InputToggle;
+
     }
 }

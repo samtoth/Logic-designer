@@ -13,7 +13,11 @@ namespace WindowsFormsTest.Controls
 {
     public partial class GateControl : LogicControl
     {
-        
+        public override string DisplayName
+        {
+            get { return LogicGate.GetType().Name + " : " + Guid.ToString(); }
+        }
+
         public ILogicGate LogicGate { get { return _logicGate; } }
 
         public override ConnectionNode OutputNode

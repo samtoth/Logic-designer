@@ -109,9 +109,21 @@ namespace WindowsFormsTest.Controls
             }*/
         }
 
+        public event EventHandler deleteNodeRequest;
+
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
-            this.DoDragDrop(this, DragDropEffects.All);
+            if (ModifierKeys == Keys.Alt)
+            {
+                if (deleteNodeRequest != null)
+                {
+                    deleteNodeRequest(this, new EventArgs());
+                }
+            }
+            else
+            {
+                this.DoDragDrop(this, DragDropEffects.All);
+            }
         }
 
         private void panel1_DragOver(object sender, DragEventArgs e)

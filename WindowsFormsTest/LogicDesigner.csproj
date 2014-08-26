@@ -179,6 +179,12 @@
     <Compile Include="Controls\partDesignerControl.Designer.cs">
       <DependentUpon>partDesignerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ListPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ListPicker.Designer.cs">
+      <DependentUpon>ListPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gates\NotGate.cs" />
     <Compile Include="Gates\XnorGate.cs" />
     <Compile Include="Gates\XorGate.cs" />
@@ -187,30 +193,30 @@
     <Compile Include="Gates\NandGate.cs" />
     <Compile Include="Gates\OrGate.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Options.cs">
+    <Compile Include="Forms\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Options.Designer.cs">
+    <Compile Include="Forms\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="newPartMessageBox.cs">
+    <Compile Include="Forms\newPartMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="newPartMessageBox.Designer.cs">
+    <Compile Include="Forms\newPartMessageBox.Designer.cs">
       <DependentUpon>newPartMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="RadRibbonForm1.cs">
+    <Compile Include="Forms\RadRibbonForm1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RadRibbonForm1.Designer.cs">
+    <Compile Include="Forms\RadRibbonForm1.Designer.cs">
       <DependentUpon>RadRibbonForm1.cs</DependentUpon>
     </Compile>
-    <Compile Include="SplashScreen.cs">
+    <Compile Include="Forms\SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SplashScreen.Designer.cs">
+    <Compile Include="Forms\SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Controls\ConnectionNode.resx">
@@ -240,7 +246,10 @@
     <EmbeddedResource Include="Controls\partDesignerControl.resx">
       <DependentUpon>partDesignerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Options.resx">
+    <EmbeddedResource Include="Forms\ListPicker.resx">
+      <DependentUpon>ListPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -253,13 +262,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="newPartMessageBox.resx">
+    <EmbeddedResource Include="Forms\newPartMessageBox.resx">
       <DependentUpon>newPartMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RadRibbonForm1.resx">
+    <EmbeddedResource Include="Forms\RadRibbonForm1.resx">
       <DependentUpon>RadRibbonForm1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplashScreen.resx">
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Hierarchy.cd" />
