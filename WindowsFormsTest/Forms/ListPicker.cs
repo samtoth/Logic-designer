@@ -29,7 +29,14 @@ namespace WindowsFormsTest.Forms
 
         private void Ok_btn_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
+            if (ListControl.SelectedItem != null)
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show("No file selected!", "Nothing selected", MessageBoxButtons.OK);
+            }
         }
     }
 }

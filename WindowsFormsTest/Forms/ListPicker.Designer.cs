@@ -31,15 +31,15 @@
             this.radLabel1 = new Telerik.WinControls.UI.RadLabel();
             this.ListControl = new Telerik.WinControls.UI.RadListView();
             this.radPanel1 = new Telerik.WinControls.UI.RadPanel();
-            this.Ok_btn = new Telerik.WinControls.UI.RadButton();
             this.Cancel_btn = new Telerik.WinControls.UI.RadButton();
+            this.Ok_btn = new Telerik.WinControls.UI.RadButton();
             ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ListControl)).BeginInit();
             this.ListControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radPanel1)).BeginInit();
             this.radPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Ok_btn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Cancel_btn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ok_btn)).BeginInit();
             this.SuspendLayout();
             // 
             // radLabel1
@@ -72,15 +72,6 @@
             this.radPanel1.Size = new System.Drawing.Size(529, 117);
             this.radPanel1.TabIndex = 0;
             // 
-            // Ok_btn
-            // 
-            this.Ok_btn.Location = new System.Drawing.Point(26, 38);
-            this.Ok_btn.Name = "Ok_btn";
-            this.Ok_btn.Size = new System.Drawing.Size(220, 48);
-            this.Ok_btn.TabIndex = 0;
-            this.Ok_btn.Text = "Ok";
-            this.Ok_btn.Click += new System.EventHandler(this.Ok_btn_Click);
-            // 
             // Cancel_btn
             // 
             this.Cancel_btn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -89,6 +80,15 @@
             this.Cancel_btn.Size = new System.Drawing.Size(220, 48);
             this.Cancel_btn.TabIndex = 1;
             this.Cancel_btn.Text = "Cancel";
+            // 
+            // Ok_btn
+            // 
+            this.Ok_btn.Location = new System.Drawing.Point(26, 38);
+            this.Ok_btn.Name = "Ok_btn";
+            this.Ok_btn.Size = new System.Drawing.Size(220, 48);
+            this.Ok_btn.TabIndex = 0;
+            this.Ok_btn.Text = "Ok";
+            this.Ok_btn.Click += new System.EventHandler(this.Ok_btn_Click);
             // 
             // ListPicker
             // 
@@ -99,7 +99,7 @@
             this.ClientSize = new System.Drawing.Size(529, 638);
             this.Controls.Add(this.ListControl);
             this.Controls.Add(this.radLabel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ListPicker";
             this.Text = "ListPicker";
             ((System.ComponentModel.ISupportInitialize)(this.radLabel1)).EndInit();
@@ -107,8 +107,8 @@
             this.ListControl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radPanel1)).EndInit();
             this.radPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Ok_btn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Cancel_btn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Ok_btn)).EndInit();
             this.ResumeLayout(false);
 
         }

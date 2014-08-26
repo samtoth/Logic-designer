@@ -40,16 +40,16 @@ namespace WindowsFormsTest
     internal static class DesignerSettings
     {
 
-        internal static Color WireColor { get; set; }
 
         internal static String LayoutPath { get; set; }
 
         internal static String Theme { get { return ThemeResolutionService.ApplicationThemeName; } set { ThemeResolutionService.ApplicationThemeName = value; } }
 
+        internal static List<String> RecentFilePaths { get; set; } 
+
         static DesignerSettings()
         {
             //Set default Value
-            WireColor = Color.FromArgb(0, 122, 204);
             
             Theme = "Windows8";
         }

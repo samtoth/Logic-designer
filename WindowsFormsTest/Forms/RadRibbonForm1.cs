@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using WindowsFormsTest.Forms;
 using Telerik.WinControls.Enumerations;
 using Telerik.WinControls.UI.Docking;
 using WindowsFormsTest.Controls;
@@ -28,7 +29,6 @@ namespace WindowsFormsTest
                     if (data != null)
                     {
                         DesignerSettings.LayoutPath = data.LayoutPath;
-                        DesignerSettings.WireColor = data.Color;
                         DesignerSettings.Theme = data.Theme;
                     }
                 }
@@ -40,7 +40,7 @@ namespace WindowsFormsTest
             InitializeComponent();
 
         }
-
+        
         private MainLogicDesigner _activeDesigner;
 
         public void AddDocumentWindow(DocumentWindow pDocWindow)
@@ -264,8 +264,7 @@ namespace WindowsFormsTest
             if (!e.Cancel)
             {
 
-                var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName,
-                    DesignerSettings.WireColor, DesignerSettings.LayoutPath);
+                var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName, DesignerSettings.LayoutPath, DesignerSettings.RecentFilePaths);
                 pd.SaveToFile(Globals.UserDataFilename);
             }
         }
@@ -273,19 +272,19 @@ namespace WindowsFormsTest
         private class PreferenceDataSerializer
         {
             public String Theme = String.Empty;
-            public Color Color = Color.Empty;
             public String LayoutPath = String.Empty;
+            public List<String> RecentFilePaths = new List<string>(); 
 
-            public PreferenceDataSerializer(String pTheme, Color wireColor, String pLayoutPath)
+            public PreferenceDataSerializer(String pTheme, String pLayoutPath, List<String> filePaths)
             {
                 Theme = pTheme;
-                Color = wireColor;
                 LayoutPath = pLayoutPath;
+                RecentFilePaths = filePaths;
             }
 
             public static PreferenceDataSerializer LoadFromFile(string filename)
             {
-                return JsonConvert.DeserializeObject<PreferenceDataSerializer>(File.ReadAllText(filename));
+                return JsonConvert.DeserializeObject<PreferenceDataSerializer>(System.IO.File.ReadAllText(filename));
             }
 
             public void SaveToFile(string filename)
@@ -437,6 +436,53 @@ namespace WindowsFormsTest
             }
         }
 
-       
+        private void ribbonTab3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Recent_btn_Click(object sender, EventArgs e)
+        {
+            ListPicker frm = new ListPicker("Recent", "Choose from your recent files from below");
+            frm.ListControl.DataSource = DesignerSettings.RecentFilePaths;
+            System.Windows.Forms.DialogResult result = frm.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                if (frm.ListControl.SelectedItem != null)
+                {
+                    DocumentWindow newWindow = new DocumentWindow(System.IO.Path.GetFileNameWithoutExtension(frm.ListControl.SelectedItem.Text));
+                    radDock2.AddDocument(newWindow);
+
+                    MainLogicDesigner mainLogicDesigner = new MainLogicDesigner();
+
+                    mainLogicDesigner.FilePath = frm.ListControl.SelectedItem.Text;
+
+                    newWindow.Controls.Add(mainLogicDesigner);
+
+                    mainLogicDesigner.Dock = DockStyle.Fill;
+
+                    mainLogicDesigner.OpenFile(frm.ListControl.SelectedItem.Text);
+                }
+                
+            }
+        }
+        internal void RecentListAdd(string fileName)
+        {
+            #region garbage
+            //while(DesignerSettings.RecentFilePaths.Count > 10)//10 is tempory will be changed to a user setting
+            //{
+            //    DesignerSettings.RecentFilePaths.Remove(DesignerSettings.RecentFilePaths[DesignerSettings.RecentFilePaths.Count - 1]);
+            //}
+            //DesignerSettings.RecentFilePaths.Add(fileName);
+
+            //foreach (var s in DesignerSettings.RecentFilePaths.Where())
+            //{
+                
+            //}
+            //{
+
+            //}
+            #endregion
+        }
     }
 }

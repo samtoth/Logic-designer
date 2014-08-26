@@ -127,6 +127,12 @@ namespace WindowsFormsTest.Controls
                 }
             }
         }
+
+        public IEnumerable<LogicControl> SelectedLogicControls
+        {
+            get { return LogicComponents.Where(item => item.Selected).ToList(); }
+        }
+
         #endregion
 
         #region SettingUpUiAndSavingEctMainThread
@@ -235,7 +241,7 @@ namespace WindowsFormsTest.Controls
 
         void MainLogicDesigner_InputToggle(object sender, EventArgs e)
         {
-            foreach (InputControl logicComponent in LogicComponents.Where(gate => gate.Selected))
+            foreach (InputControl logicComponent in SelectedLogicControls)
             {
                 logicComponent.IsOn = !logicComponent.IsOn;
             }
@@ -254,7 +260,7 @@ namespace WindowsFormsTest.Controls
         void control_ControlSelected(object sender, LogicControl.SelectionEventHandler e)
         {
             //If control key not down then unselect all other controls
-            if (ModifierKeys != Keys.Control)
+            if (ModifierKeys != Keys.Control && ModifierKeys != Keys.Shift)
             {
                 foreach (var item in LogicComponents.Where(item => item != sender))
                 {
@@ -302,7 +308,7 @@ namespace WindowsFormsTest.Controls
                     var Ydif = previousPos.Y - CurrentPos.Y;
                     var Xdif = CurrentPos.X - previousPos.X;
 
-                    foreach (var item in LogicComponents.Where(item => item.Selected))
+                    foreach (var item in SelectedLogicControls)
                     {
                         item.Left += Xdif;
                         item.Top -= Ydif;
@@ -333,10 +339,7 @@ namespace WindowsFormsTest.Controls
             {
                 if (previousPos.X > trashcan.Location.X && previousPos.Y > trashcan.Location.Y)
                 {
-                    foreach (var logicComponent in LogicComponents.Where(item => item.Selected))
-                    {
-                        DeleteLogicControl(logicComponent);
-                    }
+                    DeleteSelectedLogicControls();
                 }
 
                 MoveTimer.Enabled = false;
@@ -353,10 +356,18 @@ namespace WindowsFormsTest.Controls
             }
         }
 
+        private void DeleteSelectedLogicControls()
+        {
+            foreach (var logicControl in SelectedLogicControls)
+            {
+                DeleteLogicControl(logicControl);
+            }
+        }
+
         private void gc_Moving(object sender, LogicControl.GateEventHandler e)
         {
             this.Refresh();
-            foreach (var item in LogicComponents.Where(item => item.Selected))
+            foreach (var item in SelectedLogicControls)
             {
                 item.MoveEnabled = true;
             }
@@ -390,6 +401,7 @@ namespace WindowsFormsTest.Controls
             
             drawingSurface.Controls.Remove(pGateControl);
             pGateControl.Dispose();
+            LogicComponents.Remove(pGateControl);
             Globals.MainForm.Refresh();
         }
 
@@ -499,6 +511,7 @@ namespace WindowsFormsTest.Controls
                 if (output != null && input != null)
                 {
                     connectedNodes.Add(new ConnectedNodes(output, input));
+                    Globals.MainForm.RecentListAdd(fileName);
                 }
             }
 
@@ -733,28 +746,33 @@ namespace WindowsFormsTest.Controls
                     UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesConnectedToGates, pendingGates);
                 }
             }
+            //Finally check for any gates that have not been processed
+            while (calculatedGates.Count < LogicComponents.Where(item => item is GateControl).ToList().Count)
+            {
+                UpdateGate(LogicComponents.First(item => item is GateControl && !calculatedGates.Contains(item)) as GateControl, calculatedGates, nodesConnectedToGates, pendingGates);
+            }
         }
 
         private void UpdateGate(GateControl gateControl, List<GateControl> calculatedGates, Dictionary<ConnectionNode, ConnectionNode> nodesThatAreConnected, List<GateControl> pendingGates)
         {
-            if (pendingGates.Contains(gateControl))
+            if (!pendingGates.Contains(gateControl))
             {
-                throw new NotImplementedException("Circular refrence detected");
-            }
 
-            pendingGates.Add(gateControl);
 
-            //Check that all inputs have been calculated
-            foreach (var node in gateControl.LogicGate.InputNodes)
-            {
-                if (nodesThatAreConnected.ContainsKey(node))
+                pendingGates.Add(gateControl);
+
+                //Check that all inputs have been calculated
+                foreach (var node in gateControl.LogicGate.InputNodes)
                 {
-                    if (!calculatedGates.Contains(nodesThatAreConnected[node].ParentLogicControl))
+                    if (nodesThatAreConnected.ContainsKey(node))
                     {
-                        //Check that its not in the pending gate list
-                        if (!pendingGates.Contains(nodesThatAreConnected[node].ParentLogicControl))
+                        if (!calculatedGates.Contains(nodesThatAreConnected[node].ParentLogicControl))
                         {
-                            UpdateGate(nodesThatAreConnected[node].ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected, pendingGates);
+                            //Check that its not in the pending gate list
+                            if (!pendingGates.Contains(nodesThatAreConnected[node].ParentLogicControl))
+                            {
+                                UpdateGate(nodesThatAreConnected[node].ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected, pendingGates);
+                            }
                         }
                     }
                 }
@@ -770,7 +788,10 @@ namespace WindowsFormsTest.Controls
                 }
                 foreach (var connectedNode in connectedNodes.Where(node => node.Output == gateControl.OutputNode && node.Input.ParentLogicControl is GateControl))
                 {
-                    UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected, pendingGates);
+                    if (!calculatedGates.Contains(connectedNode.Input.ParentLogicControl as GateControl))
+                    {
+                        UpdateGate(connectedNode.Input.ParentLogicControl as GateControl, calculatedGates, nodesThatAreConnected, pendingGates);
+                    }
                 }
             }
         }
@@ -839,6 +860,6 @@ namespace WindowsFormsTest.Controls
 
         }
         #endregion
-        
+
     }
 }
