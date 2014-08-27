@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsTest.Controls
 {
-    public partial class InputControl : LogicControl
+    public partial class InputControl : ProcessingControl
     {
 
         public bool IsOn

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Telerik.WinControls;
 using WindowsFormsTest.Controls;
 
+//TODO Make Recent layout work
+
 namespace WindowsFormsTest
 {
     internal static class Globals
@@ -39,19 +41,21 @@ namespace WindowsFormsTest
 
     internal static class DesignerSettings
     {
-
-
+        
         internal static String LayoutPath { get; set; }
 
         internal static String Theme { get { return ThemeResolutionService.ApplicationThemeName; } set { ThemeResolutionService.ApplicationThemeName = value; } }
 
         internal static List<String> RecentFilePaths { get; set; } 
 
+        internal static  int RecentFileCount { get; set; }
+
         static DesignerSettings()
         {
             //Set default Value
-            
+            RecentFileCount = 10;
             Theme = "Windows8";
+            RecentFilePaths = new List<string>();
         }
     }
 

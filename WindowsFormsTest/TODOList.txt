@@ -1,0 +1,11 @@
+This release:
+	Implement recent files - .5 hours - took 20 mins Done
+	Implement Gate properties - 1 hour 12:00 done 13:46 (lunch in the middle) took3 hours inc lunch
+	Implement output component - 2 hours done 16:46 not took a couple breaks
+	Add options menu - .5 hours Done 18:38
+	Clean everything up - 1 hour Bugfree :18:40 (not fully tested)
+	Setup the installer - 2 hours
+	Total - 7 hours
+Post Release:
+	Add multiple inputs in cerain gates
+	Add components that users can create as a form of grouping

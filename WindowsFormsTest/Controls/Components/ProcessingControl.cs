@@ -10,20 +10,13 @@ using System.Windows.Forms;
 
 namespace WindowsFormsTest.Controls
 {
-    public partial class Settings : UserControl
+    public partial class ProcessingControl : LogicControl
     {
-        public Settings()
+        public ProcessingControl()
         {
             InitializeComponent();
         }
-        private void Settings_Load(object sender, EventArgs e)
-        {
-        }
 
-        public void SetSettingsTarget(object designerProperties)
-        {
-            radPropertyGrid1.SelectedObject = designerProperties;
-        }
-
+        public virtual ConnectionNode OutputNode { get { return null; } }
     }
 }

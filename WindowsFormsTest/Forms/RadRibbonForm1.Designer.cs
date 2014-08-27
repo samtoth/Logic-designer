@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RadRibbonForm1));
             this.radStatusStrip1 = new Telerik.WinControls.UI.RadStatusStrip();
             this.radLabelElement1 = new Telerik.WinControls.UI.RadLabelElement();
@@ -45,18 +44,22 @@
             this.radButtonElement4 = new Telerik.WinControls.UI.RadButtonElement();
             this.radButtonElement5 = new Telerik.WinControls.UI.RadButtonElement();
             this.radButtonElement6 = new Telerik.WinControls.UI.RadButtonElement();
-            this.radContextMenu1 = new Telerik.WinControls.UI.RadContextMenu(this.components);
-            this.Seperator = new Telerik.WinControls.UI.RadMenuSeparatorItem();
-            this.RibbonBarOptions = new Telerik.WinControls.UI.RadMenuButtonItem();
-            this.radContextMenuManager1 = new Telerik.WinControls.UI.RadContextMenuManager();
             this.radRibbonBar1 = new Telerik.WinControls.UI.RadRibbonBar();
             this.radRibbonBarBackstageView1 = new Telerik.WinControls.UI.RadRibbonBarBackstageView();
             this.backstageViewPage1 = new Telerik.WinControls.UI.BackstageViewPage();
             this.backstageTabItem1 = new Telerik.WinControls.UI.BackstageTabItem();
+            this.File_tab = new Telerik.WinControls.UI.RibbonTab();
+            this.radRibbonBarGroup8 = new Telerik.WinControls.UI.RadRibbonBarGroup();
+            this.NewBlankDoc_btn = new Telerik.WinControls.UI.RadButtonElement();
+            this.radRibbonBarGroup9 = new Telerik.WinControls.UI.RadRibbonBarGroup();
+            this.Save_btn = new Telerik.WinControls.UI.RadButtonElement();
+            this.Save_As_btn = new Telerik.WinControls.UI.RadButtonElement();
+            this.radRibbonBarGroup10 = new Telerik.WinControls.UI.RadRibbonBarGroup();
+            this.OpenFile_FromDocument_btn = new Telerik.WinControls.UI.RadButtonElement();
+            this.Recent_btn = new Telerik.WinControls.UI.RadButtonElement();
+            this.Options_btn = new Telerik.WinControls.UI.RadRibbonBarGroup();
+            this.Option_btn = new Telerik.WinControls.UI.RadButtonElement();
             this.ribbonTab1 = new Telerik.WinControls.UI.RibbonTab();
-            this.radRibbonBarGroup1 = new Telerik.WinControls.UI.RadRibbonBarGroup();
-            this.newPart = new Telerik.WinControls.UI.RadButtonElement();
-            this.SavedParts = new Telerik.WinControls.UI.RadButtonElement();
             this.radRibbonBarGroup2 = new Telerik.WinControls.UI.RadRibbonBarGroup();
             this.SaveLayout = new Telerik.WinControls.UI.RadButtonElement();
             this.LoadLayout = new Telerik.WinControls.UI.RadButtonElement();
@@ -95,15 +98,6 @@
             this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
             this.windows8Theme1 = new Telerik.WinControls.Themes.Windows8Theme();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.File_tab = new Telerik.WinControls.UI.RibbonTab();
-            this.radRibbonBarGroup8 = new Telerik.WinControls.UI.RadRibbonBarGroup();
-            this.NewBlankDoc_btn = new Telerik.WinControls.UI.RadButtonElement();
-            this.radRibbonBarGroup9 = new Telerik.WinControls.UI.RadRibbonBarGroup();
-            this.Save_btn = new Telerik.WinControls.UI.RadButtonElement();
-            this.Save_As_btn = new Telerik.WinControls.UI.RadButtonElement();
-            this.radRibbonBarGroup10 = new Telerik.WinControls.UI.RadRibbonBarGroup();
-            this.OpenFile_FromDocument_btn = new Telerik.WinControls.UI.RadButtonElement();
-            this.Recent_btn = new Telerik.WinControls.UI.RadButtonElement();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.documentContainer1)).BeginInit();
             this.documentContainer1.SuspendLayout();
@@ -121,10 +115,9 @@
             // 
             this.radStatusStrip1.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radLabelElement1});
-            this.radStatusStrip1.Location = new System.Drawing.Point(0, 739);
+            this.radStatusStrip1.Location = new System.Drawing.Point(0, 737);
             this.radStatusStrip1.Name = "radStatusStrip1";
-            this.radContextMenuManager1.SetRadContextMenu(this.radStatusStrip1, this.radContextMenu1);
-            this.radStatusStrip1.Size = new System.Drawing.Size(1583, 40);
+            this.radStatusStrip1.Size = new System.Drawing.Size(1583, 42);
             this.radStatusStrip1.SizingGrip = false;
             this.radStatusStrip1.TabIndex = 1;
             this.radStatusStrip1.Text = "radStatusStrip1";
@@ -166,16 +159,16 @@
             this.documentTabStrip1.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.documentTabStrip1.SelectedIndex = 0;
             this.documentTabStrip1.ShowItemCloseButton = true;
-            this.documentTabStrip1.Size = new System.Drawing.Size(1573, 531);
+            this.documentTabStrip1.Size = new System.Drawing.Size(1573, 530);
             this.documentTabStrip1.TabIndex = 0;
             this.documentTabStrip1.TabStop = false;
             // 
             // documentWindow1
             // 
-            this.documentWindow1.Location = new System.Drawing.Point(6, 45);
+            this.documentWindow1.Location = new System.Drawing.Point(5, 46);
             this.documentWindow1.Name = "documentWindow1";
             this.documentWindow1.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.TabbedDocument;
-            this.documentWindow1.Size = new System.Drawing.Size(1561, 480);
+            this.documentWindow1.Size = new System.Drawing.Size(1563, 479);
             this.documentWindow1.Text = "documentWindow1";
             // 
             // radDock2
@@ -187,21 +180,21 @@
             this.radDock2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radDock2.ForeColor = System.Drawing.Color.White;
             this.radDock2.IsCleanUpTarget = true;
-            this.radDock2.Location = new System.Drawing.Point(0, 198);
+            this.radDock2.Location = new System.Drawing.Point(0, 197);
             this.radDock2.MainDocumentContainer = this.documentContainer1;
             this.radDock2.Name = "radDock2";
-            this.radContextMenuManager1.SetRadContextMenu(this.radDock2, this.radContextMenu1);
             // 
             // 
             // 
             this.radDock2.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.radDock2.ShowDocumentCloseButton = true;
-            this.radDock2.Size = new System.Drawing.Size(1583, 541);
+            this.radDock2.Size = new System.Drawing.Size(1583, 540);
             this.radDock2.SplitterWidth = 2;
             this.radDock2.TabIndex = 5;
             this.radDock2.TabStop = false;
             this.radDock2.Text = "radDock2";
             this.radDock2.DockWindowClosing += new Telerik.WinControls.UI.Docking.DockWindowCancelEventHandler(this.radDock2_DockWindowClosing);
+            this.radDock2.DockWindowClosed += new Telerik.WinControls.UI.Docking.DockWindowEventHandler(this.radDock2_DockWindowClosed);
             this.radDock2.ActiveWindowChanged += new Telerik.WinControls.UI.Docking.DockWindowEventHandler(this.radDock2_ActiveWindowChanged);
             this.radDock2.Initialized += new System.EventHandler(this.radDock2_Initialized);
             // 
@@ -293,35 +286,6 @@
             this.radButtonElement6.TextOrientation = System.Windows.Forms.Orientation.Horizontal;
             this.radButtonElement6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
-            // radContextMenu1
-            // 
-            this.radContextMenu1.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.Seperator,
-            this.RibbonBarOptions});
-            this.radContextMenu1.ThemeName = "VisualStudio2012Dark";
-            this.radContextMenu1.DropDownOpened += new System.EventHandler(this.radContextMenu1_DropDownOpened);
-            this.radContextMenu1.DropDownClosed += new System.EventHandler(this.radContextMenu1_DropDownClosed);
-            // 
-            // Seperator
-            // 
-            this.Seperator.Name = "Seperator";
-            this.Seperator.Text = "";
-            this.Seperator.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // RibbonBarOptions
-            // 
-            this.RibbonBarOptions.AccessibleDescription = "Customize Bar";
-            this.RibbonBarOptions.AccessibleName = "Customize Bar";
-            // 
-            // 
-            // 
-            this.RibbonBarOptions.ButtonElement.AccessibleDescription = "Customize Bar";
-            this.RibbonBarOptions.ButtonElement.AccessibleName = "Customize Bar";
-            this.RibbonBarOptions.CanFocus = true;
-            this.RibbonBarOptions.Name = "RibbonBarOptions";
-            this.RibbonBarOptions.Text = "Customize Bar";
-            this.RibbonBarOptions.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
             // radRibbonBar1
             // 
             this.radRibbonBar1.BackstageControl = this.radRibbonBarBackstageView1;
@@ -331,8 +295,7 @@
             this.ribbonTab2});
             this.radRibbonBar1.Location = new System.Drawing.Point(0, 0);
             this.radRibbonBar1.Name = "radRibbonBar1";
-            this.radContextMenuManager1.SetRadContextMenu(this.radRibbonBar1, this.radContextMenu1);
-            this.radRibbonBar1.Size = new System.Drawing.Size(1583, 198);
+            this.radRibbonBar1.Size = new System.Drawing.Size(1583, 197);
             this.radRibbonBar1.StartButtonImage = ((System.Drawing.Image)(resources.GetObject("radRibbonBar1.StartButtonImage")));
             this.radRibbonBar1.StartMenuItems.AddRange(new Telerik.WinControls.RadItem[] {
             this.NewContainer,
@@ -372,6 +335,121 @@
             this.backstageTabItem1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             this.backstageTabItem1.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
+            // File_tab
+            // 
+            this.File_tab.AccessibleDescription = "File";
+            this.File_tab.AccessibleName = "File";
+            this.File_tab.IsSelected = true;
+            this.File_tab.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.radRibbonBarGroup8,
+            this.radRibbonBarGroup9,
+            this.radRibbonBarGroup10,
+            this.Options_btn});
+            this.File_tab.Name = "File_tab";
+            this.File_tab.Text = "File";
+            this.File_tab.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.File_tab.Click += new System.EventHandler(this.ribbonTab3_Click);
+            // 
+            // radRibbonBarGroup8
+            // 
+            this.radRibbonBarGroup8.AccessibleDescription = "New";
+            this.radRibbonBarGroup8.AccessibleName = "New";
+            this.radRibbonBarGroup8.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.NewBlankDoc_btn});
+            this.radRibbonBarGroup8.Name = "radRibbonBarGroup8";
+            this.radRibbonBarGroup8.Text = "New";
+            this.radRibbonBarGroup8.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // NewBlankDoc_btn
+            // 
+            this.NewBlankDoc_btn.AccessibleDescription = "<html><p>Blank</p><p>Document</p></html>";
+            this.NewBlankDoc_btn.AccessibleName = "<html><p>Blank</p><p>Document</p></html>";
+            this.NewBlankDoc_btn.Name = "NewBlankDoc_btn";
+            this.NewBlankDoc_btn.Text = "<html><p>Blank</p><p>Document</p></html>";
+            this.NewBlankDoc_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.NewBlankDoc_btn.Click += new System.EventHandler(this.NewBlankDocument_Click);
+            // 
+            // radRibbonBarGroup9
+            // 
+            this.radRibbonBarGroup9.AccessibleDescription = "Save";
+            this.radRibbonBarGroup9.AccessibleName = "Save";
+            this.radRibbonBarGroup9.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.Save_btn,
+            this.Save_As_btn});
+            this.radRibbonBarGroup9.Name = "radRibbonBarGroup9";
+            this.radRibbonBarGroup9.Text = "Save";
+            this.radRibbonBarGroup9.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // Save_btn
+            // 
+            this.Save_btn.AccessibleDescription = "Save";
+            this.Save_btn.AccessibleName = "Save";
+            this.Save_btn.Name = "Save_btn";
+            this.Save_btn.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.Save_btn.Text = "Save";
+            this.Save_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Save_btn.Click += new System.EventHandler(this.Save_Click);
+            // 
+            // Save_As_btn
+            // 
+            this.Save_As_btn.AccessibleDescription = "<html><p>Save</p><p>As</p></html>";
+            this.Save_As_btn.AccessibleName = "<html><p>Save</p><p>As</p></html>";
+            this.Save_As_btn.Name = "Save_As_btn";
+            this.Save_As_btn.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.Save_As_btn.Text = "<html><p>Save</p><p>As</p></html>";
+            this.Save_As_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Save_As_btn.Click += new System.EventHandler(this.SaveAs_Click);
+            // 
+            // radRibbonBarGroup10
+            // 
+            this.radRibbonBarGroup10.AccessibleDescription = "Open File";
+            this.radRibbonBarGroup10.AccessibleName = "Open File";
+            this.radRibbonBarGroup10.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.OpenFile_FromDocument_btn,
+            this.Recent_btn});
+            this.radRibbonBarGroup10.Name = "radRibbonBarGroup10";
+            this.radRibbonBarGroup10.Text = "Open File";
+            this.radRibbonBarGroup10.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // OpenFile_FromDocument_btn
+            // 
+            this.OpenFile_FromDocument_btn.AccessibleDescription = "File";
+            this.OpenFile_FromDocument_btn.AccessibleName = "File";
+            this.OpenFile_FromDocument_btn.Name = "OpenFile_FromDocument_btn";
+            this.OpenFile_FromDocument_btn.Text = "File";
+            this.OpenFile_FromDocument_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.OpenFile_FromDocument_btn.Click += new System.EventHandler(this.Load_Click);
+            // 
+            // Recent_btn
+            // 
+            this.Recent_btn.AccessibleDescription = "Recent";
+            this.Recent_btn.AccessibleName = "Recent";
+            this.Recent_btn.Name = "Recent_btn";
+            this.Recent_btn.Text = "Recent";
+            this.Recent_btn.TextWrap = true;
+            this.Recent_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Recent_btn.Click += new System.EventHandler(this.Recent_btn_Click);
+            // 
+            // Options_btn
+            // 
+            this.Options_btn.AccessibleDescription = "Options";
+            this.Options_btn.AccessibleName = "Options";
+            this.Options_btn.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.Option_btn});
+            this.Options_btn.Name = "Options_btn";
+            this.Options_btn.Text = "Options";
+            this.Options_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Options_btn.Click += new System.EventHandler(this.Options_btn_Click);
+            // 
+            // Option_btn
+            // 
+            this.Option_btn.AccessibleDescription = "Options";
+            this.Option_btn.AccessibleName = "Options";
+            this.Option_btn.Name = "Option_btn";
+            this.Option_btn.Text = "Options";
+            this.Option_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.Option_btn.Click += new System.EventHandler(this.Options_Click);
+            // 
             // ribbonTab1
             // 
             this.ribbonTab1.AccessibleDescription = "Create";
@@ -379,44 +457,11 @@
             this.ribbonTab1.AutoEllipsis = false;
             this.ribbonTab1.IsSelected = false;
             this.ribbonTab1.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.radRibbonBarGroup1,
             this.radRibbonBarGroup2,
             this.radRibbonBarGroup5});
             this.ribbonTab1.Name = "ribbonTab1";
             this.ribbonTab1.Text = "Layout";
             this.ribbonTab1.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // radRibbonBarGroup1
-            // 
-            this.radRibbonBarGroup1.AccessibleDescription = "parts";
-            this.radRibbonBarGroup1.AccessibleName = "parts";
-            this.radRibbonBarGroup1.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.newPart,
-            this.SavedParts});
-            this.radRibbonBarGroup1.Margin = new System.Windows.Forms.Padding(0);
-            this.radRibbonBarGroup1.MaxSize = new System.Drawing.Size(0, 0);
-            this.radRibbonBarGroup1.MinSize = new System.Drawing.Size(0, 0);
-            this.radRibbonBarGroup1.Name = "radRibbonBarGroup1";
-            this.radRibbonBarGroup1.Text = "parts";
-            this.radRibbonBarGroup1.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // newPart
-            // 
-            this.newPart.AccessibleDescription = "newPart";
-            this.newPart.AccessibleName = "newPart";
-            this.newPart.Name = "newPart";
-            this.newPart.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.newPart.Text = "<html><p>new</p><p>Part</p></html>";
-            this.newPart.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // SavedParts
-            // 
-            this.SavedParts.AccessibleDescription = "savedParts";
-            this.SavedParts.AccessibleName = "savedParts";
-            this.SavedParts.Name = "SavedParts";
-            this.SavedParts.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.SavedParts.Text = "<html><p>saved</p><p>Parts</p></html>";
-            this.SavedParts.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             // 
             // radRibbonBarGroup2
             // 
@@ -637,100 +682,6 @@
             this.OpenFromFile.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.OpenFromFile.Click += new System.EventHandler(this.Load_Click);
             // 
-            // File_tab
-            // 
-            this.File_tab.AccessibleDescription = "File";
-            this.File_tab.AccessibleName = "File";
-            this.File_tab.IsSelected = true;
-            this.File_tab.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.radRibbonBarGroup8,
-            this.radRibbonBarGroup9,
-            this.radRibbonBarGroup10});
-            this.File_tab.Name = "File_tab";
-            this.File_tab.Text = "File";
-            this.File_tab.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.File_tab.Click += new System.EventHandler(this.ribbonTab3_Click);
-            // 
-            // radRibbonBarGroup8
-            // 
-            this.radRibbonBarGroup8.AccessibleDescription = "New";
-            this.radRibbonBarGroup8.AccessibleName = "New";
-            this.radRibbonBarGroup8.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.NewBlankDoc_btn});
-            this.radRibbonBarGroup8.Name = "radRibbonBarGroup8";
-            this.radRibbonBarGroup8.Text = "New";
-            this.radRibbonBarGroup8.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // NewBlankDoc_btn
-            // 
-            this.NewBlankDoc_btn.AccessibleDescription = "<html><p>Blank</p><p>Document</p></html>";
-            this.NewBlankDoc_btn.AccessibleName = "<html><p>Blank</p><p>Document</p></html>";
-            this.NewBlankDoc_btn.Name = "NewBlankDoc_btn";
-            this.NewBlankDoc_btn.Text = "<html><p>Blank</p><p>Document</p></html>";
-            this.NewBlankDoc_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.NewBlankDoc_btn.Click += new System.EventHandler(this.NewBlankDocument_Click);
-            // 
-            // radRibbonBarGroup9
-            // 
-            this.radRibbonBarGroup9.AccessibleDescription = "Save";
-            this.radRibbonBarGroup9.AccessibleName = "Save";
-            this.radRibbonBarGroup9.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.Save_btn,
-            this.Save_As_btn});
-            this.radRibbonBarGroup9.Name = "radRibbonBarGroup9";
-            this.radRibbonBarGroup9.Text = "Save";
-            this.radRibbonBarGroup9.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // Save_btn
-            // 
-            this.Save_btn.AccessibleDescription = "Save";
-            this.Save_btn.AccessibleName = "Save";
-            this.Save_btn.Name = "Save_btn";
-            this.Save_btn.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.Save_btn.Text = "Save";
-            this.Save_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.Save_btn.Click += new System.EventHandler(this.Save_Click);
-            // 
-            // Save_As_btn
-            // 
-            this.Save_As_btn.AccessibleDescription = "<html><p>Save</p><p>As</p></html>";
-            this.Save_As_btn.AccessibleName = "<html><p>Save</p><p>As</p></html>";
-            this.Save_As_btn.Name = "Save_As_btn";
-            this.Save_As_btn.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.Save_As_btn.Text = "<html><p>Save</p><p>As</p></html>";
-            this.Save_As_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.Save_As_btn.Click += new System.EventHandler(this.SaveAs_Click);
-            // 
-            // radRibbonBarGroup10
-            // 
-            this.radRibbonBarGroup10.AccessibleDescription = "Open File";
-            this.radRibbonBarGroup10.AccessibleName = "Open File";
-            this.radRibbonBarGroup10.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.OpenFile_FromDocument_btn,
-            this.Recent_btn});
-            this.radRibbonBarGroup10.Name = "radRibbonBarGroup10";
-            this.radRibbonBarGroup10.Text = "Open File";
-            this.radRibbonBarGroup10.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            // 
-            // OpenFile_FromDocument_btn
-            // 
-            this.OpenFile_FromDocument_btn.AccessibleDescription = "File";
-            this.OpenFile_FromDocument_btn.AccessibleName = "File";
-            this.OpenFile_FromDocument_btn.Name = "OpenFile_FromDocument_btn";
-            this.OpenFile_FromDocument_btn.Text = "File";
-            this.OpenFile_FromDocument_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.OpenFile_FromDocument_btn.Click += new System.EventHandler(this.Load_Click);
-            // 
-            // Recent_btn
-            // 
-            this.Recent_btn.AccessibleDescription = "Recent";
-            this.Recent_btn.AccessibleName = "Recent";
-            this.Recent_btn.Name = "Recent_btn";
-            this.Recent_btn.Text = "Recent";
-            this.Recent_btn.TextWrap = true;
-            this.Recent_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.Recent_btn.Click += new System.EventHandler(this.Recent_btn_Click);
-            // 
             // RadRibbonForm1
             // 
             this.AllowAero = false;
@@ -743,7 +694,6 @@
             this.Controls.Add(this.radRibbonBarBackstageView1);
             this.MainMenuStrip = null;
             this.Name = "RadRibbonForm1";
-            this.radContextMenuManager1.SetRadContextMenu(this, this.radContextMenu1);
             // 
             // 
             // 
@@ -774,9 +724,6 @@
         private Telerik.WinControls.Themes.VisualStudio2012DarkTheme visualStudio2012DarkTheme1;
         private Telerik.WinControls.UI.RadRibbonBar radRibbonBar1;
         private Telerik.WinControls.UI.RibbonTab ribbonTab1;
-        private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup1;
-        private Telerik.WinControls.UI.RadButtonElement newPart;
-        private Telerik.WinControls.UI.RadButtonElement SavedParts;
         private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup2;
         private Telerik.WinControls.UI.RadButtonElement SaveLayout;
         private Telerik.WinControls.UI.RadButtonElement LoadLayout;
@@ -804,10 +751,6 @@
         private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup5;
         private Telerik.WinControls.UI.RadButtonElement NewStandardToolsButton;
         private Telerik.WinControls.UI.RadButtonElement ColorSettings;
-        private Telerik.WinControls.UI.RadContextMenu radContextMenu1;
-        private Telerik.WinControls.UI.RadMenuSeparatorItem Seperator;
-        private Telerik.WinControls.UI.RadMenuButtonItem RibbonBarOptions;
-        private Telerik.WinControls.UI.RadContextMenuManager radContextMenuManager1;
         private Telerik.WinControls.Themes.AquaTheme aquaTheme1;
         private Telerik.WinControls.Themes.BreezeTheme breezeTheme1;
         private Telerik.WinControls.Themes.DesertTheme desertTheme1;
@@ -844,5 +787,7 @@
         private Telerik.WinControls.UI.RadRibbonBarGroup radRibbonBarGroup10;
         private Telerik.WinControls.UI.RadButtonElement OpenFile_FromDocument_btn;
         private Telerik.WinControls.UI.RadButtonElement Recent_btn;
+        private Telerik.WinControls.UI.RadRibbonBarGroup Options_btn;
+        private Telerik.WinControls.UI.RadButtonElement Option_btn;
     }
 }

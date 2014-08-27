@@ -1,38 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Comment CommentText="Gate Control has logic component">
-    <Position X="1.582" Y="3.184" Height="0.606" Width="1.7" />
+    <Position X="1.478" Y="4.694" Height="0.606" Width="1.7" />
   </Comment>
   <Class Name="WindowsFormsTest.Controls.LogicControl" Collapsed="true">
-    <Position X="3" Y="0.5" Width="1.5" />
+    <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gCAAAIAQASAAAAAAAADAAABCAAAAJAAAiAAAAAAEIAA=</HashCode>
+      <HashCode>iCAAAIARASAAAAAAABDAAARCEAAIJEAAgAAAAAAEIAI=</HashCode>
       <FileName>Controls\LogicControl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Controls.GateControl" Collapsed="true">
-    <Position X="0.5" Y="2.5" Width="1.5" />
+    <Position X="0.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAABQACAAAAAAAACAAAAGABAAAAAACAAAAAAAAAA=</HashCode>
+      <HashCode>gAAAAABQACAAAAAAAACAAAAGABAAAAAACAAAAAEAAAA=</HashCode>
       <FileName>Controls\GateControl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Controls.InputControl" Collapsed="true">
-    <Position X="3" Y="2.5" Width="1.5" />
+    <Position X="3" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAABCAAAACCQAAAAAACAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAAAABCAAAAKCQAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>Controls\InputControl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Controls.ConstantControl" Collapsed="true">
-    <Position X="5.5" Y="2.5" Width="1.5" />
+    <Position X="5.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAgCAAgACCAAAAAAACAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAAAAASAAgACCAAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>Controls\ConstantControl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.component.LogicGateBase" Collapsed="true">
-    <Position X="0.5" Y="3.75" Width="1.5" />
+    <Position X="0.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAQAAAAAAACAAAABAACAAAAAAAIAA=</HashCode>
       <FileName>component\LogicGateBase.cs</FileName>
@@ -40,52 +40,73 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="WindowsFormsTest.Gates.AndGate" Collapsed="true">
-    <Position X="0.5" Y="5.5" Width="1.5" />
+    <Position X="0.5" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Gates\AndGate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Gates.NandGate" Collapsed="true">
-    <Position X="7.25" Y="5.5" Width="1.5" />
+    <Position X="7.25" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Gates\NandGate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Gates.NorGate" Collapsed="true">
-    <Position X="11.75" Y="5.5" Width="1.5" />
+    <Position X="11.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Gates\NorGate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Gates.NotGate" Collapsed="true">
-    <Position X="2.75" Y="5.5" Width="1.5" />
+    <Position X="2.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Gates\NotGate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Gates.OrGate" Collapsed="true">
-    <Position X="9.5" Y="5.5" Width="1.5" />
+    <Position X="9.5" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Gates\OrGate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Gates.XnorGate" Collapsed="true">
-    <Position X="14" Y="5.5" Width="1.5" />
+    <Position X="14" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Gates\XnorGate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="WindowsFormsTest.Gates.XorGate" Collapsed="true">
-    <Position X="5" Y="5.5" Width="1.5" />
+    <Position X="5" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Gates\XorGate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsFormsTest.Controls.ProcessingControl" Collapsed="true">
+    <Position X="3" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Controls\ProcessingControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsFormsTest.Controls.DisplayControl" Collapsed="true">
+    <Position X="8.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\DisplayControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsFormsTest.Controls.LedDisplayControl" Collapsed="true">
+    <Position X="8" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controls\LEDDisplayControl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

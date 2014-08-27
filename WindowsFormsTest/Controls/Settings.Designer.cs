@@ -42,6 +42,7 @@
             this.radPropertyGrid1.SortOrder = System.Windows.Forms.SortOrder.Ascending;
             this.radPropertyGrid1.TabIndex = 0;
             this.radPropertyGrid1.Text = "radPropertyGrid1";
+            this.radPropertyGrid1.ToolbarVisible = true;
             // 
             // Settings
             // 
@@ -49,7 +50,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.radPropertyGrid1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Settings";
             this.Size = new System.Drawing.Size(444, 687);
             this.Load += new System.EventHandler(this.Settings_Load);

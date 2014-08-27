@@ -119,28 +119,40 @@
   <ItemGroup>
     <Compile Include="component\ILogicGate.cs" />
     <Compile Include="component\LogicGateBase.cs" />
-    <Compile Include="Controls\ConnectionNode.cs">
+    <Compile Include="Controls\Components\ConnectionNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ConnectionNode.Designer.cs">
+    <Compile Include="Controls\Components\ConnectionNode.Designer.cs">
       <DependentUpon>ConnectionNode.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ConstantControl.cs">
+    <Compile Include="Controls\Components\ConstantControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ConstantControl.Designer.cs">
+    <Compile Include="Controls\Components\ConstantControl.Designer.cs">
       <DependentUpon>ConstantControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\InputControl.cs">
+    <Compile Include="Controls\Components\DisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\InputControl.Designer.cs">
+    <Compile Include="Controls\Components\DisplayControl.Designer.cs">
+      <DependentUpon>DisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Components\InputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Components\InputControl.Designer.cs">
       <DependentUpon>InputControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LogicControl.cs">
+    <Compile Include="Controls\Components\LEDDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\LogicControl.Designer.cs">
+    <Compile Include="Controls\Components\LEDDisplayControl.Designer.cs">
+      <DependentUpon>LEDDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Components\LogicControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Components\LogicControl.Designer.cs">
       <DependentUpon>LogicControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\MainLogicDesigner.cs">
@@ -149,17 +161,35 @@
     <Compile Include="Controls\MainLogicDesigner.Designer.cs">
       <DependentUpon>MainLogicDesigner.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GateControl.cs">
+    <Compile Include="Controls\Components\GateControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\GateControl.Designer.cs">
+    <Compile Include="Controls\Components\GateControl.Designer.cs">
       <DependentUpon>GateControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Components\ProcessingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Components\ProcessingControl.Designer.cs">
+      <DependentUpon>ProcessingControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Settings.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SettingsControls\Appearance.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SettingsControls\Appearance.Designer.cs">
+      <DependentUpon>Appearance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SettingsControls\SavingAndLoading.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SettingsControls\SavingAndLoading.Designer.cs">
+      <DependentUpon>SavingAndLoading.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\SettingsToolWindow.cs">
       <SubType>Component</SubType>
@@ -184,6 +214,12 @@
     </Compile>
     <Compile Include="Forms\ListPicker.Designer.cs">
       <DependentUpon>ListPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gates\NotGate.cs" />
     <Compile Include="Gates\XnorGate.cs" />
@@ -219,26 +255,35 @@
     <Compile Include="Forms\SplashScreen.Designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Controls\ConnectionNode.resx">
+    <EmbeddedResource Include="Controls\Components\ConnectionNode.resx">
       <DependentUpon>ConnectionNode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ConstantControl.resx">
+    <EmbeddedResource Include="Controls\Components\ConstantControl.resx">
       <DependentUpon>ConstantControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\InputControl.resx">
+    <EmbeddedResource Include="Controls\Components\InputControl.resx">
       <DependentUpon>InputControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\LogicControl.resx">
+    <EmbeddedResource Include="Controls\Components\LEDDisplayControl.resx">
+      <DependentUpon>LEDDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Components\LogicControl.resx">
       <DependentUpon>LogicControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MainLogicDesigner.resx">
       <DependentUpon>MainLogicDesigner.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GateControl.resx">
+    <EmbeddedResource Include="Controls\Components\GateControl.resx">
       <DependentUpon>GateControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SettingsControls\Appearance.resx">
+      <DependentUpon>Appearance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SettingsControls\SavingAndLoading.resx">
+      <DependentUpon>SavingAndLoading.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\StandardTools.resx">
       <DependentUpon>StandardTools.cs</DependentUpon>
@@ -251,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -357,6 +405,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Deafult.xml" />
+    <None Include="Resources\Led_Green.png" />
+    <None Include="Resources\Led_off_green.png" />
+    <None Include="Resources\LedMenu16x16.png" />
+    <Content Include="TODOList.txt" />
     <None Include="Resources\On_Switch_16x16.png" />
     <None Include="Resources\Off_Switch_16x16.png" />
     <None Include="Resources\On_Switch.png" />

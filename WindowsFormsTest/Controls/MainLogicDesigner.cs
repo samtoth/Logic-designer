@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 
 namespace WindowsFormsTest.Controls
 {
-
     public partial class MainLogicDesigner : UserControl
     {
         public MainLogicDesigner()
@@ -140,7 +139,7 @@ namespace WindowsFormsTest.Controls
         {
             // e.Effect = DragDropEffects.Copy;
 
-            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate || e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl || e.Data.GetData(e.Data.GetFormats()[0]) is InputControl)
+            if (e.Data.GetData(e.Data.GetFormats()[0]) is ILogicGate || e.Data.GetData(e.Data.GetFormats()[0]) is LogicControl)
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -171,7 +170,7 @@ namespace WindowsFormsTest.Controls
             {
                 Point pos = this.PointToClient(new Point(e.X, e.Y));
                 var lc = (ILogicGate) e.Data.GetData(e.Data.GetFormats()[0]);
-                CreateLogicControl(lc.GetType(), pos);
+                CreateLogicControl(lc.GetType(), pos, null);
             }
 
             if (e.Data.GetData(e.Data.GetFormats()[0]) is ConstantControl)
@@ -182,17 +181,24 @@ namespace WindowsFormsTest.Controls
 
                 Object o = e.Data.GetData(e.Data.GetFormats()[0]);
                 
-                var ctrl = CreateLogicControl(o.GetType(), pos);
+                var ctrl = CreateLogicControl(o.GetType(), pos, null);
                 
             }
 
             if (e.Data.GetData((e.Data.GetFormats()[0])) is InputControl)
             {
-                CreateLogicControl(typeof(InputControl), PointToClient(new Point(e.X, e.Y)));
+                CreateLogicControl(typeof(InputControl), PointToClient(new Point(e.X, e.Y)), null);
+            }
+
+            if (e.Data.GetData((e.Data.GetFormats()[0])) is DisplayControl)
+            {
+                object o = e.Data.GetData(e.Data.GetFormats()[0]);
+
+                CreateLogicControl(o.GetType(), PointToClient(new Point(e.X, e.Y)), null);
             }
         }
 
-        private LogicControl CreateLogicControl(Type t, Point pos)
+        private LogicControl CreateLogicControl(Type t, Point pos, string name)
         {
             LogicControl control;
             if (typeof(ILogicGate).IsAssignableFrom(t))
@@ -208,6 +214,8 @@ namespace WindowsFormsTest.Controls
             control.Location = pos;
             drawingSurface.Controls.Add(control);
 
+            control.Name = name;
+
             //add to list
             LogicComponents.Add(control);
 
@@ -217,23 +225,26 @@ namespace WindowsFormsTest.Controls
             control.Moving += gc_Moving;
             control.Moved += gc_Moved;
             control.MoveStart += Control_MoveStart;
-            control.OutputNode.deleteNodeRequest += OutputNode_deleteNodeRequest;
-
-            if (control is ConstantControl)
+            if (control is ProcessingControl)
             {
+                (control as ProcessingControl).OutputNode.deleteNodeRequest += OutputNode_deleteNodeRequest;
 
-                (control as ConstantControl).ControlColor = control is ConstantControlHigh ? Properties.WireOnColor : Properties.WireOffColor;
-            }
-            else if (control is GateControl)
-            {
-                foreach (var node in (control as GateControl).LogicGate.InputNodes)
+                if (control is ConstantControl)
                 {
-                    node.deleteNodeRequest += OutputNode_deleteNodeRequest;
+
+                    (control as ConstantControl).ControlColor = control is ConstantControlHigh ? Properties.WireOnColor : Properties.WireOffColor;
                 }
-            }
-            else if(control is InputControl)
-            {
-                (control as InputControl).InputToggle += MainLogicDesigner_InputToggle;
+                else if (control is GateControl)
+                {
+                    foreach (var node in (control as GateControl).LogicGate.InputNodes)
+                    {
+                        node.deleteNodeRequest += OutputNode_deleteNodeRequest;
+                    }
+                }
+                else if (control is InputControl)
+                {
+                    (control as InputControl).InputToggle += MainLogicDesigner_InputToggle;
+                }
             }
 
             return control;
@@ -259,6 +270,13 @@ namespace WindowsFormsTest.Controls
 
         void control_ControlSelected(object sender, LogicControl.SelectionEventHandler e)
         {
+            var settings = Globals.MainForm.FindSettingsWindow();
+
+            if (settings != null)
+            {
+                settings.SetSettingsTarget(sender);
+            }
+
             //If control key not down then unselect all other controls
             if (ModifierKeys != Keys.Control && ModifierKeys != Keys.Shift)
             {
@@ -270,7 +288,7 @@ namespace WindowsFormsTest.Controls
         }
         void drawingSurface_Click(object sender, EventArgs e)
         {
-            control_ControlSelected(this, new LogicControl.SelectionEventHandler(new LogicControl()));
+            control_ControlSelected(Properties, new LogicControl.SelectionEventHandler(new LogicControl()));
         }
         private GateControl CreateGate(Type gateType)
         {
@@ -483,7 +501,7 @@ namespace WindowsFormsTest.Controls
 
             foreach (var ctrl in data.LogicControls)
             {
-                CreateLogicControl(ctrl.Type, ctrl.Pos).Guid = ctrl.Guid;
+                CreateLogicControl(ctrl.Type, ctrl.Pos, ctrl.Name).Guid = ctrl.Guid;
             }
             foreach (var connection in data.Connections)
             {
@@ -494,7 +512,7 @@ namespace WindowsFormsTest.Controls
                     if (ctrl.Guid == connection.Output.GateGuid)
                     {
                         //Dealing with the outuput node
-                        output = ctrl.OutputNode;
+                        output = (ctrl as ProcessingControl).OutputNode;
                     }
 
                     if (ctrl.Guid == connection.Input.GateGuid)
@@ -511,7 +529,6 @@ namespace WindowsFormsTest.Controls
                 if (output != null && input != null)
                 {
                     connectedNodes.Add(new ConnectedNodes(output, input));
-                    Globals.MainForm.RecentListAdd(fileName);
                 }
             }
 
@@ -519,7 +536,7 @@ namespace WindowsFormsTest.Controls
 
             this.ChangedFlag = false;
             this.Refresh();
-        }//TODO
+        }
 
         private GraphicsPath getConnectionPath(ConnectedNodes nodes)
         {
@@ -695,7 +712,13 @@ namespace WindowsFormsTest.Controls
             {
                 UpdateComponent(component);
             }
+            //Run a seperate method for gate controls that uses an algorithm for detecting order and circular refrences etc...
             UpdateGates();
+            //Finally update my display controls
+            foreach (var logicComponent in LogicComponents.Where( item => item is DisplayControl))
+            {
+                UpdateComponent(logicComponent);
+            }
         }
 
         private void UpdateGates()
@@ -838,10 +861,13 @@ namespace WindowsFormsTest.Controls
         private void UpdateComponent(LogicControl component)
         {
             component.UpdateOutputState();
-            foreach (var item in connectedNodes.Where(item => item.Output == component.OutputNode))
+            if (component is ProcessingControl)
             {
-                item.Input.IsOn = item.Output.IsOn;
-                item.On = item.Output.IsOn;
+                foreach (var item in connectedNodes.Where(item => item.Output == (component as ProcessingControl).OutputNode))
+                {
+                    item.Input.IsOn = item.Output.IsOn;
+                    item.On = item.Output.IsOn;
+                }
             }
         }
 

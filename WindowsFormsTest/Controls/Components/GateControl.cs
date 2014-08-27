@@ -11,13 +11,15 @@ using WindowsFormsTest.component;
 
 namespace WindowsFormsTest.Controls
 {
-    public partial class GateControl : LogicControl
+    public partial class GateControl : ProcessingControl
     {
-        public override string DisplayName
-        {
-            get { return LogicGate.GetType().Name + " : " + Guid.ToString(); }
-        }
+        [ReadOnly(true)]
+        [DefaultValue(2)]
+        [Category("Logic Gate")]
+        [Description("Not implemented yet!")]
+        public int NumberOfInputNodes { get; set; }
 
+        [Browsable(false)]
         public ILogicGate LogicGate { get { return _logicGate; } }
 
         public override ConnectionNode OutputNode
@@ -31,7 +33,8 @@ namespace WindowsFormsTest.Controls
         {
             Guid = pGuid;
             _logicGate = logicGate;
-            InitializeComponent(); 
+            InitializeComponent();
+            Name = LogicGate.GetType().Name + " : " + Guid.ToString();
         }
 
         public override void UpdateOutputState()

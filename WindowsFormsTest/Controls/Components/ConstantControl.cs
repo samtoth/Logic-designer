@@ -12,7 +12,7 @@ using Telerik.WinControls.UI.RadColorPicker;
 
 namespace WindowsFormsTest.Controls
 {
-    public partial class ConstantControl : LogicControl
+    public partial class ConstantControl : ProcessingControl
     {
 
 

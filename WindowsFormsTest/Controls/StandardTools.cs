@@ -65,6 +65,16 @@ namespace WindowsFormsTest.Controls
             SwitchNode.Image = random.NextDouble() > 0.5 ? Properties.Resources.On_Switch_16x16 : Properties.Resources.Off_Switch_16x16;
             SwitchNode.Tag = new InputControl();
             #endregion
+
+            #region Outputs
+
+            RadTreeNode outputNodeParent = radTreeView1.Nodes.Add("Outputs");
+
+            RadTreeNode ledNode = outputNodeParent.Nodes.Add("LED");
+            ledNode.Image = Properties.Resources.LedMenu16x16;
+            ledNode.Tag = new LedDisplayControl();
+
+            #endregion
         }
 
         private void StandardTools_Load(object sender, EventArgs e)
@@ -82,7 +92,7 @@ namespace WindowsFormsTest.Controls
 
         private void radTreeView1_NodeMouseDown(object sender, RadTreeViewMouseEventArgs e)
         {
-            if(e.Node.Parent == radTreeView1.Nodes[0] || e.Node.Parent == radTreeView1.Nodes[1] || e.Node.Parent == radTreeView1.Nodes[2]){
+            if(radTreeView1.Nodes.Contains(e.Node.Parent)){
                 this.DoDragDrop(e.Node.Tag, DragDropEffects.Copy);
             }
         }

@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.MoveTimer = new System.Windows.Forms.Timer(this.components);
             this.MainImage = new System.Windows.Forms.PictureBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.MainImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,6 +69,6 @@
 
         private System.Windows.Forms.Timer MoveTimer;
         protected System.Windows.Forms.PictureBox MainImage;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

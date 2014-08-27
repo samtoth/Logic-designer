@@ -30,6 +30,8 @@ namespace WindowsFormsTest
                     {
                         DesignerSettings.LayoutPath = data.LayoutPath;
                         DesignerSettings.Theme = data.Theme;
+                        DesignerSettings.RecentFilePaths.AddRange(data.RecentFilePaths);
+                        DesignerSettings.RecentFileCount = data.RecentFilesCount;
                     }
                 }
 
@@ -264,7 +266,7 @@ namespace WindowsFormsTest
             if (!e.Cancel)
             {
 
-                var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName, DesignerSettings.LayoutPath, DesignerSettings.RecentFilePaths);
+                var pd = new PreferenceDataSerializer(ThemeResolutionService.ApplicationThemeName, DesignerSettings.LayoutPath, DesignerSettings.RecentFilePaths, DesignerSettings.RecentFileCount);
                 pd.SaveToFile(Globals.UserDataFilename);
             }
         }
@@ -273,13 +275,15 @@ namespace WindowsFormsTest
         {
             public String Theme = String.Empty;
             public String LayoutPath = String.Empty;
-            public List<String> RecentFilePaths = new List<string>(); 
+            public List<String> RecentFilePaths = new List<string>();
+            public int RecentFilesCount = 0;
 
-            public PreferenceDataSerializer(String pTheme, String pLayoutPath, List<String> filePaths)
+            public PreferenceDataSerializer(String pTheme, String pLayoutPath, List<String> filePaths, int recentFileCount)
             {
                 Theme = pTheme;
                 LayoutPath = pLayoutPath;
                 RecentFilePaths = filePaths;
+                RecentFilesCount = recentFileCount;
             }
 
             public static PreferenceDataSerializer LoadFromFile(string filename)
@@ -289,16 +293,12 @@ namespace WindowsFormsTest
 
             public void SaveToFile(string filename)
             {
-                String prefData = JsonConvert.SerializeObject(this);
+                String prefData = JsonConvert.SerializeObject(this);//TODO Change to indented formatting
                 Directory.CreateDirectory(Path.GetDirectoryName(filename)); //Ensure it exists
                 File.WriteAllText(filename, prefData);
             }
         }
 
-        private void radContextMenu1_DropDownOpened(object sender, EventArgs e)
-        {
-            radContextMenu1.Items[1].Click += Options_Click;
-        }
 
         private void Options_Click(object sender, EventArgs e)
         {
@@ -306,10 +306,6 @@ namespace WindowsFormsTest
             optionForm.Show();
         }
 
-        private void radContextMenu1_DropDownClosed(object sender, EventArgs e)
-        {
-            radContextMenu1.Items[1].Click -= Options_Click;
-        }
 
         private void SaveContainer_Click(object sender, EventArgs e)
         {
@@ -354,11 +350,17 @@ namespace WindowsFormsTest
 
         private void radDock2_DockWindowClosing(object sender, DockWindowCancelEventArgs e)
         {
-
-
             if (e.NewWindow is DocumentWindow)
             {
                 e.Cancel = !SaveIfRequired(e.NewWindow as DocumentWindow);
+            }
+            if (e.NewWindow is DocumentWindow)
+            {
+                var designer = e.NewWindow.Controls[0] as MainLogicDesigner;
+                if (designer != null && !String.IsNullOrEmpty(designer.FilePath))
+                {
+                    RecentListAdd(designer.FilePath);
+                }
             }
         }
 
@@ -479,10 +481,41 @@ namespace WindowsFormsTest
             //{
                 
             //}
-            //{
-
-            //}
             #endregion
+
+            //If its allready on the take it out
+            //if (DesignerSettings.RecentFilePaths.Contains(fileName))
+            {
+                DesignerSettings.RecentFilePaths.Remove(fileName);
+            }
+
+            //Insert it at the the beggining
+            DesignerSettings.RecentFilePaths.Insert(0, fileName);
+
+            //Remove any excess from the bottem
+            while (DesignerSettings.RecentFilePaths.Count > DesignerSettings.RecentFileCount && DesignerSettings.RecentFileCount >= 0)
+            {
+                DesignerSettings.RecentFilePaths.Remove(DesignerSettings.RecentFilePaths[DesignerSettings.RecentFilePaths.Count - 1]);
+            }
+        }
+
+        private void radDock2_DockWindowClosed(object sender, DockWindowEventArgs e)
+        {
+            
+        }
+
+        private void Options_btn_Click(object sender, EventArgs e)
+        {
+            using (OptionsForm frm = new OptionsForm())
+            {
+                if (frm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    OptionsForm.SettingData dat = frm.getSettingsData();
+
+                    DesignerSettings.RecentFileCount = dat.RecentFilesCount;
+                    DesignerSettings.Theme = dat.Theme;
+                }
+            }
         }
     }
 }

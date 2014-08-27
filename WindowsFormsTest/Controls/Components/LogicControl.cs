@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Telerik.WinControls.UI;
 
 namespace WindowsFormsTest.Controls
 {
@@ -18,19 +20,15 @@ namespace WindowsFormsTest.Controls
             Guid = new Guid();
             MainImage.MouseClick += MainImage_MouseClick;
             Selected = false;
+            Name = GetType().Name + Guid;
         }
-
+        
         void MainImage_MouseClick(object sender, MouseEventArgs e)
         {
             if(!Selected)
             Selected = true;
         }
-
-        public virtual String DisplayName {
-            get { return this.GetType().ToString() + " : " + Guid.ToString(); }
-        }
-
-        public virtual ConnectionNode OutputNode { get { return null; } }
+        
 
         public bool MoveEnabled { get { return MoveTimer.Enabled; }
             set { MoveTimer.Enabled = value; }
@@ -140,7 +138,20 @@ namespace WindowsFormsTest.Controls
 
         public delegate void MovementEventDelegate(Object sender, GateEventHandler e);
 
+        [Browsable(true)]
+        [ReadOnly(true)]
+        [DisplayName("Unique identifier")]
+        [Description("gives the program a way of identifiting each Logic component")]
+        [Category("LogicControl")]
+        [RadSortOrder(0)]
         public Guid Guid { get; set; }
+
+        [RadSortOrder(0)]
+        [Category("LogicControl")]
+        [Browsable(true)]
+        [Description("Sets the name of the logic component")]
+        public string Name { get { return toolTip1.GetToolTip(MainImage); } set{toolTip1.SetToolTip(MainImage, value);} }
+
 
         private void MainImage_MouseDown(object sender, MouseEventArgs e)
         {
@@ -161,6 +172,7 @@ namespace WindowsFormsTest.Controls
             public Type Type;
             public Point Pos;
             public Guid Guid;
+            public string Name;
         }
 
         public virtual LogicSaveData GetSaveData()
@@ -169,7 +181,8 @@ namespace WindowsFormsTest.Controls
             {
                 Type = this.GetType(),
                 Pos = this.Location,
-                Guid = this.Guid
+                Guid = this.Guid,
+                Name = this.Name
             };
 
             return result;
