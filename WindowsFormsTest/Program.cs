@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using WindowsFormsTest.Forms;
 
 namespace WindowsFormsTest
 {
@@ -14,7 +15,7 @@ namespace WindowsFormsTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SplashScreen());
+            Application.Run(new SplashScreenLogicDesigner());
         }
     }
 }

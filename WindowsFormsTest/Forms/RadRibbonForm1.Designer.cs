@@ -82,20 +82,10 @@
             this.aquaTheme1 = new Telerik.WinControls.Themes.AquaTheme();
             this.breezeTheme1 = new Telerik.WinControls.Themes.BreezeTheme();
             this.desertTheme1 = new Telerik.WinControls.Themes.DesertTheme();
-            this.highContrastBlackTheme1 = new Telerik.WinControls.Themes.HighContrastBlackTheme();
-            this.office2007BlackTheme1 = new Telerik.WinControls.Themes.Office2007BlackTheme();
-            this.office2007SilverTheme1 = new Telerik.WinControls.Themes.Office2007SilverTheme();
-            this.office2010BlackTheme1 = new Telerik.WinControls.Themes.Office2010BlackTheme();
             this.office2010BlueTheme1 = new Telerik.WinControls.Themes.Office2010BlueTheme();
             this.office2010SilverTheme1 = new Telerik.WinControls.Themes.Office2010SilverTheme();
-            this.office2013DarkTheme1 = new Telerik.WinControls.Themes.Office2013DarkTheme();
-            this.office2013LightTheme1 = new Telerik.WinControls.Themes.Office2013LightTheme();
-            this.telerikMetroTheme1 = new Telerik.WinControls.Themes.TelerikMetroTheme();
-            this.telerikMetroBlueTheme1 = new Telerik.WinControls.Themes.TelerikMetroBlueTheme();
-            this.telerikMetroTouchTheme1 = new Telerik.WinControls.Themes.TelerikMetroTouchTheme();
             this.visualStudio2012DarkTheme2 = new Telerik.WinControls.Themes.VisualStudio2012DarkTheme();
             this.visualStudio2012LightTheme1 = new Telerik.WinControls.Themes.VisualStudio2012LightTheme();
-            this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
             this.windows8Theme1 = new Telerik.WinControls.Themes.Windows8Theme();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
@@ -115,7 +105,7 @@
             // 
             this.radStatusStrip1.Items.AddRange(new Telerik.WinControls.RadItem[] {
             this.radLabelElement1});
-            this.radStatusStrip1.Location = new System.Drawing.Point(0, 737);
+            this.radStatusStrip1.Location = new System.Drawing.Point(0, 739);
             this.radStatusStrip1.Name = "radStatusStrip1";
             this.radStatusStrip1.Size = new System.Drawing.Size(1583, 42);
             this.radStatusStrip1.SizingGrip = false;
@@ -138,6 +128,7 @@
             this.documentContainer1.CausesValidation = false;
             this.documentContainer1.Controls.Add(this.documentTabStrip1);
             this.documentContainer1.Name = "documentContainer1";
+            this.documentContainer1.Padding = new System.Windows.Forms.Padding(0);
             // 
             // 
             // 
@@ -159,7 +150,7 @@
             this.documentTabStrip1.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.documentTabStrip1.SelectedIndex = 0;
             this.documentTabStrip1.ShowItemCloseButton = true;
-            this.documentTabStrip1.Size = new System.Drawing.Size(1573, 530);
+            this.documentTabStrip1.Size = new System.Drawing.Size(1583, 541);
             this.documentTabStrip1.TabIndex = 0;
             this.documentTabStrip1.TabStop = false;
             // 
@@ -168,7 +159,7 @@
             this.documentWindow1.Location = new System.Drawing.Point(5, 46);
             this.documentWindow1.Name = "documentWindow1";
             this.documentWindow1.PreviousDockState = Telerik.WinControls.UI.Docking.DockState.TabbedDocument;
-            this.documentWindow1.Size = new System.Drawing.Size(1563, 479);
+            this.documentWindow1.Size = new System.Drawing.Size(1573, 490);
             this.documentWindow1.Text = "documentWindow1";
             // 
             // radDock2
@@ -180,15 +171,16 @@
             this.radDock2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radDock2.ForeColor = System.Drawing.Color.White;
             this.radDock2.IsCleanUpTarget = true;
-            this.radDock2.Location = new System.Drawing.Point(0, 197);
+            this.radDock2.Location = new System.Drawing.Point(0, 196);
             this.radDock2.MainDocumentContainer = this.documentContainer1;
             this.radDock2.Name = "radDock2";
+            this.radDock2.Padding = new System.Windows.Forms.Padding(0);
             // 
             // 
             // 
             this.radDock2.RootElement.MinSize = new System.Drawing.Size(0, 0);
             this.radDock2.ShowDocumentCloseButton = true;
-            this.radDock2.Size = new System.Drawing.Size(1583, 540);
+            this.radDock2.Size = new System.Drawing.Size(1583, 541);
             this.radDock2.SplitterWidth = 2;
             this.radDock2.TabIndex = 5;
             this.radDock2.TabStop = false;
@@ -295,14 +287,14 @@
             this.ribbonTab2});
             this.radRibbonBar1.Location = new System.Drawing.Point(0, 0);
             this.radRibbonBar1.Name = "radRibbonBar1";
-            this.radRibbonBar1.Size = new System.Drawing.Size(1583, 197);
+            this.radRibbonBar1.Size = new System.Drawing.Size(1583, 196);
             this.radRibbonBar1.StartButtonImage = ((System.Drawing.Image)(resources.GetObject("radRibbonBar1.StartButtonImage")));
             this.radRibbonBar1.StartMenuItems.AddRange(new Telerik.WinControls.RadItem[] {
             this.NewContainer,
             this.SaveContainer,
             this.OpenContainer});
             this.radRibbonBar1.TabIndex = 2;
-            this.radRibbonBar1.Text = "RadRibbonForm1";
+            this.radRibbonBar1.Text = "Logic Designer";
             // 
             // radRibbonBarBackstageView1
             // 
@@ -448,7 +440,7 @@
             this.Option_btn.Name = "Option_btn";
             this.Option_btn.Text = "Options";
             this.Option_btn.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.Option_btn.Click += new System.EventHandler(this.Options_Click);
+            this.Option_btn.Click += new System.EventHandler(this.Options_btn_Click);
             // 
             // ribbonTab1
             // 
@@ -692,6 +684,7 @@
             this.Controls.Add(this.radRibbonBar1);
             this.Controls.Add(this.radStatusStrip1);
             this.Controls.Add(this.radRibbonBarBackstageView1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = null;
             this.Name = "RadRibbonForm1";
             // 
@@ -699,7 +692,7 @@
             // 
             this.RootElement.ApplyShapeToControl = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RadRibbonForm1";
+            this.Text = "Logic Designer";
             this.ThemeName = "ControlDefault";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RadRibbonForm1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
@@ -754,20 +747,10 @@
         private Telerik.WinControls.Themes.AquaTheme aquaTheme1;
         private Telerik.WinControls.Themes.BreezeTheme breezeTheme1;
         private Telerik.WinControls.Themes.DesertTheme desertTheme1;
-        private Telerik.WinControls.Themes.HighContrastBlackTheme highContrastBlackTheme1;
-        private Telerik.WinControls.Themes.Office2007BlackTheme office2007BlackTheme1;
-        private Telerik.WinControls.Themes.Office2007SilverTheme office2007SilverTheme1;
-        private Telerik.WinControls.Themes.Office2010BlackTheme office2010BlackTheme1;
         private Telerik.WinControls.Themes.Office2010BlueTheme office2010BlueTheme1;
         private Telerik.WinControls.Themes.Office2010SilverTheme office2010SilverTheme1;
-        private Telerik.WinControls.Themes.Office2013DarkTheme office2013DarkTheme1;
-        private Telerik.WinControls.Themes.Office2013LightTheme office2013LightTheme1;
-        private Telerik.WinControls.Themes.TelerikMetroTheme telerikMetroTheme1;
-        private Telerik.WinControls.Themes.TelerikMetroBlueTheme telerikMetroBlueTheme1;
-        private Telerik.WinControls.Themes.TelerikMetroTouchTheme telerikMetroTouchTheme1;
         private Telerik.WinControls.Themes.VisualStudio2012DarkTheme visualStudio2012DarkTheme2;
         private Telerik.WinControls.Themes.VisualStudio2012LightTheme visualStudio2012LightTheme1;
-        private Telerik.WinControls.Themes.Windows7Theme windows7Theme1;
         private Telerik.WinControls.Themes.Windows8Theme windows8Theme1;
         private Telerik.WinControls.UI.RibbonTab ribbonTab2;
         private System.Windows.Forms.HelpProvider helpProvider1;

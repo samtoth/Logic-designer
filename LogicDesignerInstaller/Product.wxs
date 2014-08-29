@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="LogicDesigner" Language="1033" Version="0.1.0.3" Manufacturer="TothCo." UpgradeCode="{9F3015B1-0A32-41C0-8D0E-865782EC1CE5}">
+		<Package InstallerVersion="301" Compressed="yes" InstallScope="perMachine" />
+
+    <PropertyRef Id="NETFRAMEWORK45"/>
+    <Condition Message="This application requires .NET Framework 4.5. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK45]]>
+    </Condition>
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes"/>
+
+    <Media Id="1" Cabinet="cab1.cab" EmbedCab="yes"/>
+    
+		<Feature Id="ProductFeature" Title="LogicDesignerInstaller" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+    <UIRef Id="WixUI_InstallDir"/>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
+    <UI>
+      
+    </UI>
+	</Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="LogicDesigner" />
+      </Directory>
+
+
+      <!--This is for the Program Folder Shortcut-->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="LogicDesigner">
+        </Directory>
+      </Directory>
+    </Directory>
+
+
+      <DirectoryRef Id="ApplicationProgramsFolder">
+        <Component Id="ApplicationShortcut" Guid="*">
+          <Shortcut Id="ApplicationStartMenuShortcut"
+                    Name="!(bind.property.ProductName)"
+                    Description="!(bind.property.ProductName)"
+                    Target="[INSTALLFOLDER]LogicDesigner.exe"
+                    WorkingDirectory="INSTALLFOLDER"/>
+
+          <RemoveFolder Id="ProgramMenuFolder" On="uninstall"/>
+          <RegistryValue Root="HKCU" Key="Software\TothCo\LogicDesigner" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        </Component>
+
+      </DirectoryRef>
+  </Fragment>
+
+  <Fragment>
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallFinalize"/>
+    </InstallExecuteSequence>
+  </Fragment>
+  
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="LogicDesigner" Guid ="*">
+        <!-- TODO: Insert files, registry keys, and other resources here. -->
+        <File Id="LogicDesigner.exe" Source="..\WindowsFormsTest\bin\Release\LogicDesigner.exe" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="WinControls" Guid ="*">
+        <File Id="WinControls.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="WinControlsUi" Guid ="*">
+        <File Id="WinControlsUi.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.UI.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="RadDock" Guid ="*">
+        <File Id="RadDock.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.RadDock.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="AquaTheme" Guid ="*">
+        <File Id="AquaTheme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.Aqua.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="BreezeTheme" Guid ="*">
+        <File Id="BreezeTheme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.Breeze.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="DesertTheme" Guid ="*">
+        <File Id="DesertTheme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.Desert.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="BlueTheme" Guid ="*">
+        <File Id="BlueTheme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.Office2010Blue.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="SilverTheme" Guid ="*">
+        <File Id="SilverTheme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.Office2010Silver.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="DarkTheme" Guid ="*">
+        <File Id="DarkTheme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.VisualStudio2012Dark.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="LightTheme" Guid ="*">
+        <File Id="LightTheme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.VisualStudio2012Light.dll" KeyPath="yes" Checksum="yes"/>
+			</Component>
+      <Component Id="NewtonSoftJson" Guid ="*">
+        <File Id="NewtonSoftJson.dll" Source="..\WindowsFormsTest\bin\Release\Newtonsoft.Json.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="TelerikCommon" Guid ="*">
+        <File Id="TelerikCommon.dll" Source="..\WindowsFormsTest\bin\Release\TelerikCommon.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="AppIcon.ico" Guid="*">
+        <File Id="AppIcon.ico" Source="..\WindowsFormsTest\AppIcon.ico" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <ComponentRef Id="ApplicationShortcut"/>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

@@ -76,8 +76,15 @@ namespace WindowsFormsTest
                     newWindow.Controls.Add(mainLogicDesigner);
 
                     mainLogicDesigner.Dock = DockStyle.Fill;
-
-                    mainLogicDesigner.OpenFile(fileDialog.FileName);
+                    try
+                    {
+                        mainLogicDesigner.OpenFile(fileDialog.FileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                        MessageBox.Show(ex.Message);
+                    }
 
                 }
             }
@@ -302,7 +309,7 @@ namespace WindowsFormsTest
 
         private void Options_Click(object sender, EventArgs e)
         {
-            Options optionForm = new Options();
+            OptionsForm optionForm = new OptionsForm();
             optionForm.Show();
         }
 

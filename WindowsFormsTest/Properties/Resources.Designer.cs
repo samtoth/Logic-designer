@@ -63,6 +63,16 @@ namespace WindowsFormsTest.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _48x48Logo {
+            get {
+                object obj = ResourceManager.GetObject("48x48Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AND {
             get {
                 object obj = ResourceManager.GetObject("AND", resourceCulture);
@@ -319,6 +329,16 @@ namespace WindowsFormsTest.Properties {
         internal static System.Drawing.Bitmap playButton_pressed {
             get {
                 object obj = ResourceManager.GetObject("playButton_pressed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Splash {
+            get {
+                object obj = ResourceManager.GetObject("Splash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
