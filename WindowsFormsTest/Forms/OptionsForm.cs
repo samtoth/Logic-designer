@@ -16,6 +16,7 @@ namespace WindowsFormsTest.Forms
 
             result.Theme = (radPageViewPage1.Controls[0] as Controls.SettingsControls.Appearance).getThemeName();
             result.RecentFilesCount = (SavingAndLoadingTab.Controls[0] as Controls.SettingsControls.SavingAndLoading).getData();
+            result.wireType = (radPageViewPage1.Controls[0] as Controls.SettingsControls.Appearance).getWireType();
 
             return result;
         }
@@ -35,6 +36,7 @@ namespace WindowsFormsTest.Forms
         {
             public int RecentFilesCount;
             public string Theme;
+            public WireType wireType;
         }
 
         private void Ok_btn_Click(object sender, EventArgs e)

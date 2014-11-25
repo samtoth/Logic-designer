@@ -104,6 +104,9 @@
       <Component Id="AppIcon.ico" Guid="*">
         <File Id="AppIcon.ico" Source="..\WindowsFormsTest\AppIcon.ico" KeyPath="yes" Checksum="yes"/>
       </Component>
+      <Component Id="Windows8Theme" Guid="*">
+        <File Id="Windows8Theme.dll" Source="..\WindowsFormsTest\bin\Release\Telerik.WinControls.Themes.Windows8.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
       <ComponentRef Id="ApplicationShortcut"/>
 		</ComponentGroup>
 	</Fragment>

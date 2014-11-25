@@ -521,6 +521,7 @@ namespace WindowsFormsTest
 
                     DesignerSettings.RecentFileCount = dat.RecentFilesCount;
                     DesignerSettings.Theme = dat.Theme;
+                    DesignerSettings.wireType = dat.wireType;
                 }
             }
         }

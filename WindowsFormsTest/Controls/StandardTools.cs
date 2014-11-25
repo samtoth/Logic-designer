@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using WindowsFormsTest.component;
 using Telerik.WinControls.UI;
+using WindowsFormsTest.Controls.Components;
 
 namespace WindowsFormsTest.Controls
 {
@@ -25,7 +26,7 @@ namespace WindowsFormsTest.Controls
         private void LoadTools()
         {
             radTreeView1.Nodes.Clear();
-
+            
             #region Gates
             RadTreeNode GatesParentNode = radTreeView1.Nodes.Add("Logic gates");
 
@@ -75,6 +76,22 @@ namespace WindowsFormsTest.Controls
             ledNode.Tag = new LedDisplayControl();
 
             #endregion
+
+            #region Others
+            /* var type = typeof(LogicControl);
+            LogicControl controls = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (LogicControl c in controls)
+            {                
+                Console.WriteLine(t.Name);
+                RadTreeNode node = GatesParentNode.Nodes.Add(t.Name);
+                var lc = Activator.CreateInstance(t);
+                node.Tag = lc;
+                node.Image = (Image)lc.GetType().GetProperty("ToolboxIcon").GetValue(lc, null);
+            } */
+            RadTreeNode labelNode = radTreeView1.Nodes.Add("Label");
+            labelNode.Tag = new TextBoxControl();
+            #endregion
         }
 
         private void StandardTools_Load(object sender, EventArgs e)
@@ -92,7 +109,7 @@ namespace WindowsFormsTest.Controls
 
         private void radTreeView1_NodeMouseDown(object sender, RadTreeViewMouseEventArgs e)
         {
-            if(radTreeView1.Nodes.Contains(e.Node.Parent)){
+            if(e.Node.Tag!=null){
                 this.DoDragDrop(e.Node.Tag, DragDropEffects.Copy);
             }
         }

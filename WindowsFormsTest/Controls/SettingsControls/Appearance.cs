@@ -41,5 +41,23 @@ namespace WindowsFormsTest.Controls.SettingsControls
             }
             return ThemeDropDownBox.SelectedText;
         }
+
+
+        public WireType getWireType()
+        {
+            switch (WireTypeDropDownBox.SelectedText)
+            {
+                case "Square":
+                    return WireType.Square;
+                    break;
+                case "Curved":
+                    return WireType.Curved;
+                    break;
+                case "Direct":
+                    return WireType.Direct;
+                    break;
+            }
+            return WireType.Square;
+        }
     }
 }

@@ -12,6 +12,12 @@ using WindowsFormsTest.Controls;
 
 namespace WindowsFormsTest
 {
+
+    public enum WireType
+    {
+        Square, Curved, Direct
+    }
+
     internal static class Globals
     {
         internal static RadRibbonForm1 MainForm { get; set; }
@@ -50,12 +56,15 @@ namespace WindowsFormsTest
 
         internal static  int RecentFileCount { get; set; }
 
+        internal static WireType wireType  { get; set; }
+
         static DesignerSettings()
         {
             //Set default Value
             RecentFileCount = 10;
             Theme = "Windows8";
             RecentFilePaths = new List<string>();
+            wireType = WireType.Square;
         }
     }
 

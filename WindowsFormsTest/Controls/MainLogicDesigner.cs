@@ -542,83 +542,50 @@ namespace WindowsFormsTest.Controls
         {
             GraphicsPath result = new GraphicsPath();
 
+
             Point nodeFromLocation = new Point(nodes.Output.Location.X + nodes.Output.ParentLogicControl.Location.X,
                 nodes.Output.Location.Y + nodes.Output.ParentLogicControl.Location.Y);
 
             Point nodeToLocation = new Point(nodes.Input.Location.X + nodes.Input.ParentLogicControl.Location.X,
                 nodes.Input.Location.Y + nodes.Input.ParentLogicControl.Location.Y);
 
-            int linePadding = 20;
-
-            /*
-            //is node on left side
-            if (nodes.Output.Location.X < nodes.Output.Control.Width / 2)
+            switch (DesignerSettings.wireType)
             {
-                //Is other node on the Right side of first one
-                if (nodeToLocation.X > nodeFromLocation.X)
-                {
-                    result.AddLine(nodeFromLocation, new Point(nodes.Output.Control.Location.X - linePadding, nodeFromLocation.Y));
-                }
-                else
-                {
+                case WireType.Curved:
 
-                }
+                    int linePadding = 20;
+                    
+                    Point[] points1 = new Point[3];
+
+                    points1[0] = nodeFromLocation;
+                    points1[1] = new Point(((nodeToLocation.X - nodeFromLocation.X) / 2) + nodeFromLocation.X, nodeFromLocation.Y);
+                    points1[2] = nodeToLocation;
+
+                    result.AddCurve(points1, 0.5f);
+
+                    break;
+
+                case WireType.Square:
+
+                    Point[] points2 = new Point[4];
+
+                    points2[0] = nodeFromLocation;
+                    points2[1] = new Point(nodeFromLocation.X + ((nodeToLocation.X - nodeFromLocation.X) / 2), nodeFromLocation.Y);
+                    points2[2] = new Point(points2[1].X, nodeToLocation.Y);
+                    points2[3] = nodeToLocation;
+
+                    result.AddLines(points2);
+                    break;
+                case WireType.Direct:
+
+                    Point[] points3 = new Point[2];
+
+                    points3[0] = nodeFromLocation;
+                    points3[1] = nodeToLocation;
+
+                    result.AddLines(points3);
+                    break;
             }
-
-            //Node is on right side
-            else
-            {
-                //Is other Node left side of the first one
-                if (nodeToLocation.X < nodeFromLocation.X)
-                {
-                    if (nodes.Input.Location.X > nodes.Input.Control.Width / 2)
-                    {
-                        result.AddLine(nodeFromLocation, new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodeToLocation.Y), nodeToLocation);
-                    }
-                    else
-                    {
-                        result.AddLine(nodeFromLocation, new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodeFromLocation.Y), new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodes.Output.Control.Location.X + nodes.Output.Control.Width + linePadding, nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Output.Control.Location.Y - 20), new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X + (Math.Abs(nodeToLocation.X - nodeFromLocation.X) / 2), nodes.Input.Control.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20), nodeToLocation);
-                    }
-                }
-                //other node is on right side of first one
-                else
-                {
-                    //if other node is on left side
-                    if (nodes.Input.Location.X < nodes.Input.Control.Width / 2)
-                    {
-                        result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeToLocation.Y));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeToLocation.Y), nodeToLocation);
-                    }
-                    else
-                    {
-                        result.AddLine(nodeFromLocation, new Point(nodeFromLocation.X + (nodes.Input.Control.Location.X - nodeFromLocation.X) / 2, nodeFromLocation.Y));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodeFromLocation.Y), new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodeFromLocation.X + (nodeToLocation.X - nodeFromLocation.X) / 2, nodes.Input.Control.Location.Y - 20), new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20));
-                        result.AddLine(new Point(nodeToLocation.X, nodes.Input.Control.Location.Y - 20), nodeToLocation);
-                    }
-                }
-            }*/
-
-            //result.AddArc(nodes.Output.Location.X, nodes.Output.Location.Y, (nodes.Input.Location.X - nodes.Output.Location.X) / 2, (nodes.Input.Location.Y - nodes.Output.Location.Y) / 2, nodes.Output.Location.Y < nodes.Input.Location.Y ? 280 : 60, 0);
-
-            Point[] points = new Point[3];
-
-            points[0] = nodeFromLocation;
-            points[1] = new Point(((nodeToLocation.X - nodeFromLocation.X)/2) + nodeFromLocation.X, nodeFromLocation.Y);
-            points[2] = nodeToLocation;
-
-            result.AddCurve(points, 0.5f);
-
             return result;
         }
 

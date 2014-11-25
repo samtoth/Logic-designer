@@ -7,5 +7,9 @@ This release:
 	Setup the installer - 2 hours
 	Total - 7 hours
 Post Release:
-	Add multiple inputs in cerain gates
-	Add components that users can create as a form of grouping
+	Shorter/easier
+		Add textboxes
+		Fix running button causing crashing when switching documents
+	Harder/longer
+		Add multiple inputs in cerain gates
+		Add components that users can create as a form of grouping
